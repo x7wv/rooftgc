@@ -1,0 +1,2723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>dsc.gg/roof TCG</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+  :root {
+    --gold: #FFD700;
+    --gold2: #FFA500;
+    --dark: #0a0a0f;
+    --dark2: #12121a;
+    --dark3: #1a1a28;
+    --pink: #ff4dbb;
+    --blue: #4dc3ff;
+    --green: #4dff9b;
+    --red: #ff4d4d;
+    --purple: #b44dff;
+    --orange: #ff944d;
+    --card-bg: #1e1e30;
+    --text: #f0f0ff;
+    --text2: #a0a0c0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ===== BACKGROUND ===== */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 20% 20%, rgba(255,77,187,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(77,195,255,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 50% 50%, rgba(180,77,255,0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 2px solid rgba(255,215,0,0.3);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+
+  .nav-logo {
+    font-family: 'Bangers', cursive;
+    font-size: 28px;
+    letter-spacing: 3px;
+    background: linear-gradient(135deg, var(--gold), var(--gold2), var(--pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    cursor: pointer;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .nav-btn {
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: var(--text2);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .nav-btn:hover, .nav-btn.active {
+    background: rgba(255,215,0,0.15);
+    color: var(--gold);
+  }
+
+  .nav-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .user-coins {
+    background: rgba(255,215,0,0.1);
+    border: 1px solid rgba(255,215,0,0.3);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--gold);
+  }
+
+  .user-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  /* ===== PAGES ===== */
+  .page { display: none; padding: 24px; max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
+  .page.active { display: block; }
+
+  /* ===== HOME ===== */
+  .hero {
+    text-align: center;
+    padding: 60px 20px 40px;
+  }
+
+  .hero-title {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(48px, 8vw, 100px);
+    letter-spacing: 6px;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--gold), var(--gold2), var(--pink), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    margin-bottom: 12px;
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    color: var(--text2);
+    margin-bottom: 40px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .hero-cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+  }
+
+  .floating-card {
+    width: 120px;
+    height: 168px;
+    border-radius: 10px;
+    border: 2px solid var(--gold);
+    background: var(--card-bg);
+    box-shadow: 0 0 30px rgba(255,215,0,0.3);
+    animation: float 3s ease-in-out infinite;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .floating-card:nth-child(2) { animation-delay: 0.5s; }
+  .floating-card:nth-child(3) { animation-delay: 1s; }
+  .floating-card:nth-child(4) { animation-delay: 1.5s; }
+  .floating-card:nth-child(5) { animation-delay: 2s; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-15px) rotate(2deg); }
+  }
+
+  .home-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* ===== BUTTONS ===== */
+  .btn {
+    padding: 12px 28px;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    color: #000;
+    box-shadow: 0 4px 20px rgba(255,215,0,0.4);
+  }
+  .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,215,0,0.5); }
+
+  .btn-pink {
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(255,77,187,0.3);
+  }
+  .btn-pink:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,77,187,0.4); }
+
+  .btn-outline {
+    background: transparent;
+    border: 2px solid var(--gold);
+    color: var(--gold);
+  }
+  .btn-outline:hover { background: rgba(255,215,0,0.1); }
+
+  .btn-sm { padding: 6px 14px; font-size: 12px; border-radius: 6px; }
+  .btn-danger { background: linear-gradient(135deg, #ff4d4d, #cc0000); color: #fff; }
+  .btn-blue { background: linear-gradient(135deg, var(--blue), #0066ff); color: #fff; }
+  .btn-green { background: linear-gradient(135deg, var(--green), #00cc55); color: #000; }
+
+  /* ===== SECTION HEADERS ===== */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid rgba(255,215,0,0.2);
+  }
+
+  .section-title {
+    font-family: 'Bangers', cursive;
+    font-size: 32px;
+    letter-spacing: 3px;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* ===== CARD DISPLAY ===== */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+  }
+
+  .card-container {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  .card-container:hover { transform: translateY(-8px) scale(1.03); }
+
+  .tcg-card {
+    width: 100%;
+    aspect-ratio: 5/7;
+    border-radius: 12px;
+    border: 3px solid var(--gold);
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 20px rgba(255,215,0,0.2);
+    background: #1a1a2e;
+  }
+
+  .tcg-card img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+
+  .card-rarity-glow {
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    pointer-events: none;
+  }
+  .rarity-common .card-rarity-glow { box-shadow: inset 0 0 15px rgba(200,200,200,0.2); }
+  .rarity-rare .card-rarity-glow { box-shadow: inset 0 0 15px rgba(77,195,255,0.4); border-color: var(--blue) !important; }
+  .rarity-epic .card-rarity-glow { box-shadow: inset 0 0 20px rgba(180,77,255,0.5); border-color: var(--purple) !important; }
+  .rarity-legendary .card-rarity-glow { box-shadow: inset 0 0 25px rgba(255,215,0,0.6); animation: legendaryPulse 2s infinite; }
+
+  @keyframes legendaryPulse {
+    0%, 100% { box-shadow: inset 0 0 25px rgba(255,215,0,0.6); }
+    50% { box-shadow: inset 0 0 40px rgba(255,165,0,0.8); }
+  }
+
+  .card-name-badge {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.85));
+    padding: 20px 8px 6px;
+    font-size: 11px;
+    font-weight: 800;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 1px 4px #000;
+  }
+
+  .card-count-badge {
+    position: absolute;
+    top: 6px; right: 6px;
+    background: rgba(0,0,0,0.8);
+    border: 1px solid var(--gold);
+    border-radius: 10px;
+    padding: 2px 7px;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--gold);
+  }
+
+  /* ===== CARD MODAL ===== */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--dark2);
+    border: 2px solid rgba(255,215,0,0.4);
+    border-radius: 20px;
+    padding: 28px;
+    max-width: 600px;
+    width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 0 60px rgba(255,215,0,0.2);
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 14px; right: 14px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: var(--text);
+    font-size: 20px;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .modal-close:hover { background: rgba(255,77,77,0.3); }
+
+  .card-detail-layout {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+  }
+
+  @media (max-width: 480px) {
+    .card-detail-layout { grid-template-columns: 1fr; }
+  }
+
+  .card-detail-img {
+    width: 100%;
+    aspect-ratio: 5/7;
+    border-radius: 12px;
+    border: 3px solid var(--gold);
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(255,215,0,0.3);
+  }
+  .card-detail-img img { width: 100%; height: 100%; object-fit: cover; }
+
+  .card-detail-info h2 {
+    font-family: 'Bangers', cursive;
+    font-size: 26px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .card-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .tag {
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .tag-type-water { background: rgba(77,195,255,0.2); color: var(--blue); border: 1px solid var(--blue); }
+  .tag-type-psychic { background: rgba(255,77,187,0.2); color: var(--pink); border: 1px solid var(--pink); }
+  .tag-type-fighting { background: rgba(255,148,77,0.2); color: var(--orange); border: 1px solid var(--orange); }
+  .tag-type-dark { background: rgba(100,100,100,0.2); color: #aaa; border: 1px solid #666; }
+  .tag-type-vape { background: rgba(77,255,155,0.2); color: var(--green); border: 1px solid var(--green); }
+  .tag-type-normal { background: rgba(200,200,200,0.2); color: #ccc; border: 1px solid #888; }
+  .tag-type-flying { background: rgba(180,77,255,0.2); color: var(--purple); border: 1px solid var(--purple); }
+  .tag-trainer { background: rgba(255,215,0,0.2); color: var(--gold); border: 1px solid var(--gold); }
+  .tag-rarity-common { background: rgba(180,180,180,0.1); color: #aaa; }
+  .tag-rarity-rare { background: rgba(77,195,255,0.1); color: var(--blue); }
+  .tag-rarity-epic { background: rgba(180,77,255,0.1); color: var(--purple); }
+  .tag-rarity-legendary { background: rgba(255,215,0,0.1); color: var(--gold); }
+
+  .card-hp-bar {
+    margin-bottom: 14px;
+  }
+  .hp-label { font-size: 12px; color: var(--text2); margin-bottom: 4px; }
+  .hp-value { font-size: 22px; font-weight: 900; color: var(--green); }
+
+  .card-flavour {
+    background: rgba(255,255,255,0.05);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: var(--text2);
+    font-style: italic;
+    margin-bottom: 14px;
+  }
+
+  .moves-list { margin-bottom: 14px; }
+  .moves-list h4 { font-size: 13px; color: var(--text2); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+
+  .move-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .move-name { font-weight: 800; font-size: 14px; flex: 1; }
+
+  .move-damage {
+    font-family: 'Bangers', cursive;
+    font-size: 20px;
+    letter-spacing: 1px;
+    min-width: 50px;
+    text-align: right;
+  }
+  .move-damage.positive { color: var(--green); }
+  .move-damage.negative { color: var(--red); }
+  .move-damage.neutral { color: var(--gold); }
+  .move-damage.special { color: var(--purple); font-size: 14px; }
+
+  .move-desc { font-size: 11px; color: var(--text2); width: 100%; margin-top: 2px; }
+
+  .card-stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .stat-box {
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    padding: 8px;
+    text-align: center;
+  }
+  .stat-label { font-size: 10px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; }
+  .stat-value { font-size: 13px; font-weight: 800; color: var(--red); margin-top: 2px; }
+  .stat-value.resist { color: var(--green); }
+  .stat-value.retreat { color: var(--blue); }
+
+  .modal-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+
+  /* ===== POKEDEX ===== */
+  .pokedex-filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .filter-btn {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
+    color: var(--text2);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .filter-btn:hover, .filter-btn.active { background: rgba(255,215,0,0.15); border-color: var(--gold); color: var(--gold); }
+
+  .search-bar {
+    flex: 1;
+    min-width: 200px;
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    outline: none;
+  }
+  .search-bar:focus { border-color: var(--gold); }
+
+  /* ===== COLLECTION ===== */
+  .collection-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: var(--dark3);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-card-value { font-family: 'Bangers', cursive; font-size: 36px; color: var(--gold); letter-spacing: 2px; }
+  .stat-card-label { font-size: 12px; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; }
+
+  /* ===== PACKS ===== */
+  .packs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 24px;
+  }
+
+  .pack-card {
+    background: var(--dark3);
+    border: 2px solid rgba(255,215,0,0.3);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .pack-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,215,0,0.05), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .pack-card:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: 0 8px 30px rgba(255,215,0,0.2); }
+  .pack-card:hover::before { opacity: 1; }
+
+  .pack-img {
+    width: 120px;
+    height: 168px;
+    margin: 0 auto 16px;
+    border-radius: 10px;
+    border: 2px solid var(--gold);
+    background: var(--dark2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(255,215,0,0.3);
+  }
+
+  .pack-img img { width: 100%; height: 100%; object-fit: cover; }
+
+  .pack-name { font-family: 'Bangers', cursive; font-size: 22px; letter-spacing: 2px; color: var(--gold); margin-bottom: 6px; }
+  .pack-desc { font-size: 12px; color: var(--text2); margin-bottom: 12px; line-height: 1.4; }
+  .pack-cards-count { font-size: 11px; color: var(--text2); margin-bottom: 12px; }
+  .pack-price { font-size: 18px; font-weight: 900; color: var(--gold); margin-bottom: 12px; }
+
+  /* ===== PACK OPENING ===== */
+  .pack-open-screen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    z-index: 2000;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+  }
+  .pack-open-screen.open { display: flex; }
+
+  .pack-open-title {
+    font-family: 'Bangers', cursive;
+    font-size: 40px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    margin-bottom: 40px;
+    text-shadow: 0 0 30px rgba(255,215,0,0.5);
+  }
+
+  .pack-reveal-cards {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 900px;
+    padding: 20px;
+  }
+
+  .reveal-card {
+    width: 130px;
+    height: 182px;
+    border-radius: 12px;
+    border: 3px solid var(--gold);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transform: rotateY(180deg);
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+
+  .reveal-card.flipped { transform: rotateY(0deg); }
+
+  .card-face, .card-back {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: 10px;
+  }
+
+  .card-back {
+    background: linear-gradient(135deg, #1a1a3e, #0d0d1a);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bangers', cursive;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    transform: rotateY(180deg);
+    border: 2px solid rgba(255,215,0,0.3);
+  }
+
+  .card-face img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* ===== BATTLE ===== */
+  .battle-arena {
+    background: var(--dark3);
+    border-radius: 20px;
+    padding: 24px;
+    border: 2px solid rgba(255,215,0,0.2);
+  }
+
+  .battle-vs {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 20px;
+    align-items: start;
+    margin-bottom: 24px;
+  }
+
+  .battle-side { text-align: center; }
+
+  .battle-side-title {
+    font-family: 'Bangers', cursive;
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: var(--text2);
+    margin-bottom: 12px;
+  }
+
+  .battle-card-slot {
+    width: 140px;
+    height: 196px;
+    border-radius: 12px;
+    border: 3px dashed rgba(255,215,0,0.3);
+    background: rgba(255,255,255,0.02);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 12px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    overflow: hidden;
+    font-size: 13px;
+    color: var(--text2);
+  }
+  .battle-card-slot.has-card { border-style: solid; border-color: var(--gold); }
+  .battle-card-slot img { width: 100%; height: 100%; object-fit: cover; }
+
+  .hp-bar-wrapper { margin-bottom: 12px; }
+  .hp-bar-track { height: 12px; background: rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden; }
+  .hp-bar-fill { height: 100%; border-radius: 6px; transition: width 0.5s, background 0.3s; background: var(--green); }
+  .hp-bar-fill.mid { background: var(--gold); }
+  .hp-bar-fill.low { background: var(--red); }
+  .hp-bar-label { font-size: 12px; color: var(--text2); margin-bottom: 4px; display: flex; justify-content: space-between; }
+
+  .vs-divider {
+    font-family: 'Bangers', cursive;
+    font-size: 48px;
+    color: var(--gold);
+    text-shadow: 0 0 20px rgba(255,215,0,0.5);
+    padding-top: 80px;
+  }
+
+  .battle-log {
+    background: rgba(0,0,0,0.4);
+    border-radius: 10px;
+    padding: 16px;
+    height: 200px;
+    overflow-y: auto;
+    margin-bottom: 16px;
+    font-size: 13px;
+    line-height: 1.8;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .log-entry { padding: 2px 0; }
+  .log-entry.damage { color: var(--red); }
+  .log-entry.heal { color: var(--green); }
+  .log-entry.system { color: var(--gold); font-weight: 700; }
+  .log-entry.effect { color: var(--purple); }
+
+  .battle-moves {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+  }
+
+  .move-btn {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .move-btn:hover { background: rgba(255,215,0,0.15); border-color: var(--gold); }
+  .move-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .move-btn-damage {
+    font-family: 'Bangers', cursive;
+    font-size: 18px;
+    color: var(--gold);
+  }
+
+  /* ===== TRADING ===== */
+  .trade-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 700px) { .trade-layout { grid-template-columns: 1fr; } }
+
+  .trade-panel {
+    background: var(--dark3);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .trade-slot {
+    min-height: 80px;
+    border: 2px dashed rgba(255,215,0,0.3);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 12px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .trade-slot-card {
+    width: 60px;
+    height: 84px;
+    border-radius: 6px;
+    border: 2px solid var(--gold);
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+  .trade-slot-card img { width: 100%; height: 100%; object-fit: cover; }
+  .trade-slot-card .remove-x {
+    position: absolute;
+    top: 2px; right: 2px;
+    background: rgba(255,0,0,0.8);
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: #fff;
+    cursor: pointer;
+  }
+
+  /* ===== ADMIN ===== */
+  .admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .admin-card {
+    background: var(--dark3);
+    border: 1px solid rgba(255,215,0,0.2);
+    border-radius: 16px;
+    padding: 20px;
+  }
+
+  .admin-card h3 {
+    font-family: 'Bangers', cursive;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+
+  .form-group { margin-bottom: 12px; }
+  .form-label { font-size: 12px; color: var(--text2); margin-bottom: 4px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold); }
+  .form-select option { background: var(--dark2); }
+  .form-textarea { resize: vertical; min-height: 70px; }
+
+  .admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .admin-table th {
+    padding: 8px 12px;
+    text-align: left;
+    color: var(--text2);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .admin-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .admin-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* ===== LOGIN ===== */
+  .login-screen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--dark);
+    z-index: 5000;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .login-screen.open { display: flex; }
+
+  .login-box {
+    background: var(--dark2);
+    border: 2px solid rgba(255,215,0,0.3);
+    border-radius: 20px;
+    padding: 40px;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 0 60px rgba(255,215,0,0.1);
+  }
+
+  .login-logo {
+    font-family: 'Bangers', cursive;
+    font-size: 42px;
+    letter-spacing: 4px;
+    background: linear-gradient(135deg, var(--gold), var(--gold2), var(--pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+
+  .login-tagline { font-size: 13px; color: var(--text2); margin-bottom: 30px; }
+
+  .tabs {
+    display: flex;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 20px;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 8px;
+    background: transparent;
+    border: none;
+    color: var(--text2);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab-btn.active { background: rgba(255,215,0,0.15); color: var(--gold); }
+
+  /* ===== TOAST ===== */
+  .toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .toast {
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    animation: slideIn 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.1);
+    min-width: 200px;
+    max-width: 350px;
+  }
+  .toast-success { background: rgba(77,255,155,0.2); border-color: var(--green); color: var(--green); }
+  .toast-error { background: rgba(255,77,77,0.2); border-color: var(--red); color: var(--red); }
+  .toast-info { background: rgba(255,215,0,0.15); border-color: var(--gold); color: var(--gold); }
+
+  @keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  /* ===== LOADING ===== */
+  .loading-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 4000;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .loading-overlay.open { display: flex; }
+
+  .spinner {
+    width: 48px; height: 48px;
+    border: 4px solid rgba(255,215,0,0.2);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-text { color: var(--gold); font-weight: 700; letter-spacing: 2px; font-size: 14px; text-transform: uppercase; }
+
+  /* ===== MISC ===== */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text2);
+  }
+  .empty-state .icon { font-size: 60px; margin-bottom: 16px; }
+  .empty-state h3 { font-family: 'Bangers', cursive; font-size: 24px; letter-spacing: 2px; color: var(--text2); margin-bottom: 8px; }
+
+  .divider { height: 1px; background: rgba(255,255,255,0.08); margin: 20px 0; }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+  .badge-online { background: rgba(77,255,155,0.2); color: var(--green); }
+  .badge-offline { background: rgba(180,180,180,0.1); color: #888; }
+
+  .supabase-note {
+    background: rgba(77,195,255,0.1);
+    border: 1px solid rgba(77,195,255,0.3);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--blue);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .config-panel {
+    background: var(--dark3);
+    border: 2px solid rgba(255,215,0,0.3);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .scrollable { overflow-x: auto; }
+
+  /* ===== SETUP SCREEN ===== */
+  .setup-screen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--dark);
+    z-index: 6000;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+  }
+  .setup-screen.open { display: flex; }
+
+  .setup-box {
+    background: var(--dark2);
+    border: 2px solid rgba(255,215,0,0.3);
+    border-radius: 20px;
+    padding: 40px;
+    width: 100%;
+    max-width: 520px;
+    box-shadow: 0 0 60px rgba(255,215,0,0.1);
+  }
+
+  .setup-title { font-family: 'Bangers', cursive; font-size: 32px; letter-spacing: 3px; color: var(--gold); margin-bottom: 6px; }
+  .setup-sub { font-size: 13px; color: var(--text2); margin-bottom: 24px; line-height: 1.5; }
+
+  .step-indicator {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .step-dot {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.1);
+    transition: background 0.3s;
+  }
+  .step-dot.done { background: var(--gold); }
+
+  /* responsive */
+  @media (max-width: 600px) {
+    .cards-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    nav { padding: 0 12px; }
+    .nav-btn span { display: none; }
+    .trade-layout { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SETUP SCREEN -->
+<div class="setup-screen open" id="setupScreen">
+  <div class="setup-box">
+    <div class="setup-title">⚙️ SETUP REQUIRED</div>
+    <p class="setup-sub">Connect your Supabase project to enable player accounts, card collections, trading, and more.</p>
+    
+    <div class="step-indicator">
+      <div class="step-dot done" id="step1"></div>
+      <div class="step-dot" id="step2"></div>
+      <div class="step-dot" id="step3"></div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Supabase Project URL</label>
+      <input class="form-input" id="sbUrl" placeholder="https://xxxxxxxxxxxx.supabase.co" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Supabase Anon Key</label>
+      <input class="form-input" id="sbKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." type="password" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Admin Password (for admin panel)</label>
+      <input class="form-input" id="adminPw" placeholder="Set a secret admin password" type="password" />
+    </div>
+
+    <div style="background:rgba(255,215,0,0.08);border-radius:10px;padding:14px;margin-bottom:16px;font-size:12px;color:#aaa;line-height:1.6;">
+      <strong style="color:var(--gold)">Required Supabase Tables:</strong><br>
+      Run this SQL in your Supabase SQL editor:<br><br>
+      <code style="color:#7df;font-size:11px;white-space:pre-wrap;" id="sqlSnippet">-- Copy from the SQL panel below</code>
+    </div>
+
+    <button class="btn btn-gold" style="width:100%" onclick="saveSetup()">🚀 Launch TCG</button>
+    <div style="text-align:center;margin-top:12px">
+      <button onclick="skipSetup()" style="background:none;border:none;color:var(--text2);font-family:Nunito,sans-serif;font-size:13px;cursor:pointer;text-decoration:underline">Skip — use demo mode (no persistence)</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">dsc.gg/roof TCG</div>
+    <p class="login-tagline">Collect. Battle. Trade. Flex.</p>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+      <button class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
+    </div>
+    <div id="loginForm">
+      <div class="form-group"><input class="form-input" id="loginEmail" placeholder="Email" type="email"/></div>
+      <div class="form-group"><input class="form-input" id="loginPass" placeholder="Password" type="password"/></div>
+      <button class="btn btn-gold" style="width:100%" onclick="doLogin()">Sign In</button>
+    </div>
+    <div id="signupForm" style="display:none">
+      <div class="form-group"><input class="form-input" id="signupUser" placeholder="Username"/></div>
+      <div class="form-group"><input class="form-input" id="signupEmail" placeholder="Email" type="email"/></div>
+      <div class="form-group"><input class="form-input" id="signupPass" placeholder="Password (min 6 chars)" type="password"/></div>
+      <button class="btn btn-gold" style="width:100%" onclick="doSignup()">Create Account</button>
+    </div>
+    <button onclick="guestLogin()" style="background:none;border:none;color:var(--text2);font-family:Nunito,sans-serif;font-size:13px;cursor:pointer;margin-top:12px;text-decoration:underline">Continue as Guest (demo)</button>
+  </div>
+</div>
+
+<!-- PACK OPENING SCREEN -->
+<div class="pack-open-screen" id="packOpenScreen">
+  <div class="pack-open-title" id="packOpenTitle">📦 OPENING PACK...</div>
+  <div class="pack-reveal-cards" id="packRevealCards"></div>
+  <div style="margin-top:30px;display:flex;gap:12px">
+    <button class="btn btn-gold" onclick="flipAllCards()">Reveal All</button>
+    <button class="btn btn-outline" onclick="closePack()">Add to Collection</button>
+  </div>
+</div>
+
+<!-- MAIN NAV -->
+<nav id="mainNav" style="display:none">
+  <div class="nav-logo" onclick="showPage('home')">⚡ ROOF TCG</div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="showPage('home')">🏠</button>
+    <button class="nav-btn" onclick="showPage('pokedex')">📖 <span>Pokédex</span></button>
+    <button class="nav-btn" onclick="showPage('collection')">🃏 <span>Collection</span></button>
+    <button class="nav-btn" onclick="showPage('packs')">📦 <span>Packs</span></button>
+    <button class="nav-btn" onclick="showPage('battle')">⚔️ <span>Battle</span></button>
+    <button class="nav-btn" onclick="showPage('trade')">🔄 <span>Trade</span></button>
+    <button class="nav-btn" id="adminNavBtn" style="display:none" onclick="showPage('admin')">🛠️ <span>Admin</span></button>
+  </div>
+  <div class="nav-user">
+    <div class="user-coins" id="userCoinsDisplay">💰 0</div>
+    <div class="user-avatar" id="userAvatarBtn" onclick="showPage('profile')">👤</div>
+  </div>
+</nav>
+
+<!-- PAGES -->
+<div id="pages" style="display:none">
+
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <div class="hero">
+      <div class="hero-title">dsc.gg/roof TCG</div>
+      <div class="hero-sub">Trading Card Game — Collect your friends</div>
+      <div class="hero-cards" id="heroFloatingCards"></div>
+      <div class="home-actions">
+        <button class="btn btn-gold" onclick="showPage('packs')">📦 Open Packs</button>
+        <button class="btn btn-pink" onclick="showPage('battle')">⚔️ Battle</button>
+        <button class="btn btn-outline" onclick="showPage('pokedex')">📖 View All Cards</button>
+      </div>
+    </div>
+
+    <div style="max-width:800px;margin:0 auto;padding:20px">
+      <div class="section-header"><span class="section-title">⚡ Recent Activity</span></div>
+      <div id="recentActivity">
+        <div class="empty-state"><div class="icon">📡</div><h3>No Activity Yet</h3><p>Be the first to open a pack!</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POKEDEX -->
+  <div class="page" id="page-pokedex">
+    <div class="section-header">
+      <span class="section-title">📖 CARD DEX</span>
+      <span style="color:var(--text2);font-size:14px" id="dexCount">0 cards</span>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+      <input class="search-bar" id="dexSearch" placeholder="🔍 Search cards..." oninput="filterDex()"/>
+      <button class="filter-btn active" onclick="filterDexType('all',this)">All</button>
+      <button class="filter-btn" onclick="filterDexType('psychic',this)">Psychic</button>
+      <button class="filter-btn" onclick="filterDexType('water',this)">Water</button>
+      <button class="filter-btn" onclick="filterDexType('fighting',this)">Fighting</button>
+      <button class="filter-btn" onclick="filterDexType('vape',this)">Vape</button>
+      <button class="filter-btn" onclick="filterDexType('trainer',this)">Trainer</button>
+    </div>
+    <div class="cards-grid" id="dexGrid"></div>
+  </div>
+
+  <!-- COLLECTION -->
+  <div class="page" id="page-collection">
+    <div class="section-header">
+      <span class="section-title">🃏 MY COLLECTION</span>
+      <button class="btn btn-sm btn-gold" onclick="showPage('packs')">+ Get More Cards</button>
+    </div>
+    <div class="collection-stats" id="collectionStats"></div>
+    <div class="cards-grid" id="collectionGrid"></div>
+  </div>
+
+  <!-- PACKS -->
+  <div class="page" id="page-packs">
+    <div class="section-header">
+      <span class="section-title">📦 PACKS</span>
+      <div class="user-coins" style="font-size:16px" id="packsCoinsDisplay">💰 0 coins</div>
+    </div>
+    <div class="packs-grid" id="packsGrid"></div>
+  </div>
+
+  <!-- BATTLE -->
+  <div class="page" id="page-battle">
+    <div class="section-header"><span class="section-title">⚔️ BATTLE</span></div>
+    <div class="battle-arena">
+      <div class="battle-vs">
+        <div class="battle-side">
+          <div class="battle-side-title" id="player1Name">YOUR CARD</div>
+          <div class="battle-card-slot" id="playerCardSlot" onclick="selectBattleCard('player')">
+            <span>Click to select</span>
+          </div>
+          <div class="hp-bar-wrapper" id="playerHpBar" style="display:none">
+            <div class="hp-bar-label"><span id="playerCardName">Card</span><span id="playerHpText">0 HP</span></div>
+            <div class="hp-bar-track"><div class="hp-bar-fill" id="playerHpFill" style="width:100%"></div></div>
+          </div>
+        </div>
+        <div class="vs-divider">VS</div>
+        <div class="battle-side">
+          <div class="battle-side-title">OPPONENT</div>
+          <div class="battle-card-slot" id="oppCardSlot">
+            <span>Waiting...</span>
+          </div>
+          <div class="hp-bar-wrapper" id="oppHpBar" style="display:none">
+            <div class="hp-bar-label"><span id="oppCardName">Card</span><span id="oppHpText">0 HP</span></div>
+            <div class="hp-bar-track"><div class="hp-bar-fill" id="oppHpFill" style="width:100%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="battleOptions">
+        <div style="text-align:center;margin-bottom:16px">
+          <button class="btn btn-gold" onclick="startPvEBattle()">⚔️ Battle CPU</button>
+          <button class="btn btn-pink" style="margin-left:10px" onclick="selectBattleCard('player')">🃏 Select Your Card</button>
+        </div>
+      </div>
+
+      <div class="battle-log" id="battleLog">
+        <div class="log-entry system">⚡ Select a card and start battling!</div>
+      </div>
+
+      <div class="battle-moves" id="battleMoves"></div>
+    </div>
+  </div>
+
+  <!-- TRADE -->
+  <div class="page" id="page-trade">
+    <div class="section-header"><span class="section-title">🔄 TRADING</span></div>
+    <div class="trade-layout">
+      <div class="trade-panel">
+        <h3 style="font-family:Bangers,cursive;color:var(--gold);letter-spacing:2px;margin-bottom:12px">YOUR OFFER</h3>
+        <div class="trade-slot" id="myTradeSlot"><span style="color:var(--text2);font-size:13px">Click cards below to add</span></div>
+        <div class="form-group">
+          <label class="form-label">Add Coins to Offer</label>
+          <input class="form-input" type="number" id="myTradeCoins" placeholder="0" min="0"/>
+        </div>
+      </div>
+      <div class="trade-panel">
+        <h3 style="font-family:Bangers,cursive;color:var(--pink);letter-spacing:2px;margin-bottom:12px">THEIR OFFER</h3>
+        <div class="trade-slot" id="theirTradeSlot"><span style="color:var(--text2);font-size:13px">Select a player to trade with</span></div>
+        <div class="form-group">
+          <label class="form-label">Select Player</label>
+          <select class="form-select" id="tradeTargetPlayer" onchange="loadTradeTarget()">
+            <option value="">— Select player —</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin:16px 0;justify-content:center">
+      <button class="btn btn-gold" onclick="proposeTrade()">📨 Propose Trade</button>
+      <button class="btn btn-outline" onclick="clearTrade()">🗑️ Clear</button>
+    </div>
+
+    <div class="section-header" style="margin-top:30px"><span class="section-title">📬 TRADE INBOX</span></div>
+    <div id="tradeInbox"><div class="empty-state"><div class="icon">📭</div><h3>No Trades</h3></div></div>
+
+    <div class="section-header" style="margin-top:30px"><span class="section-title">🃏 SELECT CARDS TO OFFER</span></div>
+    <div class="cards-grid" id="tradeMyCards"></div>
+  </div>
+
+  <!-- ADMIN -->
+  <div class="page" id="page-admin">
+    <div class="section-header"><span class="section-title">🛠️ ADMIN PANEL</span></div>
+
+    <div class="admin-grid">
+      <!-- Create Card -->
+      <div class="admin-card">
+        <h3>➕ Create Card</h3>
+        <div class="form-group"><label class="form-label">Card Name</label><input class="form-input" id="adminCardName" placeholder="e.g. Mega Caspian"/></div>
+        <div class="form-group"><label class="form-label">Card Number</label><input class="form-input" id="adminCardNum" placeholder="0010" type="number"/></div>
+        <div class="form-group"><label class="form-label">HP</label><input class="form-input" id="adminCardHp" placeholder="100" type="number"/></div>
+        <div class="form-group">
+          <label class="form-label">Type</label>
+          <select class="form-select" id="adminCardType">
+            <option value="normal">Normal</option>
+            <option value="psychic">Psychic (Pink)</option>
+            <option value="water">Water</option>
+            <option value="fighting">Fighting (Orange)</option>
+            <option value="vape">Vape</option>
+            <option value="flying">Flying</option>
+            <option value="dark">Dark</option>
+            <option value="trainer">TRAINER card</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Rarity</label>
+          <select class="form-select" id="adminCardRarity">
+            <option value="common">Common</option>
+            <option value="rare">Rare</option>
+            <option value="epic">Epic</option>
+            <option value="legendary">Legendary</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Image URL</label><input class="form-input" id="adminCardImg" placeholder="https://... (or upload to Supabase storage)"/></div>
+        <div class="form-group"><label class="form-label">Flavour Text</label><textarea class="form-textarea" id="adminCardFlavour" placeholder="Card description / lore..."></textarea></div>
+        <div class="form-group"><label class="form-label">Weakness</label><input class="form-input" id="adminCardWeak" placeholder="e.g. Fire"/></div>
+        <div class="form-group"><label class="form-label">Resistance</label><input class="form-input" id="adminCardResist" placeholder="e.g. Water"/></div>
+        <div class="form-group"><label class="form-label">Retreat Cost</label><input class="form-input" id="adminCardRetreat" placeholder="e.g. Soap"/></div>
+        <div class="form-group"><label class="form-label">Stage</label>
+          <select class="form-select" id="adminCardStage">
+            <option value="basic">Basic</option><option value="stage1">Stage 1</option><option value="stage2">Stage 2</option>
+          </select>
+        </div>
+        <div id="adminMovesList"></div>
+        <button class="btn btn-sm btn-outline" onclick="addAdminMove()" style="margin-bottom:10px">+ Add Move</button>
+        <button class="btn btn-gold" style="width:100%" onclick="adminCreateCard()">Create Card</button>
+      </div>
+
+      <!-- Create Pack -->
+      <div class="admin-card">
+        <h3>📦 Create Pack</h3>
+        <div class="form-group"><label class="form-label">Pack Name</label><input class="form-input" id="adminPackName" placeholder="Starter Pack"/></div>
+        <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="adminPackDesc" placeholder="What's in this pack?"></textarea></div>
+        <div class="form-group"><label class="form-label">Cards Per Pack</label><input class="form-input" id="adminPackCards" placeholder="5" type="number" value="5"/></div>
+        <div class="form-group"><label class="form-label">Price (coins)</label><input class="form-input" id="adminPackPrice" placeholder="100" type="number" value="100"/></div>
+        <div class="form-group">
+          <label class="form-label">Pack Image URL</label>
+          <input class="form-input" id="adminPackImg" placeholder="https://..."/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cards in Pool (select multiple)</label>
+          <select class="form-select" id="adminPackCardPool" multiple style="height:120px"></select>
+        </div>
+        <button class="btn btn-gold" style="width:100%;margin-top:8px" onclick="adminCreatePack()">Create Pack</button>
+      </div>
+
+      <!-- Give Cards/Packs -->
+      <div class="admin-card">
+        <h3>🎁 Give to Player</h3>
+        <div class="form-group"><label class="form-label">Player</label>
+          <select class="form-select" id="adminGivePlayer"></select>
+        </div>
+        <div class="form-group"><label class="form-label">Card to Give</label>
+          <select class="form-select" id="adminGiveCard">
+            <option value="">— Select card —</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Quantity</label>
+          <input class="form-input" id="adminGiveQty" type="number" value="1" min="1"/>
+        </div>
+        <button class="btn btn-green btn-sm" style="width:100%;margin-bottom:8px" onclick="adminGiveCard()">Give Card</button>
+        <div class="divider"></div>
+        <div class="form-group"><label class="form-label">Pack to Give</label>
+          <select class="form-select" id="adminGivePack">
+            <option value="">— Select pack —</option>
+          </select>
+        </div>
+        <button class="btn btn-blue btn-sm" style="width:100%;margin-bottom:8px" onclick="adminGivePack()">Give Pack</button>
+        <div class="divider"></div>
+        <div class="form-group"><label class="form-label">Coins to Give</label>
+          <input class="form-input" id="adminGiveCoins" type="number" placeholder="500" min="0"/>
+        </div>
+        <button class="btn btn-gold btn-sm" style="width:100%" onclick="adminGiveCoins()">Give Coins</button>
+      </div>
+
+      <!-- Events -->
+      <div class="admin-card">
+        <h3>🎉 Run Event</h3>
+        <div class="form-group"><label class="form-label">Event Name</label><input class="form-input" id="adminEventName" placeholder="Weekend Tournament"/></div>
+        <div class="form-group"><label class="form-label">Event Description</label><textarea class="form-textarea" id="adminEventDesc" placeholder="Details about the event..."></textarea></div>
+        <div class="form-group"><label class="form-label">Reward Card</label>
+          <select class="form-select" id="adminEventCard">
+            <option value="">— No card reward —</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Reward Coins</label><input class="form-input" id="adminEventCoins" type="number" placeholder="0"/></div>
+        <button class="btn btn-pink" style="width:100%" onclick="adminCreateEvent()">🎉 Launch Event</button>
+        <div class="divider"></div>
+        <h3>👥 Players</h3>
+        <div class="scrollable"><table class="admin-table" id="adminPlayersTable">
+          <tr><th>Username</th><th>Cards</th><th>Coins</th><th>Actions</th></tr>
+        </table></div>
+      </div>
+    </div>
+
+    <div class="section-header"><span class="section-title">📋 ALL CARDS</span></div>
+    <div class="scrollable"><table class="admin-table" id="adminCardsTable">
+      <tr><th>#</th><th>Name</th><th>Type</th><th>HP</th><th>Rarity</th><th>Actions</th></tr>
+    </table></div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="page" id="page-profile">
+    <div class="section-header"><span class="section-title">👤 PROFILE</span></div>
+    <div style="max-width:500px">
+      <div style="display:flex;align-items:center;gap:20px;margin-bottom:24px">
+        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--purple));border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:36px" id="profileAvatar">👤</div>
+        <div>
+          <div style="font-family:Bangers,cursive;font-size:28px;letter-spacing:2px" id="profileUsername">Guest</div>
+          <div style="font-size:13px;color:var(--text2)" id="profileEmail"></div>
+        </div>
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="doLogout()">Sign Out</button>
+    </div>
+  </div>
+
+</div><!-- end pages -->
+
+<!-- CARD DETAIL MODAL -->
+<div class="modal-overlay" id="cardModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('cardModal')">✕</button>
+    <div class="card-detail-layout" id="cardModalContent"></div>
+  </div>
+</div>
+
+<!-- CARD SELECT MODAL (for battle) -->
+<div class="modal-overlay" id="cardSelectModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('cardSelectModal')">✕</button>
+    <h2 style="font-family:Bangers,cursive;font-size:24px;color:var(--gold);margin-bottom:16px">SELECT A CARD</h2>
+    <div class="cards-grid" id="cardSelectGrid"></div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loadingText">Loading...</div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- SQL SNIPPET MODAL -->
+<div class="modal-overlay" id="sqlModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('sqlModal')">✕</button>
+    <h2 style="font-family:Bangers,cursive;color:var(--gold);margin-bottom:16px">📋 SUPABASE SQL SETUP</h2>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Run this in your Supabase SQL Editor:</p>
+    <textarea id="fullSqlText" readonly style="width:100%;height:400px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px;color:#7df;font-family:monospace;font-size:12px;resize:vertical;outline:none"></textarea>
+    <button class="btn btn-gold" style="margin-top:10px" onclick="copySql()">📋 Copy SQL</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  CARD DATA (read from uploaded images)
+// ============================================================
+const ALL_CARDS = [
+  {
+    id: 'card_0001',
+    number: '0001',
+    name: 'Keanu Elliot James',
+    stage: 'Stage 1',
+    hp: 280,
+    hpUnit: 'Tons',
+    type: 'psychic',
+    rarity: 'epic',
+    imageUrl: null,
+    imageName: 'Keanu_Elliot_James_No__0001.png',
+    flavour: 'Little gay man that is not over 13 and likes men also is a girl',
+    weakness: 'Euphoria & Face',
+    resistance: 'Shampoo',
+    retreat: 'A WHOLE LOT of estrogen',
+    isTrainer: false,
+    moves: [
+      { name: 'Oily Hair', damage: 30, type: 'damage', desc: '' },
+      { name: 'Bully', damage: 5, type: 'damage', desc: 'I bully giggle and others because im self Conscious of my self and im fat.' },
+      { name: 'Mistake', damage: -10, type: 'special', desc: 'Thought Euphoria WAS his friend...' },
+      { name: 'Kirkify', damage: 'Evo', type: 'special', desc: 'Evolves the card' },
+    ]
+  },
+  {
+    id: 'card_0002',
+    number: '0002',
+    name: 'Keanu No Shampoo James',
+    stage: 'Stage 1',
+    hp: 380,
+    hpUnit: 'Tons',
+    type: 'psychic',
+    rarity: 'epic',
+    imageUrl: null,
+    imageName: 'Keanu_no_shampooo_james_No__0002.png',
+    flavour: 'French fry arms with jelly rolls beggs on knees for brainrots fakes going to the gyms alergic to girls & femboy',
+    weakness: 'Shampoo & Girls',
+    resistance: 'Being good at a game',
+    retreat: 'Spiderini Brainrot',
+    isTrainer: false,
+    moves: [
+      { name: 'Dandruff', damage: 15, type: 'damage', desc: '' },
+      { name: 'Fire Breath', damage: 25, type: 'damage', desc: '' },
+      { name: 'Shark Teeth', damage: 40, type: 'damage', desc: '' },
+      { name: 'Lonely', damage: 0, type: 'effect', desc: 'When Keanu uses this ability he puts you in a room for the rest of the match. Opponent skips next turn.' },
+    ]
+  },
+  {
+    id: 'card_0003',
+    number: '0003',
+    name: 'Keanu Blanket James',
+    stage: 'Stage 1',
+    hp: 100,
+    hpUnit: 'Tons',
+    type: 'psychic',
+    rarity: 'rare',
+    imageUrl: null,
+    imageName: 'Keanu_Blanket_James_No__0003.png',
+    flavour: 'Tranny is scared to show HER face so she covers it with a blanket and tries to leave the call but cant find the button',
+    weakness: 'End Button Call',
+    resistance: 'Turning on cam',
+    retreat: 'Going to gym',
+    isTrainer: false,
+    moves: [
+      { name: 'Blanket', damage: 15, type: 'damage', desc: 'Hides face with blanket to not scare you off. Reduces incoming damage by 10 next turn.' },
+      { name: 'Face', damage: 80, type: 'damage', desc: '' },
+    ]
+  },
+  {
+    id: 'card_0004',
+    number: '0004',
+    name: 'Caspian da 5',
+    stage: 'Stage 1',
+    hp: 80,
+    hpUnit: 'HP',
+    type: 'dark',
+    rarity: 'rare',
+    imageUrl: null,
+    imageName: 'Caspian_da_5_No_0004.png',
+    flavour: 'Short little black boy that smokes and flexes fake balenciaga tracks',
+    weakness: 'No Vape',
+    resistance: 'Fire/Smoke',
+    retreat: 'Drug Test',
+    isTrainer: false,
+    moves: [
+      { name: 'Geek Bar', damage: 30, type: 'damage', desc: 'Blows flavored smoke.' },
+      { name: 'Shit Stain', damage: 30, type: 'effect', desc: 'Shit stain blinds enemy for 10 seconds. Opponent misses next move.' },
+      { name: 'Balenciaga Tracks', damage: 10, type: 'damage', desc: '' },
+    ]
+  },
+  {
+    id: 'card_0005',
+    number: '0005',
+    name: 'Big Shoulder Caspian',
+    stage: 'Stage 1',
+    hp: 100,
+    hpUnit: 'HP',
+    type: 'fighting',
+    rarity: 'rare',
+    imageUrl: null,
+    imageName: 'Big_Shoulder_Caspian_No_0005.png',
+    flavour: 'Lil black boy with big shoulder pads knock you out',
+    weakness: 'No Shoulder Pads',
+    resistance: 'Football',
+    retreat: 'Watermelon',
+    isTrainer: false,
+    moves: [
+      { name: 'Shoulder Pads', damage: 100, type: 'damage', desc: '' },
+      { name: 'Gatorade', damage: '+50', type: 'heal', desc: 'Restores 50 HP.' },
+    ]
+  },
+  {
+    id: 'card_0006',
+    number: '0006',
+    name: 'Majesitc Caspian',
+    stage: 'Stage 1',
+    hp: 110,
+    hpUnit: 'HP',
+    type: 'flying',
+    rarity: 'epic',
+    imageUrl: null,
+    imageName: 'Majesitc_Caspian_No__0006.png',
+    flavour: 'Caspian has always wanted to be gansta but hes as sugary as a sugar cookie',
+    weakness: 'Looking good for stoopy',
+    resistance: 'Geek Bar',
+    retreat: 'Fairy Dust',
+    isTrainer: false,
+    moves: [
+      { name: 'Fein', damage: 15, type: 'damage', desc: 'Feining for his vape.' },
+      { name: 'Os', damage: 60, type: 'damage', desc: 'Shooting out Os out of his ashy lips.' },
+    ]
+  },
+  {
+    id: 'card_0007',
+    number: '0007',
+    name: 'Geek Bar',
+    stage: 'Stage 1',
+    hp: 20,
+    hpUnit: 'HP',
+    type: 'vape',
+    rarity: 'common',
+    imageUrl: null,
+    imageName: 'Geek_Bar_No__0007.png',
+    flavour: 'Compact disposable vape that brings +10 HP',
+    weakness: 'Caspian',
+    resistance: 'Weed',
+    retreat: 'Vape Juice',
+    isTrainer: false,
+    moves: [
+      { name: 'Smoke', damage: '+10', type: 'heal', desc: 'Restores 10 HP to the user.' },
+      { name: 'Explode', damage: 40, type: 'damage', desc: '' },
+    ]
+  },
+  {
+    id: 'card_0008',
+    number: '0008',
+    name: 'Vape Juice',
+    stage: null,
+    hp: null,
+    hpUnit: null,
+    type: 'trainer',
+    rarity: 'common',
+    imageUrl: null,
+    imageName: 'Vape_Juice_No__0008.png',
+    flavour: 'A nicotine filled delight Caspian is an addict to this',
+    weakness: null,
+    resistance: null,
+    retreat: null,
+    isTrainer: true,
+    trainerEffect: 'When played: Restore 30 HP to your active Vape-type card. If Caspian is in play, deal 20 bonus damage on next attack.',
+    moves: []
+  },
+  {
+    id: 'card_0009',
+    number: '0009',
+    name: 'Shower',
+    stage: 'Stage 1',
+    hp: 20,
+    hpUnit: 'HP',
+    type: 'water',
+    rarity: 'common',
+    imageUrl: null,
+    imageName: 'Shower_No__0009.png',
+    flavour: 'Water PSPSPSPSPSPS — The bane of all Caspians',
+    weakness: 'Stoopy',
+    resistance: 'Fire/Smoke',
+    retreat: 'Soap',
+    isTrainer: false,
+    moves: [
+      { name: 'Cold Water', damage: 15, type: 'damage', desc: '' },
+      { name: 'Hot Water', damage: 20, type: 'damage', desc: '' },
+    ]
+  }
+];
+
+// ============================================================
+//  APP STATE
+// ============================================================
+let STATE = {
+  supabaseUrl: '',
+  supabaseKey: '',
+  adminPassword: '',
+  currentUser: null,
+  isGuest: false,
+  isAdmin: false,
+  collection: [], // { cardId, quantity }
+  coins: 500,
+  packs: [],
+  trades: [],
+  currentPage: 'home',
+  battle: {
+    active: false,
+    playerCard: null,
+    oppCard: null,
+    playerHp: 0,
+    oppHp: 0,
+    playerMaxHp: 0,
+    oppMaxHp: 0,
+    stunned: false,
+    shielded: false,
+    turn: 'player',
+  },
+  tradeOffer: { myCards: [], myCoins: 0, targetUserId: '', theirCards: [] },
+  allPlayers: [],
+};
+
+// ============================================================
+//  SETUP
+// ============================================================
+const SQL = `-- dsc.gg/roof TCG — Supabase Setup SQL
+-- Run this in your Supabase SQL Editor
+
+CREATE TABLE IF NOT EXISTS profiles (
+  id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  username text UNIQUE NOT NULL,
+  coins integer DEFAULT 500,
+  is_admin boolean DEFAULT false,
+  created_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS collection (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
+  card_id text NOT NULL,
+  quantity integer DEFAULT 1,
+  created_at timestamptz DEFAULT now(),
+  UNIQUE(user_id, card_id)
+);
+
+CREATE TABLE IF NOT EXISTS packs (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  name text NOT NULL,
+  description text,
+  cards_per_pack integer DEFAULT 5,
+  price integer DEFAULT 100,
+  image_url text,
+  card_pool jsonb DEFAULT '[]',
+  created_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS player_packs (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
+  pack_id uuid REFERENCES packs(id),
+  opened boolean DEFAULT false,
+  created_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS trades (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  from_user uuid REFERENCES profiles(id),
+  to_user uuid REFERENCES profiles(id),
+  from_cards jsonb DEFAULT '[]',
+  to_cards jsonb DEFAULT '[]',
+  from_coins integer DEFAULT 0,
+  to_coins integer DEFAULT 0,
+  status text DEFAULT 'pending',
+  created_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS events (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  name text NOT NULL,
+  description text,
+  reward_card text,
+  reward_coins integer DEFAULT 0,
+  active boolean DEFAULT true,
+  created_at timestamptz DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS custom_cards (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  card_data jsonb NOT NULL,
+  created_by uuid REFERENCES profiles(id),
+  created_at timestamptz DEFAULT now()
+);
+
+-- RLS Policies
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE collection ENABLE ROW LEVEL SECURITY;
+ALTER TABLE packs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE player_packs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE trades ENABLE ROW LEVEL SECURITY;
+ALTER TABLE events ENABLE ROW LEVEL SECURITY;
+ALTER TABLE custom_cards ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Public profiles" ON profiles FOR SELECT USING (true);
+CREATE POLICY "Own profile" ON profiles FOR ALL USING (auth.uid() = id);
+CREATE POLICY "Own collection" ON collection FOR ALL USING (auth.uid() = user_id);
+CREATE POLICY "View all collections" ON collection FOR SELECT USING (true);
+CREATE POLICY "Public packs" ON packs FOR SELECT USING (true);
+CREATE POLICY "Admin packs" ON packs FOR ALL USING (true);
+CREATE POLICY "Own player_packs" ON player_packs FOR ALL USING (auth.uid() = user_id);
+CREATE POLICY "Trade parties" ON trades FOR ALL USING (auth.uid() = from_user OR auth.uid() = to_user);
+CREATE POLICY "Public events" ON events FOR SELECT USING (true);
+CREATE POLICY "Public custom_cards" ON custom_cards FOR SELECT USING (true);`;
+
+document.getElementById('fullSqlText').value = SQL;
+
+function saveSetup() {
+  const url = document.getElementById('sbUrl').value.trim();
+  const key = document.getElementById('sbKey').value.trim();
+  const pw = document.getElementById('adminPw').value.trim();
+  if (!url || !key) { toast('Enter your Supabase URL and Key', 'error'); return; }
+  STATE.supabaseUrl = url;
+  STATE.supabaseKey = key;
+  STATE.adminPassword = pw || 'admin123';
+  localStorage.setItem('roofTcgConfig', JSON.stringify({ url, key, pw: pw || 'admin123' }));
+  document.getElementById('step2').classList.add('done');
+  document.getElementById('step3').classList.add('done');
+  document.getElementById('setupScreen').classList.remove('open');
+  document.getElementById('loginScreen').classList.add('open');
+  toast('Setup saved! Sign in to continue.', 'success');
+}
+
+function skipSetup() {
+  STATE.supabaseUrl = '';
+  STATE.supabaseKey = '';
+  STATE.adminPassword = 'admin123';
+  document.getElementById('setupScreen').classList.remove('open');
+  guestLogin();
+}
+
+function showSqlModal() {
+  document.getElementById('sqlModal').classList.add('open');
+}
+function copySql() {
+  navigator.clipboard.writeText(SQL).then(() => toast('SQL copied!', 'success'));
+}
+
+// Load saved config
+const saved = localStorage.getItem('roofTcgConfig');
+if (saved) {
+  const cfg = JSON.parse(saved);
+  STATE.supabaseUrl = cfg.url;
+  STATE.supabaseKey = cfg.key;
+  STATE.adminPassword = cfg.pw;
+  document.getElementById('sbUrl').value = cfg.url;
+  document.getElementById('sbKey').value = cfg.key;
+}
+
+// ============================================================
+//  AUTH
+// ============================================================
+function switchTab(t) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('loginForm').style.display = t === 'login' ? '' : 'none';
+  document.getElementById('signupForm').style.display = t === 'signup' ? '' : 'none';
+}
+
+async function doLogin() {
+  if (!STATE.supabaseUrl) { guestLogin(); return; }
+  const email = document.getElementById('loginEmail').value;
+  const pass = document.getElementById('loginPass').value;
+  showLoading('Signing in...');
+  try {
+    const r = await sbFetch('POST', '/auth/v1/token?grant_type=password', { email, password: pass });
+    if (r.access_token) {
+      STATE.sbToken = r.access_token;
+      await loadProfile(r.user.id);
+      loginSuccess();
+    } else { toast(r.error_description || 'Login failed', 'error'); }
+  } catch(e) { toast('Login error: ' + e.message, 'error'); }
+  hideLoading();
+}
+
+async function doSignup() {
+  if (!STATE.supabaseUrl) { guestLogin(); return; }
+  const user = document.getElementById('signupUser').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const pass = document.getElementById('signupPass').value;
+  if (!user || !email || !pass) { toast('Fill all fields', 'error'); return; }
+  showLoading('Creating account...');
+  try {
+    const r = await sbFetch('POST', '/auth/v1/signup', { email, password: pass });
+    if (r.user || r.id) {
+      const uid = (r.user || r).id;
+      STATE.sbToken = r.access_token;
+      await sbFetch('POST', '/rest/v1/profiles', { id: uid, username: user, coins: 500 });
+      await loadProfile(uid);
+      loginSuccess();
+      toast('Account created! Welcome ' + user, 'success');
+    } else { toast(r.msg || r.error_description || 'Signup failed', 'error'); }
+  } catch(e) { toast('Signup error: ' + e.message, 'error'); }
+  hideLoading();
+}
+
+function guestLogin() {
+  STATE.isGuest = true;
+  STATE.currentUser = { id: 'guest', username: 'Guest', coins: 500, is_admin: false };
+  STATE.coins = 500;
+  STATE.collection = [
+    { cardId: 'card_0001', quantity: 2 },
+    { cardId: 'card_0002', quantity: 1 },
+    { cardId: 'card_0004', quantity: 3 },
+    { cardId: 'card_0005', quantity: 1 },
+    { cardId: 'card_0009', quantity: 2 },
+  ];
+  loginSuccess();
+}
+
+async function loadProfile(uid) {
+  const profiles = await sbFetch('GET', `/rest/v1/profiles?id=eq.${uid}&select=*`);
+  if (profiles && profiles.length > 0) {
+    STATE.currentUser = profiles[0];
+    STATE.coins = profiles[0].coins;
+    if (profiles[0].is_admin) STATE.isAdmin = true;
+  }
+  const coll = await sbFetch('GET', `/rest/v1/collection?user_id=eq.${uid}&select=*`);
+  if (coll) STATE.collection = coll.map(c => ({ cardId: c.card_id, quantity: c.quantity }));
+}
+
+function loginSuccess() {
+  document.getElementById('loginScreen').classList.remove('open');
+  document.getElementById('mainNav').style.display = '';
+  document.getElementById('pages').style.display = '';
+  updateNavUser();
+  document.getElementById('adminNavBtn').style.display = '';
+  initPacks();
+  renderHeroCards();
+  showPage('home');
+  toast('Welcome back! 👋', 'success');
+}
+
+function doLogout() {
+  STATE.currentUser = null;
+  STATE.isGuest = false;
+  STATE.collection = [];
+  STATE.coins = 0;
+  document.getElementById('mainNav').style.display = 'none';
+  document.getElementById('pages').style.display = 'none';
+  document.getElementById('loginScreen').classList.add('open');
+}
+
+function updateNavUser() {
+  document.getElementById('userCoinsDisplay').textContent = '💰 ' + (STATE.coins || 0);
+  document.getElementById('packsCoinsDisplay').textContent = '💰 ' + (STATE.coins || 0) + ' coins';
+  document.getElementById('userAvatarBtn').textContent = (STATE.currentUser?.username || 'G')[0].toUpperCase();
+  document.getElementById('profileUsername').textContent = STATE.currentUser?.username || 'Guest';
+  document.getElementById('profileEmail').textContent = STATE.isGuest ? 'Guest Mode — data not saved' : '';
+  document.getElementById('profileAvatar').textContent = (STATE.currentUser?.username || 'G')[0].toUpperCase();
+}
+
+// ============================================================
+//  SUPABASE FETCH
+// ============================================================
+async function sbFetch(method, path, body) {
+  if (!STATE.supabaseUrl) return null;
+  const isAuth = path.startsWith('/auth');
+  const headers = {
+    'Content-Type': 'application/json',
+    'apikey': STATE.supabaseKey,
+    'Authorization': `Bearer ${STATE.sbToken || STATE.supabaseKey}`,
+  };
+  if (!isAuth) headers['Prefer'] = 'return=representation';
+  const opts = { method, headers };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(STATE.supabaseUrl + path, opts);
+  return r.json().catch(() => null);
+}
+
+// ============================================================
+//  NAVIGATION
+// ============================================================
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const el = document.getElementById('page-' + page);
+  if (el) el.classList.add('active');
+  STATE.currentPage = page;
+  
+  // Admin password gate
+  if (page === 'admin' && !STATE.isAdmin) {
+    const pw = prompt('Enter admin password:');
+    if (pw !== STATE.adminPassword) { toast('Wrong password!', 'error'); return; }
+    STATE.isAdmin = true;
+  }
+  if (page === 'collection') renderCollection();
+  if (page === 'packs') renderPacks();
+  if (page === 'trade') renderTrade();
+  if (page === 'admin') renderAdmin();
+  if (page === 'battle') setupBattleUI();
+}
+
+// ============================================================
+//  CARD RENDERING
+// ============================================================
+function getCardColor(type) {
+  const colors = {
+    psychic: '#ff4dbb', water: '#4dc3ff', fighting: '#ff944d',
+    vape: '#4dff9b', flying: '#b44dff', dark: '#888', trainer: '#FFD700',
+    normal: '#ccc'
+  };
+  return colors[type] || '#ccc';
+}
+
+function getTypeGradient(type) {
+  const gradients = {
+    psychic: 'linear-gradient(135deg,rgba(255,77,187,0.3),rgba(180,77,255,0.3))',
+    water: 'linear-gradient(135deg,rgba(77,195,255,0.3),rgba(0,100,200,0.3))',
+    fighting: 'linear-gradient(135deg,rgba(255,148,77,0.3),rgba(200,80,0,0.3))',
+    vape: 'linear-gradient(135deg,rgba(77,255,155,0.2),rgba(0,150,80,0.2))',
+    flying: 'linear-gradient(135deg,rgba(180,77,255,0.3),rgba(100,0,200,0.3))',
+    dark: 'linear-gradient(135deg,rgba(80,80,100,0.3),rgba(30,30,50,0.3))',
+    trainer: 'linear-gradient(135deg,rgba(255,215,0,0.3),rgba(200,120,0,0.3))',
+    normal: 'linear-gradient(135deg,rgba(180,180,180,0.2),rgba(100,100,120,0.2))',
+  };
+  return gradients[type] || gradients.normal;
+}
+
+function renderCardThumb(card, extra='', onclick='') {
+  const col = getCardColor(card.type);
+  const imgSrc = card.imageUrl || `cards/${card.imageName}`;
+  return `<div class="card-container ${extra}" onclick="${onclick || `showCardModal('${card.id}')`}" style="--c:${col}">
+    <div class="tcg-card rarity-${card.rarity}" style="background:${getTypeGradient(card.type)};border-color:${col}">
+      <img src="${imgSrc}" alt="${card.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" style="width:100%;height:100%;object-fit:cover"/>
+      <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;flex-direction:column;gap:6px;color:${col};padding:10px;text-align:center">
+        <div style="font-size:28px">${card.isTrainer?'🃏':'⚡'}</div>
+        <div style="font-family:Bangers,cursive;font-size:14px;letter-spacing:1px">${card.name}</div>
+      </div>
+      <div class="card-rarity-glow"></div>
+    </div>
+    <div class="card-name-badge">${card.name}</div>
+  </div>`;
+}
+
+function showCardModal(cardId) {
+  const card = getCard(cardId);
+  if (!card) return;
+  const col = getCardColor(card.type);
+  const imgSrc = card.imageUrl || `cards/${card.imageName}`;
+  
+  let movesHtml = '';
+  if (card.isTrainer) {
+    movesHtml = `<div style="background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.3);border-radius:10px;padding:14px;margin-bottom:14px">
+      <div style="font-size:12px;color:var(--gold);font-weight:800;text-transform:uppercase;margin-bottom:6px">Trainer Effect</div>
+      <div style="font-size:13px;color:var(--text)">${card.trainerEffect || card.flavour}</div>
+    </div>`;
+  } else {
+    movesHtml = `<div class="moves-list"><h4>Moves</h4>`;
+    for (const m of card.moves) {
+      const dmgClass = m.type === 'heal' ? 'positive' : m.type === 'special' ? 'special' : typeof m.damage === 'number' && m.damage < 0 ? 'negative' : 'neutral';
+      movesHtml += `<div class="move-row">
+        <div>
+          <div class="move-name">${m.name}</div>
+          ${m.desc ? `<div class="move-desc">${m.desc}</div>` : ''}
+        </div>
+        <div class="move-damage ${dmgClass}">${m.type==='heal'?'+':''}${m.damage}</div>
+      </div>`;
+    }
+    movesHtml += '</div>';
+  }
+
+  const owned = STATE.collection.find(c => c.cardId === cardId);
+  const ownedBadge = owned ? `<span class="tag" style="background:rgba(77,255,155,0.1);color:var(--green);border:1px solid var(--green)">Owned ×${owned.quantity}</span>` : '';
+
+  document.getElementById('cardModalContent').innerHTML = `
+    <div class="card-detail-img">
+      <img src="${imgSrc}" alt="${card.name}" onerror="this.style.display='none'"/>
+    </div>
+    <div class="card-detail-info">
+      <h2>${card.name}</h2>
+      <div class="card-tags">
+        ${card.isTrainer ? '<span class="tag tag-trainer">TRAINER</span>' : `<span class="tag tag-type-${card.type}">${card.type.toUpperCase()}</span>`}
+        <span class="tag tag-rarity-${card.rarity}">${card.rarity.toUpperCase()}</span>
+        ${card.stage ? `<span class="tag" style="background:rgba(255,255,255,0.1);color:var(--text2)">${card.stage}</span>` : ''}
+        ${ownedBadge}
+        <span class="tag" style="background:rgba(255,255,255,0.05);color:var(--text2)">#${card.number}</span>
+      </div>
+      ${card.hp ? `<div class="card-hp-bar"><div class="hp-label">HP</div><div class="hp-value" style="color:${col}">${card.hp} ${card.hpUnit}</div></div>` : ''}
+      ${card.flavour ? `<div class="card-flavour">"${card.flavour}"</div>` : ''}
+      ${movesHtml}
+      ${!card.isTrainer ? `<div class="card-stats-row">
+        <div class="stat-box"><div class="stat-label">Weakness</div><div class="stat-value">${card.weakness||'—'}</div></div>
+        <div class="stat-box"><div class="stat-label">Resistance</div><div class="stat-value resist">${card.resistance||'—'}</div></div>
+        <div class="stat-box"><div class="stat-label">Retreat</div><div class="stat-value retreat">${card.retreat||'—'}</div></div>
+      </div>` : ''}
+      <div class="modal-actions">
+        ${owned ? `<button class="btn btn-sm btn-pink" onclick="addToTradeOffer('${cardId}');closeModal('cardModal')">+ Add to Trade</button>` : ''}
+        ${owned ? `<button class="btn btn-sm btn-gold" onclick="selectCardForBattle('${cardId}');showPage('battle');closeModal('cardModal')">⚔️ Battle with</button>` : ''}
+      </div>
+    </div>`;
+  document.getElementById('cardModal').classList.add('open');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function getCard(id) {
+  return ALL_CARDS.find(c => c.id === id) || STATE.packs.find(p=>p.id===id);
+}
+
+// ============================================================
+//  POKEDEX
+// ============================================================
+let dexFilter = 'all';
+
+function renderPokedex() {
+  const search = document.getElementById('dexSearch').value.toLowerCase();
+  let cards = ALL_CARDS.filter(c => {
+    if (dexFilter !== 'all' && c.type !== dexFilter) return false;
+    if (search && !c.name.toLowerCase().includes(search)) return false;
+    return true;
+  });
+  document.getElementById('dexCount').textContent = cards.length + ' cards';
+  document.getElementById('dexGrid').innerHTML = cards.map(c => {
+    const owned = STATE.collection.find(x=>x.cardId===c.id);
+    return `<div style="position:relative">${renderCardThumb(c)}${owned?`<div class="card-count-badge">×${owned.quantity}</div>`:''}</div>`;
+  }).join('') || `<div class="empty-state"><div class="icon">🔍</div><h3>No Cards Found</h3></div>`;
+}
+
+function filterDex() { renderPokedex(); }
+function filterDexType(type, btn) {
+  dexFilter = type;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPokedex();
+}
+
+// ============================================================
+//  COLLECTION
+// ============================================================
+function renderCollection() {
+  const owned = STATE.collection;
+  const total = owned.reduce((s,c)=>s+c.quantity,0);
+  const unique = owned.length;
+  const pct = Math.round((unique/ALL_CARDS.length)*100);
+  
+  document.getElementById('collectionStats').innerHTML = `
+    <div class="stat-card"><div class="stat-card-value">${total}</div><div class="stat-card-label">Total Cards</div></div>
+    <div class="stat-card"><div class="stat-card-value">${unique}</div><div class="stat-card-label">Unique</div></div>
+    <div class="stat-card"><div class="stat-card-value">${ALL_CARDS.length}</div><div class="stat-card-label">Total in Dex</div></div>
+    <div class="stat-card"><div class="stat-card-value">${pct}%</div><div class="stat-card-label">Complete</div></div>
+    <div class="stat-card"><div class="stat-card-value" style="color:var(--gold)">💰${STATE.coins}</div><div class="stat-card-label">Coins</div></div>
+  `;
+
+  if (!owned.length) {
+    document.getElementById('collectionGrid').innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="icon">🃏</div><h3>No Cards Yet</h3><p>Open some packs to get started!</p><button class="btn btn-gold" style="margin-top:12px" onclick="showPage('packs')">Open Packs</button></div>`;
+    return;
+  }
+  
+  document.getElementById('collectionGrid').innerHTML = owned.map(item => {
+    const card = getCard(item.cardId);
+    if (!card) return '';
+    return `<div style="position:relative">${renderCardThumb(card)}<div class="card-count-badge">×${item.quantity}</div></div>`;
+  }).join('');
+}
+
+// ============================================================
+//  PACKS
+// ============================================================
+function initPacks() {
+  if (!STATE.packs.length) {
+    STATE.packs = [
+      {
+        id: 'pack_starter',
+        name: 'Starter Pack',
+        description: 'The classic starter. Get 5 random cards including at least one Keanu or Caspian.',
+        cardsPerPack: 5,
+        price: 0,
+        imageUrl: null,
+        imageName: 'The_Pack.png',
+        cardPool: ALL_CARDS.map(c => c.id),
+        isStarter: true,
+      },
+      {
+        id: 'pack_caspian',
+        name: 'Caspian Pack',
+        description: 'Focused on Caspian cards. Higher chance of Majestic Caspian!',
+        cardsPerPack: 3,
+        price: 150,
+        imageUrl: null,
+        imageName: 'The_Pack.png',
+        cardPool: ['card_0004','card_0005','card_0006','card_0007','card_0008'],
+      },
+      {
+        id: 'pack_keanu',
+        name: 'Keanu Pack',
+        description: 'All 3 Keanu forms! Rare chance at No Shampoo James.',
+        cardsPerPack: 3,
+        price: 200,
+        imageUrl: null,
+        imageName: 'The_Pack.png',
+        cardPool: ['card_0001','card_0002','card_0003'],
+      },
+    ];
+  }
+}
+
+function renderPacks() {
+  initPacks();
+  updateNavUser();
+  document.getElementById('packsGrid').innerHTML = STATE.packs.map(pack => {
+    const imgSrc = pack.imageUrl || `cards/${pack.imageName}`;
+    const isFree = pack.price === 0;
+    return `<div class="pack-card" onclick="openPackUI('${pack.id}')">
+      <div class="pack-img">
+        <img src="${imgSrc}" onerror="this.style.display='none';this.nextSibling.style.display='block'" style="width:100%;height:100%;object-fit:cover;border-radius:8px"/>
+        <span style="display:none;font-size:40px">📦</span>
+      </div>
+      <div class="pack-name">${pack.name}</div>
+      <div class="pack-desc">${pack.description}</div>
+      <div class="pack-cards-count">${pack.cardsPerPack} cards per pack</div>
+      <div class="pack-price">${isFree ? '🆓 FREE' : '💰 ' + pack.price}</div>
+      <button class="btn btn-gold" style="width:100%">Open Pack</button>
+    </div>`;
+  }).join('');
+}
+
+function openPackUI(packId) {
+  const pack = STATE.packs.find(p=>p.id===packId);
+  if (!pack) return;
+  if (!pack.isStarter && STATE.coins < pack.price) {
+    toast('Not enough coins! Need 💰' + pack.price, 'error');
+    return;
+  }
+  if (!pack.isStarter) { STATE.coins -= pack.price; updateNavUser(); }
+  
+  // Pull random cards
+  const pool = pack.cardPool || ALL_CARDS.map(c=>c.id);
+  const pulled = [];
+  for (let i = 0; i < pack.cardsPerPack; i++) {
+    const roll = Math.random();
+    let eligible = pool.map(id => getCard(id)).filter(Boolean);
+    // Rarity weighted
+    if (roll < 0.05) eligible = eligible.filter(c=>c.rarity==='legendary').length ? eligible.filter(c=>c.rarity==='legendary') : eligible;
+    else if (roll < 0.20) eligible = eligible.filter(c=>c.rarity==='epic').length ? eligible.filter(c=>c.rarity==='epic') : eligible;
+    else if (roll < 0.45) eligible = eligible.filter(c=>c.rarity==='rare').length ? eligible.filter(c=>c.rarity==='rare') : eligible;
+    else eligible = eligible.filter(c=>c.rarity==='common').length ? eligible.filter(c=>c.rarity==='common') : eligible;
+    const card = eligible[Math.floor(Math.random()*eligible.length)];
+    if (card) pulled.push(card);
+  }
+  
+  // Add to collection
+  for (const card of pulled) {
+    const existing = STATE.collection.find(c=>c.cardId===card.id);
+    if (existing) existing.quantity++;
+    else STATE.collection.push({ cardId: card.id, quantity: 1 });
+    if (!STATE.isGuest && STATE.supabaseUrl) {
+      // Upsert to supabase
+      sbFetch('POST', '/rest/v1/collection', { user_id: STATE.currentUser.id, card_id: card.id, quantity: 1 });
+    }
+  }
+  
+  // Show pack opening screen
+  document.getElementById('packOpenTitle').textContent = `📦 ${pack.name}`;
+  const container = document.getElementById('packRevealCards');
+  container.innerHTML = pulled.map((card, i) => {
+    const imgSrc = card.imageUrl || `cards/${card.imageName}`;
+    return `<div class="reveal-card" id="revealCard${i}" onclick="flipCard(${i})">
+      <div class="card-face" style="background:${getTypeGradient(card.type)}">
+        <img src="${imgSrc}" alt="${card.name}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"/>
+      </div>
+      <div class="card-back">⚡ ROOF<br>TCG</div>
+    </div>`;
+  }).join('');
+  
+  STATE._packPulled = pulled;
+  document.getElementById('packOpenScreen').classList.add('open');
+}
+
+function flipCard(i) {
+  document.getElementById('revealCard'+i)?.classList.add('flipped');
+}
+function flipAllCards() {
+  STATE._packPulled?.forEach((_,i) => flipCard(i));
+}
+function closePack() {
+  document.getElementById('packOpenScreen').classList.remove('open');
+  toast(`Added ${STATE._packPulled?.length || 0} cards to your collection!`, 'success');
+}
+
+// ============================================================
+//  BATTLE SYSTEM
+// ============================================================
+function setupBattleUI() {
+  renderBattleMoves();
+}
+
+function selectBattleCard(side) {
+  const grid = document.getElementById('cardSelectGrid');
+  grid.innerHTML = STATE.collection.map(item => {
+    const card = getCard(item.cardId);
+    if (!card || card.isTrainer) return '';
+    return renderCardThumb(card, '', `selectCardForBattle('${card.id}');closeModal('cardSelectModal')`);
+  }).join('') || `<div class="empty-state" style="grid-column:1/-1"><div class="icon">🃏</div><h3>No Cards</h3><p>Open packs first!</p></div>`;
+  document.getElementById('cardSelectModal').classList.add('open');
+}
+
+function selectCardForBattle(cardId) {
+  const card = getCard(cardId);
+  if (!card) return;
+  STATE.battle.playerCard = card;
+  STATE.battle.playerHp = card.hp || 50;
+  STATE.battle.playerMaxHp = card.hp || 50;
+  
+  // AI picks opponent card
+  const aiPool = ALL_CARDS.filter(c => !c.isTrainer && c.id !== cardId);
+  const opp = aiPool[Math.floor(Math.random()*aiPool.length)];
+  STATE.battle.oppCard = opp;
+  STATE.battle.oppHp = opp.hp || 50;
+  STATE.battle.oppMaxHp = opp.hp || 50;
+  STATE.battle.stunned = false;
+  STATE.battle.shielded = false;
+  STATE.battle.turn = 'player';
+  
+  updateBattleUI();
+  addLog('system', `⚔️ ${card.name} VS ${opp.name}! Battle start!`);
+  renderBattleMoves();
+}
+
+function updateBattleUI() {
+  const { playerCard, oppCard, playerHp, playerMaxHp, oppHp, oppMaxHp } = STATE.battle;
+  
+  if (playerCard) {
+    const slot = document.getElementById('playerCardSlot');
+    const imgSrc = playerCard.imageUrl || `cards/${playerCard.imageName}`;
+    slot.innerHTML = `<img src="${imgSrc}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.backgroundColor='#1e1e30'"/>`;
+    slot.classList.add('has-card');
+    
+    document.getElementById('playerHpBar').style.display = '';
+    document.getElementById('playerCardName').textContent = playerCard.name;
+    document.getElementById('playerHpText').textContent = `${Math.max(0,playerHp)} / ${playerMaxHp} ${playerCard.hpUnit||'HP'}`;
+    const pct = Math.max(0, (playerHp/playerMaxHp)*100);
+    const fill = document.getElementById('playerHpFill');
+    fill.style.width = pct + '%';
+    fill.className = 'hp-bar-fill' + (pct<25?' low':pct<50?' mid':'');
+  }
+  
+  if (oppCard) {
+    const slot = document.getElementById('oppCardSlot');
+    const imgSrc = oppCard.imageUrl || `cards/${oppCard.imageName}`;
+    slot.innerHTML = `<img src="${imgSrc}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.backgroundColor='#1e1e30'"/>`;
+    slot.classList.add('has-card');
+    
+    document.getElementById('oppHpBar').style.display = '';
+    document.getElementById('oppCardName').textContent = oppCard.name;
+    document.getElementById('oppHpText').textContent = `${Math.max(0,oppHp)} / ${oppMaxHp} ${oppCard.hpUnit||'HP'}`;
+    const pct2 = Math.max(0, (oppHp/oppMaxHp)*100);
+    const fill2 = document.getElementById('oppHpFill');
+    fill2.style.width = pct2 + '%';
+    fill2.className = 'hp-bar-fill' + (pct2<25?' low':pct2<50?' mid':'');
+  }
+}
+
+function renderBattleMoves() {
+  const { playerCard } = STATE.battle;
+  const container = document.getElementById('battleMoves');
+  if (!playerCard) { container.innerHTML = ''; return; }
+  container.innerHTML = playerCard.moves.map(m => `
+    <button class="move-btn" onclick="useMove('${m.name}')" ${STATE.battle.stunned?'disabled':''}>
+      <span>${m.name}</span>
+      <span class="move-btn-damage">${m.type==='heal'?'+':''}${m.damage}</span>
+    </button>`).join('');
+}
+
+function useMove(moveName) {
+  const { playerCard, oppCard } = STATE.battle;
+  if (!playerCard || !oppCard) { toast('Select a card first!', 'error'); return; }
+  
+  const move = playerCard.moves.find(m=>m.name===moveName);
+  if (!move) return;
+  
+  // Disable buttons
+  document.querySelectorAll('.move-btn').forEach(b=>b.disabled=true);
+  
+  // Apply move
+  if (move.type === 'heal') {
+    const heal = parseInt(String(move.damage).replace('+','')) || 0;
+    STATE.battle.playerHp = Math.min(STATE.battle.playerMaxHp, STATE.battle.playerHp + heal);
+    addLog('heal', `💚 ${playerCard.name} used ${move.name}! Restored ${heal} HP!`);
+  } else if (move.type === 'effect' && move.name === 'Lonely') {
+    STATE.battle.oppStunned = true;
+    addLog('effect', `😶 ${playerCard.name} used Lonely! Opponent is isolated and skips their next turn!`);
+  } else if (move.type === 'effect' && move.name === 'Shit Stain') {
+    STATE.battle.oppStunned = true;
+    addLog('effect', `💩 ${playerCard.name} used Shit Stain! Opponent is blinded for 10 seconds and misses their next move!`);
+  } else if (move.name === 'Blanket') {
+    STATE.battle.shielded = true;
+    let dmg = typeof move.damage === 'number' ? move.damage : 0;
+    STATE.battle.oppHp -= dmg;
+    addLog('damage', `🛡️ ${playerCard.name} used Blanket! Dealt ${dmg} damage + gained shield! (Reduces next hit by 10)`);
+  } else if (move.name === 'Kirkify') {
+    addLog('special', `✨ ${playerCard.name} used Kirkify! Evolution energy building...`);
+  } else if (move.type === 'damage' || move.type === 'special') {
+    let dmg = typeof move.damage === 'number' ? move.damage : 0;
+    if (dmg < 0) { STATE.battle.playerHp += dmg; addLog('damage', `💔 Backfire! ${playerCard.name} used ${moveName} but it hurt itself for ${Math.abs(dmg)}!`); }
+    else {
+      // Weakness check
+      const weak = oppCard.weakness?.toLowerCase().includes(playerCard.type?.toLowerCase()) || false;
+      if (weak) { dmg *= 2; addLog('effect', `⚡ It's super effective!`); }
+      STATE.battle.oppHp -= dmg;
+      addLog('damage', `⚔️ ${playerCard.name} used ${moveName}! Dealt ${dmg} damage to ${oppCard.name}!`);
+      if (move.desc) addLog('effect', `📝 ${move.desc}`);
+    }
+  }
+  
+  updateBattleUI();
+  
+  // Check win
+  if (STATE.battle.oppHp <= 0) {
+    setTimeout(() => {
+      addLog('system', `🏆 ${playerCard.name} wins! You earned 50 coins!`);
+      STATE.coins += 50;
+      updateNavUser();
+      document.querySelectorAll('.move-btn').forEach(b=>b.disabled=true);
+    }, 400);
+    return;
+  }
+  
+  // Opponent turn
+  setTimeout(() => {
+    if (STATE.battle.oppStunned) {
+      STATE.battle.oppStunned = false;
+      addLog('effect', `😵 ${oppCard.name} is stunned and misses their turn!`);
+    } else {
+      aiMove();
+    }
+    document.querySelectorAll('.move-btn').forEach(b=>b.disabled=false);
+    renderBattleMoves();
+  }, 1000);
+}
+
+function aiMove() {
+  const { playerCard, oppCard } = STATE.battle;
+  const attacks = oppCard.moves.filter(m => m.type === 'damage' || (m.type === 'heal'));
+  if (!attacks.length) { addLog('system', `${oppCard.name} has no moves!`); return; }
+  const move = attacks[Math.floor(Math.random()*attacks.length)];
+  
+  if (move.type === 'heal') {
+    const heal = parseInt(String(move.damage).replace('+','')) || 0;
+    STATE.battle.oppHp = Math.min(STATE.battle.oppMaxHp, STATE.battle.oppHp + heal);
+    addLog('heal', `💊 ${oppCard.name} used ${move.name}! Restored ${heal} HP!`);
+  } else {
+    let dmg = typeof move.damage === 'number' ? move.damage : 0;
+    if (STATE.battle.shielded) { dmg = Math.max(0, dmg - 10); STATE.battle.shielded = false; }
+    STATE.battle.playerHp -= dmg;
+    addLog('damage', `💥 ${oppCard.name} used ${move.name}! You took ${dmg} damage!`);
+  }
+  
+  updateBattleUI();
+  
+  if (STATE.battle.playerHp <= 0) {
+    setTimeout(() => {
+      addLog('system', `😔 ${oppCard.name} wins... Better luck next time!`);
+      document.querySelectorAll('.move-btn').forEach(b=>b.disabled=true);
+    }, 400);
+  }
+}
+
+function startPvEBattle() {
+  if (!STATE.battle.playerCard) { selectBattleCard('player'); return; }
+  toast('Battle in progress! Select a move.', 'info');
+  addLog('system', '🔁 New battle! Choose your move!');
+}
+
+function addLog(type, msg) {
+  const log = document.getElementById('battleLog');
+  const div = document.createElement('div');
+  div.className = 'log-entry ' + type;
+  div.textContent = msg;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+}
+
+// ============================================================
+//  TRADING
+// ============================================================
+function renderTrade() {
+  // My cards for offer
+  document.getElementById('tradeMyCards').innerHTML = STATE.collection.map(item => {
+    const card = getCard(item.cardId);
+    if (!card) return '';
+    return renderCardThumb(card, '', `addToTradeOffer('${card.id}')`);
+  }).join('') || `<div class="empty-state" style="grid-column:1/-1"><div class="icon">🃏</div><h3>No Cards to Trade</h3></div>`;
+  renderTradeOfferSlots();
+}
+
+function addToTradeOffer(cardId) {
+  if (!STATE.tradeOffer.myCards.includes(cardId)) {
+    STATE.tradeOffer.myCards.push(cardId);
+    renderTradeOfferSlots();
+    toast('Card added to offer!', 'info');
+  }
+}
+
+function renderTradeOfferSlots() {
+  const slot = document.getElementById('myTradeSlot');
+  if (!STATE.tradeOffer.myCards.length) {
+    slot.innerHTML = '<span style="color:var(--text2);font-size:13px">Click cards below to add</span>';
+    return;
+  }
+  slot.innerHTML = STATE.tradeOffer.myCards.map(id => {
+    const card = getCard(id);
+    if (!card) return '';
+    const imgSrc = card.imageUrl || `cards/${card.imageName}`;
+    return `<div class="trade-slot-card">
+      <img src="${imgSrc}" onerror="this.style.display='none'"/>
+      <div class="remove-x" onclick="removeTradeCard('${id}')">✕</div>
+    </div>`;
+  }).join('');
+}
+
+function removeTradeCard(id) {
+  STATE.tradeOffer.myCards = STATE.tradeOffer.myCards.filter(c=>c!==id);
+  renderTradeOfferSlots();
+}
+
+function clearTrade() {
+  STATE.tradeOffer = { myCards: [], myCoins: 0, targetUserId: '', theirCards: [] };
+  renderTradeOfferSlots();
+  document.getElementById('theirTradeSlot').innerHTML = '<span style="color:var(--text2);font-size:13px">Select a player to trade with</span>';
+}
+
+function proposeTrade() {
+  if (!STATE.tradeOffer.myCards.length) { toast('Add some cards to your offer!', 'error'); return; }
+  toast('Trade proposal sent! (Demo mode — connect Supabase for real trades)', 'success');
+  clearTrade();
+}
+
+function loadTradeTarget() {}
+
+// ============================================================
+//  ADMIN
+// ============================================================
+let adminMoveCount = 0;
+
+function renderAdmin() {
+  // Populate card selects
+  const cardOpts = ALL_CARDS.map(c=>`<option value="${c.id}">${c.number} — ${c.name}</option>`).join('');
+  document.getElementById('adminGiveCard').innerHTML = '<option value="">— Select card —</option>' + cardOpts;
+  document.getElementById('adminEventCard').innerHTML = '<option value="">— No card reward —</option>' + cardOpts;
+  document.getElementById('adminPackCardPool').innerHTML = cardOpts;
+  
+  // Pack select
+  const packOpts = STATE.packs.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+  document.getElementById('adminGivePack').innerHTML = '<option value="">— Select pack —</option>' + packOpts;
+  
+  // Players table (demo)
+  const playersHtml = STATE.allPlayers.length ? STATE.allPlayers.map(p=>`<tr>
+    <td>${p.username}</td>
+    <td>${p.cards||0}</td>
+    <td>💰${p.coins||0}</td>
+    <td><button class="btn btn-sm btn-danger" onclick="adminKickPlayer('${p.id}')">Kick</button></td>
+  </tr>`).join('') : '<tr><td colspan="4" style="color:var(--text2);text-align:center;padding:20px">No players loaded (connect Supabase)</td></tr>';
+  document.getElementById('adminPlayersTable').innerHTML = `<tr><th>Username</th><th>Cards</th><th>Coins</th><th>Actions</th></tr>` + playersHtml;
+  
+  // Cards table
+  document.getElementById('adminCardsTable').innerHTML = `<tr><th>#</th><th>Name</th><th>Type</th><th>HP</th><th>Rarity</th><th>Actions</th></tr>` +
+    ALL_CARDS.map(c=>`<tr>
+      <td>${c.number}</td>
+      <td>${c.name}</td>
+      <td><span class="tag tag-type-${c.type}">${c.type}</span></td>
+      <td>${c.hp||'—'}</td>
+      <td><span class="tag tag-rarity-${c.rarity}">${c.rarity}</span></td>
+      <td><button class="btn btn-sm btn-outline" onclick="showCardModal('${c.id}')">View</button></td>
+    </tr>`).join('');
+}
+
+function addAdminMove() {
+  adminMoveCount++;
+  const list = document.getElementById('adminMovesList');
+  const div = document.createElement('div');
+  div.style.cssText = 'background:rgba(255,255,255,0.04);border-radius:8px;padding:10px;margin-bottom:8px';
+  div.innerHTML = `
+    <div class="form-group"><label class="form-label">Move Name</label><input class="form-input admin-move-name" placeholder="Move name"/></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="form-group"><label class="form-label">Damage</label><input class="form-input admin-move-dmg" type="number" placeholder="20"/></div>
+      <div class="form-group"><label class="form-label">Type</label>
+        <select class="form-select admin-move-type"><option value="damage">Damage</option><option value="heal">Heal</option><option value="effect">Effect</option></select>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Description</label><input class="form-input admin-move-desc" placeholder="Optional move description"/></div>`;
+  list.appendChild(div);
+}
+
+function adminCreateCard() {
+  const name = document.getElementById('adminCardName').value.trim();
+  if (!name) { toast('Card name required', 'error'); return; }
+  
+  const moves = [];
+  document.querySelectorAll('#adminMovesList > div').forEach(div => {
+    const n = div.querySelector('.admin-move-name')?.value;
+    const d = div.querySelector('.admin-move-dmg')?.value;
+    const t = div.querySelector('.admin-move-type')?.value;
+    const desc = div.querySelector('.admin-move-desc')?.value;
+    if (n) moves.push({ name: n, damage: parseInt(d)||0, type: t||'damage', desc: desc||'' });
+  });
+  
+  const newCard = {
+    id: 'card_custom_' + Date.now(),
+    number: document.getElementById('adminCardNum').value || '00'+ALL_CARDS.length,
+    name,
+    stage: document.getElementById('adminCardStage').value,
+    hp: parseInt(document.getElementById('adminCardHp').value)||100,
+    hpUnit: 'HP',
+    type: document.getElementById('adminCardType').value,
+    rarity: document.getElementById('adminCardRarity').value,
+    imageUrl: document.getElementById('adminCardImg').value||null,
+    imageName: null,
+    flavour: document.getElementById('adminCardFlavour').value,
+    weakness: document.getElementById('adminCardWeak').value,
+    resistance: document.getElementById('adminCardResist').value,
+    retreat: document.getElementById('adminCardRetreat').value,
+    isTrainer: document.getElementById('adminCardType').value === 'trainer',
+    moves,
+  };
+  
+  ALL_CARDS.push(newCard);
+  toast(`Card "${name}" created!`, 'success');
+  renderAdmin();
+}
+
+function adminCreatePack() {
+  const name = document.getElementById('adminPackName').value.trim();
+  if (!name) { toast('Pack name required', 'error'); return; }
+  const selectedOpts = Array.from(document.getElementById('adminPackCardPool').selectedOptions).map(o=>o.value);
+  const newPack = {
+    id: 'pack_custom_' + Date.now(),
+    name,
+    description: document.getElementById('adminPackDesc').value,
+    cardsPerPack: parseInt(document.getElementById('adminPackCards').value)||5,
+    price: parseInt(document.getElementById('adminPackPrice').value)||100,
+    imageUrl: document.getElementById('adminPackImg').value||null,
+    imageName: 'The_Pack.png',
+    cardPool: selectedOpts.length ? selectedOpts : ALL_CARDS.map(c=>c.id),
+  };
+  STATE.packs.push(newPack);
+  toast(`Pack "${name}" created!`, 'success');
+}
+
+function adminGiveCard() {
+  const cardId = document.getElementById('adminGiveCard').value;
+  const qty = parseInt(document.getElementById('adminGiveQty').value)||1;
+  if (!cardId) { toast('Select a card', 'error'); return; }
+  const existing = STATE.collection.find(c=>c.cardId===cardId);
+  if (existing) existing.quantity += qty;
+  else STATE.collection.push({ cardId, quantity: qty });
+  toast(`Gave ${qty}x ${getCard(cardId)?.name} to player`, 'success');
+}
+
+function adminGivePack() {
+  const packId = document.getElementById('adminGivePack').value;
+  if (!packId) { toast('Select a pack', 'error'); return; }
+  toast('Pack given! (Demo — connect Supabase for real distribution)', 'success');
+}
+
+function adminGiveCoins() {
+  const coins = parseInt(document.getElementById('adminGiveCoins').value)||0;
+  STATE.coins += coins;
+  updateNavUser();
+  toast(`Gave 💰${coins} coins!`, 'success');
+}
+
+function adminCreateEvent() {
+  const name = document.getElementById('adminEventName').value.trim();
+  if (!name) { toast('Event name required', 'error'); return; }
+  toast(`🎉 Event "${name}" launched! (Demo mode)`, 'success');
+}
+
+function adminKickPlayer(id) { toast('Player kicked (demo)', 'info'); }
+
+// ============================================================
+//  HERO CARDS
+// ============================================================
+function renderHeroCards() {
+  const sample = ALL_CARDS.slice(0,5);
+  document.getElementById('heroFloatingCards').innerHTML = sample.map(c => {
+    const imgSrc = c.imageUrl || `cards/${c.imageName}`;
+    return `<div class="floating-card" onclick="showCardModal('${c.id}')">
+      <img src="${imgSrc}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"/>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+//  UTILS
+// ============================================================
+function showLoading(msg='Loading...') {
+  document.getElementById('loadingText').textContent = msg;
+  document.getElementById('loadingOverlay').classList.add('open');
+}
+function hideLoading() { document.getElementById('loadingOverlay').classList.remove('open'); }
+
+function toast(msg, type='info') {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = `toast toast-${type}`;
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+window.addEventListener('load', () => {
+  // Pre-configured credentials
+  STATE.supabaseUrl = 'https://tnhcucreiuvwbpszznuh.supabase.co';
+  STATE.supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRuaGN1Y3JlaXV2d2Jwc3p6bnVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwMTA1MDksImV4cCI6MjA5MTU4NjUwOX0.ysx5B4QxiqyJ2ei9FsDmW_573ivDXW7nA9qZL31l7Lg';
+  STATE.adminPassword = 'Roof TGC';
+  // Skip setup, go straight to login
+  document.getElementById('setupScreen').classList.remove('open');
+  document.getElementById('loginScreen').classList.add('open');
+});
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if(e.target===o) o.classList.remove('open'); });
+});
+</script>
+</body>
+</html>
