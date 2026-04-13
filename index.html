@@ -6,274 +6,258 @@
 <title>dsc.gg/roof TCG</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&display=swap');
-:root{--gold:#FFD700;--gold2:#FFA500;--dark:#0a0a0f;--dark2:#12121a;--dark3:#1a1a28;--pink:#ff4dbb;--blue:#4dc3ff;--green:#4dff9b;--red:#ff4d4d;--purple:#b44dff;--orange:#ff944d;--text:#f0f0ff;--text2:#a0a0c0;}
+:root{--gold:#FFD700;--g2:#FFA500;--dark:#0a0a0f;--d2:#12121a;--d3:#1a1a28;--pink:#ff4dbb;--blue:#4dc3ff;--green:#4dff9b;--red:#ff4d4d;--purple:#b44dff;--orange:#ff944d;--text:#f0f0ff;--t2:#a0a0c0;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--dark);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden;}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(255,77,187,.07) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(77,195,255,.07) 0%,transparent 60%);pointer-events:none;z-index:0;}
-
-/* NAV */
-nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,.96);backdrop-filter:blur(20px);border-bottom:2px solid rgba(255,215,0,.28);padding:0 14px;display:flex;align-items:center;justify-content:space-between;height:56px;}
-.nav-logo{font-family:'Bangers',cursive;font-size:24px;letter-spacing:3px;background:linear-gradient(135deg,var(--gold),var(--gold2),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer;}
-.nav-links{display:flex;gap:2px;flex-wrap:wrap;}
-.nav-btn{padding:5px 11px;border-radius:7px;border:none;background:transparent;color:var(--text2);font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;cursor:pointer;transition:all .2s;text-transform:uppercase;}
-.nav-btn:hover,.nav-btn.active{background:rgba(255,215,0,.14);color:var(--gold);}
-.nav-user{display:flex;align-items:center;gap:8px;}
-.coins-badge{background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.3);border-radius:20px;padding:3px 10px;font-size:12px;font-weight:800;color:var(--gold);}
-.avatar{width:33px;height:33px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--purple));border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;cursor:pointer;}
-
-/* PAGES */
-.page{display:none;padding:18px;max-width:1380px;margin:0 auto;position:relative;z-index:1;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(255,77,187,.06) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(77,195,255,.06) 0%,transparent 60%);pointer-events:none;z-index:0;}
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,.97);backdrop-filter:blur(20px);border-bottom:2px solid rgba(255,215,0,.25);padding:0 12px;display:flex;align-items:center;justify-content:space-between;height:54px;gap:8px;}
+.nlogo{font-family:'Bangers',cursive;font-size:22px;letter-spacing:3px;background:linear-gradient(135deg,var(--gold),var(--g2),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer;white-space:nowrap;}
+.nlinks{display:flex;gap:2px;flex-wrap:wrap;}
+.nb{padding:4px 10px;border-radius:6px;border:none;background:transparent;color:var(--t2);font-family:'Nunito',sans-serif;font-weight:700;font-size:11px;cursor:pointer;transition:all .2s;text-transform:uppercase;}
+.nb:hover,.nb.on{background:rgba(255,215,0,.13);color:var(--gold);}
+.nuser{display:flex;align-items:center;gap:7px;flex-shrink:0;}
+.cbadge{background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.28);border-radius:20px;padding:2px 9px;font-size:11px;font-weight:800;color:var(--gold);white-space:nowrap;}
+.ava{width:31px;height:31px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--purple));border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;cursor:pointer;}
+.page{display:none;padding:16px;max-width:1380px;margin:0 auto;position:relative;z-index:1;}
 .page.active{display:block;}
-
-/* HERO */
-.hero{text-align:center;padding:46px 16px 28px;}
-.hero-title{font-family:'Bangers',cursive;font-size:clamp(42px,8vw,88px);letter-spacing:6px;line-height:1;background:linear-gradient(135deg,var(--gold),var(--gold2),var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;}
-.hero-sub{font-size:13px;color:var(--text2);margin-bottom:28px;font-weight:600;letter-spacing:2px;text-transform:uppercase;}
-.hero-cards{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:30px;}
-.float-card{width:96px;height:134px;border-radius:10px;border:2px solid var(--gold);overflow:hidden;cursor:pointer;animation:flt 3s ease-in-out infinite;background:#1a1a2e;}
-.float-card:nth-child(2){animation-delay:.5s}.float-card:nth-child(3){animation-delay:1s}.float-card:nth-child(4){animation-delay:1.5s}.float-card:nth-child(5){animation-delay:2s}
-.float-card img{width:100%;height:100%;object-fit:cover;}
-@keyframes flt{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-11px) rotate(2deg)}}
-
-/* BUTTONS */
-.btn{padding:9px 20px;border-radius:10px;border:none;font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;cursor:pointer;transition:all .2s;text-transform:uppercase;}
-.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;box-shadow:0 4px 14px rgba(255,215,0,.32);}
-.btn-gold:hover{transform:translateY(-2px);}
-.btn-pink{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;}
-.btn-pink:hover{transform:translateY(-2px);}
-.btn-outline{background:transparent;border:2px solid var(--gold);color:var(--gold);}
-.btn-outline:hover{background:rgba(255,215,0,.09);}
-.btn-sm{padding:5px 11px;font-size:11px;border-radius:6px;}
-.btn-danger{background:linear-gradient(135deg,#ff4d4d,#bb0000);color:#fff;}
-.btn-blue{background:linear-gradient(135deg,var(--blue),#0055ee);color:#fff;}
-.btn-green{background:linear-gradient(135deg,var(--green),#00bb44);color:#000;}
-.btn-dark{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);color:var(--text);}
-
-/* SECTION */
-.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;padding-bottom:9px;border-bottom:2px solid rgba(255,215,0,.18);}
-.sec-title{font-family:'Bangers',cursive;font-size:26px;letter-spacing:3px;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-
-/* CARDS GRID */
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(134px,1fr));gap:14px;}
+.hero{text-align:center;padding:44px 14px 26px;}
+.htitle{font-family:'Bangers',cursive;font-size:clamp(40px,8vw,86px);letter-spacing:6px;line-height:1;background:linear-gradient(135deg,var(--gold),var(--g2),var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:7px;}
+.hsub{font-size:12px;color:var(--t2);margin-bottom:26px;font-weight:600;letter-spacing:2px;text-transform:uppercase;}
+.hcards{display:flex;justify-content:center;gap:11px;flex-wrap:wrap;margin-bottom:28px;}
+.fcard{width:90px;height:126px;border-radius:9px;border:2px solid var(--gold);overflow:hidden;cursor:pointer;animation:flt 3s ease-in-out infinite;background:#1a1a2e;}
+.fcard:nth-child(2){animation-delay:.5s}.fcard:nth-child(3){animation-delay:1s}.fcard:nth-child(4){animation-delay:1.5s}.fcard:nth-child(5){animation-delay:2s}
+.fcard img{width:100%;height:100%;object-fit:cover;}
+@keyframes flt{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(2deg)}}
+.btn{padding:8px 18px;border-radius:9px;border:none;font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;cursor:pointer;transition:all .2s;text-transform:uppercase;}
+.bgold{background:linear-gradient(135deg,var(--gold),var(--g2));color:#000;box-shadow:0 3px 12px rgba(255,215,0,.3);}
+.bgold:hover{transform:translateY(-2px);}
+.bpink{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;}
+.bpink:hover{transform:translateY(-2px);}
+.bout{background:transparent;border:2px solid var(--gold);color:var(--gold);}
+.bout:hover{background:rgba(255,215,0,.08);}
+.bsm{padding:4px 10px;font-size:10px;border-radius:5px;}
+.bdanger{background:linear-gradient(135deg,#ff4d4d,#bb0000);color:#fff;}
+.bblue{background:linear-gradient(135deg,var(--blue),#0055ee);color:#fff;}
+.bgreen{background:linear-gradient(135deg,var(--green),#00bb44);color:#000;}
+.bdark{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:var(--text);}
+.shdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid rgba(255,215,0,.16);}
+.stitle{font-family:'Bangers',cursive;font-size:24px;letter-spacing:3px;background:linear-gradient(135deg,var(--gold),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;}
 .cw{position:relative;cursor:pointer;transition:transform .3s;}.cw:hover{transform:translateY(-5px) scale(1.03);}
-.tc{width:100%;aspect-ratio:5/7;border-radius:11px;border:3px solid var(--gold);overflow:hidden;position:relative;box-shadow:0 4px 14px rgba(0,0,0,.5),0 0 14px rgba(255,215,0,.12);background:#1a1a2e;}
+.tc{width:100%;aspect-ratio:5/7;border-radius:10px;border:3px solid var(--gold);overflow:hidden;position:relative;box-shadow:0 3px 12px rgba(0,0,0,.5),0 0 12px rgba(255,215,0,.1);background:#1a1a2e;}
 .tc img{width:100%;height:100%;object-fit:cover;display:block;}
-.card-fb{display:none;width:100%;height:100%;align-items:center;justify-content:center;flex-direction:column;gap:5px;padding:9px;text-align:center;position:absolute;inset:0;background:#1a1a2e;}
-.cnb{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.88));padding:16px 5px 5px;font-size:9px;font-weight:800;text-align:center;color:#fff;text-shadow:0 1px 3px #000;}
-.cqb{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.82);border:1px solid var(--gold);border-radius:7px;padding:1px 5px;font-size:9px;font-weight:800;color:var(--gold);}
-.cfb{position:absolute;top:4px;left:4px;border-radius:5px;padding:1px 4px;font-size:8px;font-weight:800;text-transform:uppercase;}
-
-/* FOIL EFFECTS */
-.fholo .tc{border-color:#88ccff;box-shadow:0 0 18px rgba(136,204,255,.48),0 4px 14px rgba(0,0,0,.5);}
-.fholo .tc::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(136,204,255,.14),rgba(255,100,200,.09));pointer-events:none;animation:hp 2.5s infinite;}
-.freverse .tc{border-color:#aaffcc;}
-.freverse .tc::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(170,255,204,.07) 0,transparent 4px,rgba(100,200,255,.05) 8px);pointer-events:none;}
-.fgold .tc{border-color:#FFD700;border-width:4px;box-shadow:0 0 28px rgba(255,215,0,.65),0 4px 14px rgba(0,0,0,.5);}
-.fgold .tc::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,215,0,.18),rgba(255,165,0,.09));pointer-events:none;animation:gp 1.8s infinite;}
-.frainbow .tc{border-width:4px;animation:rb 1.8s linear infinite;box-shadow:0 0 28px rgba(255,100,200,.45);}
-.frainbow .tc::after{content:'';position:absolute;inset:0;pointer-events:none;animation:rs 1.8s linear infinite;}
-@keyframes hp{0%,100%{opacity:.8}50%{opacity:1}}
-@keyframes gp{0%,100%{opacity:.88}50%{opacity:1}}
-@keyframes rb{0%{border-color:#ff0064}20%{border-color:#ff9900}40%{border-color:#00ff64}60%{border-color:#00c8ff}80%{border-color:#9900ff}100%{border-color:#ff0064}}
-@keyframes rs{0%{filter:hue-rotate(0)}100%{filter:hue-rotate(360deg)}}
-
-/* MODAL */
-.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
+.cfb{display:none;width:100%;height:100%;align-items:center;justify-content:center;flex-direction:column;gap:4px;padding:8px;text-align:center;position:absolute;inset:0;background:#1a1a2e;}
+/* Card number label at bottom of card thumb */
+.cnlabel{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.9));padding:14px 5px 4px;font-size:8px;font-weight:800;text-align:center;color:#fff;text-shadow:0 1px 3px #000;line-height:1.2;}
+.cqb{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.82);border:1px solid var(--gold);border-radius:6px;padding:1px 5px;font-size:9px;font-weight:800;color:var(--gold);}
+.cfoilb{position:absolute;top:4px;left:4px;border-radius:4px;padding:1px 4px;font-size:8px;font-weight:800;text-transform:uppercase;}
+/* FOIL */
+.Fholo .tc{border-color:#88ccff;box-shadow:0 0 16px rgba(136,204,255,.5),0 3px 12px rgba(0,0,0,.5);}
+.Fholo .tc::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(136,204,255,.13),rgba(255,100,200,.08));pointer-events:none;animation:hpa 2.5s infinite;}
+.Freverse .tc{border-color:#aaffcc;}
+.Freverse .tc::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(170,255,204,.06) 0,transparent 4px,rgba(100,200,255,.04) 8px);pointer-events:none;}
+.Fgold .tc{border-color:#FFD700;border-width:4px;box-shadow:0 0 26px rgba(255,215,0,.6),0 3px 12px rgba(0,0,0,.5);}
+.Fgold .tc::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,215,0,.17),rgba(255,165,0,.08));pointer-events:none;animation:gpa 1.8s infinite;}
+.Frainbow .tc{border-width:4px;animation:rba 1.8s linear infinite;box-shadow:0 0 26px rgba(255,100,200,.4);}
+.Frainbow .tc::after{content:'';position:absolute;inset:0;pointer-events:none;animation:rsa 1.8s linear infinite;}
+@keyframes hpa{0%,100%{opacity:.7}50%{opacity:1}}
+@keyframes gpa{0%,100%{opacity:.85}50%{opacity:1}}
+@keyframes rba{0%{border-color:#ff0064}20%{border-color:#ff9900}40%{border-color:#00ff64}60%{border-color:#00c8ff}80%{border-color:#9900ff}100%{border-color:#ff0064}}
+@keyframes rsa{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.86);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
 .mo.open{display:flex;}
-.mdl{background:var(--dark2);border:2px solid rgba(255,215,0,.32);border-radius:18px;padding:22px;max-width:560px;width:95%;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 0 44px rgba(255,215,0,.13);}
-.mclose{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.07);border:none;color:var(--text);font-size:17px;width:28px;height:28px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.mdl{background:var(--d2);border:2px solid rgba(255,215,0,.3);border-radius:16px;padding:20px;max-width:560px;width:95%;max-height:90vh;overflow-y:auto;position:relative;}
+.mclose{position:absolute;top:9px;right:9px;background:rgba(255,255,255,.07);border:none;color:var(--text);font-size:16px;width:26px;height:26px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .mclose:hover{background:rgba(255,77,77,.28);}
-.cdl{display:grid;grid-template-columns:170px 1fr;gap:18px;}
-@media(max-width:460px){.cdl{grid-template-columns:1fr;}}
-.cdi{width:100%;aspect-ratio:5/7;border-radius:11px;border:3px solid var(--gold);overflow:hidden;}
-.cdi img{width:100%;height:100%;object-fit:cover;}
-.ctags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:9px;}
-.tag{padding:2px 6px;border-radius:4px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;}
-.tp{background:rgba(255,77,187,.2);color:var(--pink);border:1px solid var(--pink);}
-.tw{background:rgba(77,195,255,.2);color:var(--blue);border:1px solid var(--blue);}
-.tf{background:rgba(255,148,77,.2);color:var(--orange);border:1px solid var(--orange);}
-.td{background:rgba(100,100,100,.2);color:#aaa;border:1px solid #666;}
-.tv{background:rgba(77,255,155,.2);color:var(--green);border:1px solid var(--green);}
-.tfl{background:rgba(180,77,255,.2);color:var(--purple);border:1px solid var(--purple);}
-.tn{background:rgba(200,200,200,.14);color:#ccc;border:1px solid #888;}
-.ttr{background:rgba(255,215,0,.2);color:var(--gold);border:1px solid var(--gold);}
-.tel{background:rgba(255,77,77,.2);color:var(--red);border:1px solid var(--red);}
-.trc{background:rgba(180,180,180,.09);color:#aaa;}.trr{background:rgba(77,195,255,.09);color:var(--blue);}
-.tre{background:rgba(180,77,255,.09);color:var(--purple);}.trl{background:rgba(255,215,0,.09);color:var(--gold);}
-.hp-val{font-size:18px;font-weight:900;color:var(--green);margin-bottom:9px;}
-.flavour{background:rgba(255,255,255,.04);border-left:3px solid var(--gold);border-radius:0 7px 7px 0;padding:6px 9px;font-size:11px;color:var(--text2);font-style:italic;margin-bottom:11px;line-height:1.5;}
-.ml h4{font-size:10px;color:var(--text2);margin-bottom:5px;text-transform:uppercase;}
-.mr{display:flex;align-items:flex-start;gap:7px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);}
-.mn{font-weight:800;font-size:12px;flex:1;}
-.md2{font-family:'Bangers',cursive;font-size:17px;min-width:40px;text-align:right;}
-.md2.pos{color:var(--green)}.md2.neg{color:var(--red)}.md2.neu{color:var(--gold)}.md2.spc{color:var(--purple);font-size:11px;}
-.mdesc{font-size:10px;color:var(--text2);width:100%;margin-top:1px;}
-.cdb2{font-size:8px;background:rgba(255,148,77,.18);color:var(--orange);border:1px solid var(--orange);border-radius:3px;padding:1px 3px;margin-left:3px;}
-.srow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:11px;}
-.sb2{background:rgba(255,255,255,.04);border-radius:7px;padding:6px;text-align:center;}
-.slb{font-size:8px;color:var(--text2);text-transform:uppercase;}
-.sv{font-size:11px;font-weight:800;color:var(--red);margin-top:1px;}.sv.r{color:var(--green)}.sv.t{color:var(--blue);}
-
-/* PACKS */
-.packs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(194px,1fr));gap:18px;}
-.pk{background:var(--dark3);border:2px solid rgba(255,215,0,.23);border-radius:15px;padding:16px;text-align:center;cursor:pointer;transition:all .3s;}
-.pk:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 7px 26px rgba(255,215,0,.16);}
-.pi{width:104px;height:146px;margin:0 auto 13px;border-radius:9px;border:2px solid var(--gold);background:var(--dark2);display:flex;align-items:center;justify-content:center;font-size:42px;overflow:hidden;}
-.pi img{width:100%;height:100%;object-fit:cover;}
-.pn{font-family:'Bangers',cursive;font-size:19px;letter-spacing:2px;color:var(--gold);margin-bottom:3px;}
-.pd{font-size:11px;color:var(--text2);margin-bottom:9px;line-height:1.4;}
-.pp{font-size:15px;font-weight:900;color:var(--gold);margin-bottom:9px;}
-
-/* PACK OPENING */
-.pos{display:none;position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:2000;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(10px);}
+.cdlayout{display:grid;grid-template-columns:160px 1fr;gap:16px;}
+@media(max-width:450px){.cdlayout{grid-template-columns:1fr;}}
+.cdimg{width:100%;aspect-ratio:5/7;border-radius:10px;border:3px solid var(--gold);overflow:hidden;}
+.cdimg img{width:100%;height:100%;object-fit:cover;}
+/* Card name format label inside detail */
+.cdnum{font-size:11px;color:var(--t2);margin-bottom:3px;font-weight:700;}
+.ctags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;}
+.tag{padding:2px 6px;border-radius:4px;font-size:9px;font-weight:800;text-transform:uppercase;}
+.Tpsychic{background:rgba(255,77,187,.2);color:var(--pink);border:1px solid var(--pink);}
+.Twater{background:rgba(77,195,255,.2);color:var(--blue);border:1px solid var(--blue);}
+.Tfighting{background:rgba(255,148,77,.2);color:var(--orange);border:1px solid var(--orange);}
+.Tdark{background:rgba(130,130,130,.2);color:#aaa;border:1px solid #666;}
+.Tvape{background:rgba(77,255,155,.2);color:var(--green);border:1px solid var(--green);}
+.Tflying{background:rgba(180,77,255,.2);color:var(--purple);border:1px solid var(--purple);}
+.Tnormal{background:rgba(200,200,200,.13);color:#ccc;border:1px solid #888;}
+.Ttrainer{background:rgba(255,215,0,.2);color:var(--gold);border:1px solid var(--gold);}
+.Tfire{background:rgba(255,100,50,.2);color:#ff6432;border:1px solid #ff6432;}
+.Telectric{background:rgba(255,220,0,.2);color:#ffd800;border:1px solid #ffd800;}
+.Rcommon{background:rgba(180,180,180,.08);color:#aaa;}
+.Rrare{background:rgba(77,195,255,.08);color:var(--blue);}
+.Repic{background:rgba(180,77,255,.08);color:var(--purple);}
+.Rlegendary{background:rgba(255,215,0,.08);color:var(--gold);}
+.hpval{font-size:17px;font-weight:900;color:var(--green);margin-bottom:8px;}
+.flavtxt{background:rgba(255,255,255,.04);border-left:3px solid var(--gold);border-radius:0 6px 6px 0;padding:5px 8px;font-size:10px;color:var(--t2);font-style:italic;margin-bottom:10px;line-height:1.5;}
+.movelist h4{font-size:9px;color:var(--t2);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px;}
+.mrow{display:flex;align-items:flex-start;gap:6px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.mname{font-weight:800;font-size:11px;flex:1;}
+.mdmg{font-family:'Bangers',cursive;font-size:16px;min-width:38px;text-align:right;}
+.mdmg.P{color:var(--green)}.mdmg.N{color:var(--red)}.mdmg.G{color:var(--gold)}.mdmg.S{color:var(--purple);font-size:10px;}
+.mdesc{font-size:9px;color:var(--t2);width:100%;margin-top:1px;}
+.cdbadge{font-size:7px;background:rgba(255,148,77,.17);color:var(--orange);border:1px solid var(--orange);border-radius:3px;padding:1px 3px;margin-left:2px;}
+.statsrow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:10px;}
+.sbox{background:rgba(255,255,255,.04);border-radius:6px;padding:5px;text-align:center;}
+.slbl{font-size:8px;color:var(--t2);text-transform:uppercase;}
+.sval{font-size:10px;font-weight:800;color:var(--red);margin-top:1px;}.sval.R{color:var(--green)}.sval.T{color:var(--blue);}
+.packs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(188px,1fr));gap:16px;}
+.pk{background:var(--d3);border:2px solid rgba(255,215,0,.2);border-radius:14px;padding:14px;text-align:center;cursor:pointer;transition:all .3s;}
+.pk:hover{transform:translateY(-3px);border-color:var(--gold);box-shadow:0 6px 22px rgba(255,215,0,.14);}
+.pimg{width:100px;height:140px;margin:0 auto 11px;border-radius:8px;border:2px solid var(--gold);background:var(--d2);display:flex;align-items:center;justify-content:center;font-size:40px;overflow:hidden;}
+.pimg img{width:100%;height:100%;object-fit:cover;}
+.pname{font-family:'Bangers',cursive;font-size:18px;letter-spacing:2px;color:var(--gold);margin-bottom:3px;}
+.pdesc{font-size:10px;color:var(--t2);margin-bottom:8px;line-height:1.4;}
+.pprice{font-size:14px;font-weight:900;color:var(--gold);margin-bottom:8px;}
+.pos{display:none;position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:2000;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(10px);}
 .pos.open{display:flex;}
-.pot{font-family:'Bangers',cursive;font-size:34px;letter-spacing:4px;color:var(--gold);margin-bottom:26px;text-shadow:0 0 22px rgba(255,215,0,.48);}
-.prc{display:flex;gap:11px;flex-wrap:wrap;justify-content:center;max-width:800px;padding:14px;}
-.rc{width:114px;height:160px;border-radius:11px;cursor:pointer;position:relative;transform-style:preserve-3d;transition:transform .6s;}
+.ptitle{font-family:'Bangers',cursive;font-size:32px;letter-spacing:4px;color:var(--gold);margin-bottom:24px;text-shadow:0 0 20px rgba(255,215,0,.45);}
+.prcards{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;max-width:780px;padding:12px;}
+.rc{width:110px;height:154px;border-radius:10px;cursor:pointer;position:relative;transform-style:preserve-3d;transition:transform .6s;}
 .rc.fl{transform:rotateY(180deg);}
-.cf,.cb{position:absolute;inset:0;backface-visibility:hidden;border-radius:10px;overflow:hidden;}
-.cb{background:linear-gradient(135deg,#1a1a3e,#0d0d1a);display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;font-size:12px;letter-spacing:2px;color:var(--gold);border:2px solid rgba(255,215,0,.28);}
-.cf{transform:rotateY(180deg);}
-.cf img{width:100%;height:100%;object-fit:cover;}
-.frl{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);font-size:8px;font-weight:800;text-transform:uppercase;border-radius:3px;padding:1px 4px;white-space:nowrap;}
-
-/* BATTLE */
-.ba{background:var(--dark3);border-radius:18px;padding:18px;border:2px solid rgba(255,215,0,.16);}
-.bvs{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:start;margin-bottom:18px;}
-.bs{text-align:center;}
-.bst{font-family:'Bangers',cursive;font-size:15px;letter-spacing:2px;color:var(--text2);margin-bottom:9px;}
-.bcs{width:124px;height:174px;border-radius:11px;border:3px dashed rgba(255,215,0,.28);background:rgba(255,255,255,.02);display:flex;align-items:center;justify-content:center;margin:0 auto 9px;cursor:pointer;overflow:hidden;font-size:11px;color:var(--text2);}
-.bcs.hc{border-style:solid;border-color:var(--gold);}
-.bcs img{width:100%;height:100%;object-fit:cover;}
-.hbw{margin-bottom:9px;}
-.hbt{height:9px;background:rgba(255,255,255,.09);border-radius:4px;overflow:hidden;}
-.hbf{height:100%;border-radius:4px;transition:width .5s,background .3s;background:var(--green);}
-.hbf.m{background:var(--gold)}.hbf.l{background:var(--red);}
-.hbl{font-size:10px;color:var(--text2);margin-bottom:3px;display:flex;justify-content:space-between;}
-.vsd{font-family:'Bangers',cursive;font-size:42px;color:var(--gold);text-shadow:0 0 16px rgba(255,215,0,.48);padding-top:65px;}
-.blog{background:rgba(0,0,0,.4);border-radius:9px;padding:12px;height:170px;overflow-y:auto;margin-bottom:12px;font-size:11px;line-height:1.8;border:1px solid rgba(255,255,255,.09);}
-.le{padding:1px 0;}.le.damage{color:var(--red)}.le.heal{color:var(--green)}.le.system{color:var(--gold);font-weight:700}.le.effect{color:var(--purple)}.le.cd{color:var(--orange);}
-.bmoves{display:grid;grid-template-columns:repeat(auto-fit,minmax(144px,1fr));gap:7px;}
-.mb{padding:8px 11px;border-radius:9px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);color:var(--text);font-family:'Nunito',sans-serif;font-weight:800;font-size:11px;cursor:pointer;transition:all .2s;display:flex;justify-content:space-between;align-items:center;}
-.mb:hover:not(:disabled){background:rgba(255,215,0,.11);border-color:var(--gold);}
-.mb:disabled{opacity:.4;cursor:not-allowed;}
-.mb.ocd{border-color:var(--orange);background:rgba(255,148,77,.05);}
+.rcf,.rcb{position:absolute;inset:0;backface-visibility:hidden;border-radius:9px;overflow:hidden;}
+.rcb{background:linear-gradient(135deg,#1a1a3e,#0d0d1a);display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;font-size:11px;letter-spacing:2px;color:var(--gold);border:2px solid rgba(255,215,0,.26);}
+.rcf{transform:rotateY(180deg);}
+.rcf img{width:100%;height:100%;object-fit:cover;}
+.foillbl{position:absolute;bottom:3px;left:50%;transform:translateX(-50%);font-size:7px;font-weight:800;text-transform:uppercase;border-radius:3px;padding:1px 4px;white-space:nowrap;}
+.ba{background:var(--d3);border-radius:16px;padding:16px;border:2px solid rgba(255,215,0,.14);}
+.bvs{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:start;margin-bottom:16px;}
+.bside{text-align:center;}
+.bsname{font-family:'Bangers',cursive;font-size:14px;letter-spacing:2px;color:var(--t2);margin-bottom:8px;}
+.bslot{width:118px;height:165px;border-radius:10px;border:3px dashed rgba(255,215,0,.26);background:rgba(255,255,255,.02);display:flex;align-items:center;justify-content:center;margin:0 auto 8px;cursor:pointer;overflow:hidden;font-size:10px;color:var(--t2);}
+.bslot.hc{border-style:solid;border-color:var(--gold);}
+.bslot img{width:100%;height:100%;object-fit:cover;}
+.hpbar-wrap{margin-bottom:8px;}
+.hpbar-track{height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;}
+.hpbar-fill{height:100%;border-radius:4px;transition:width .5s,background .3s;background:var(--green);}
+.hpbar-fill.M{background:var(--gold)}.hpbar-fill.L{background:var(--red);}
+.hplbl{font-size:9px;color:var(--t2);margin-bottom:2px;display:flex;justify-content:space-between;}
+.vstxt{font-family:'Bangers',cursive;font-size:40px;color:var(--gold);text-shadow:0 0 14px rgba(255,215,0,.45);padding-top:60px;}
+.blog{background:rgba(0,0,0,.4);border-radius:8px;padding:11px;height:164px;overflow-y:auto;margin-bottom:11px;font-size:10px;line-height:1.8;border:1px solid rgba(255,255,255,.08);}
+.le{padding:1px 0;}
+.le.dmg{color:var(--red)}.le.heal{color:var(--green)}.le.sys{color:var(--gold);font-weight:700}.le.eff{color:var(--purple)}.le.cd{color:var(--orange);}
+.bmoves{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:6px;}
+.mb{padding:7px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--text);font-family:'Nunito',sans-serif;font-weight:800;font-size:11px;cursor:pointer;transition:all .2s;display:flex;justify-content:space-between;align-items:center;}
+.mb:hover:not(:disabled){background:rgba(255,215,0,.1);border-color:var(--gold);}
+.mb:disabled{opacity:.38;cursor:not-allowed;}
+.mb.OCD{border-color:var(--orange);background:rgba(255,148,77,.04);}
+.mb.OPM{border-color:#666;background:rgba(100,100,100,.06);}
 .mbr{display:flex;flex-direction:column;align-items:flex-end;gap:1px;}
-.mbd{font-family:'Bangers',cursive;font-size:16px;color:var(--gold);}
-.mbcd{font-size:8px;color:var(--orange);}
-.bt{display:flex;gap:7px;margin-bottom:14px;}
-.btb{padding:6px 14px;border-radius:7px;border:1px solid rgba(255,255,255,.13);background:transparent;color:var(--text2);font-family:'Nunito',sans-serif;font-weight:700;font-size:11px;cursor:pointer;transition:all .2s;}
-.btb.active{background:rgba(255,215,0,.14);border-color:var(--gold);color:var(--gold);}
-
-/* TRADE */
-.trl2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
-@media(max-width:660px){.trl2{grid-template-columns:1fr;}}
-.tp2{background:var(--dark3);border-radius:14px;padding:16px;border:1px solid rgba(255,255,255,.07);}
-.tslot{min-height:64px;border:2px dashed rgba(255,215,0,.22);border-radius:9px;padding:7px;margin-bottom:9px;display:flex;gap:5px;flex-wrap:wrap;align-items:center;}
-.tsc{width:48px;height:67px;border-radius:5px;border:2px solid var(--gold);overflow:hidden;position:relative;}
+.mbdmg{font-family:'Bangers',cursive;font-size:15px;color:var(--gold);}
+.mbcd{font-size:7px;color:var(--orange);}
+.btabs{display:flex;gap:6px;margin-bottom:12px;}
+.btab{padding:5px 13px;border-radius:6px;border:1px solid rgba(255,255,255,.12);background:transparent;color:var(--t2);font-family:'Nunito',sans-serif;font-weight:700;font-size:11px;cursor:pointer;transition:all .2s;}
+.btab.on{background:rgba(255,215,0,.13);border-color:var(--gold);color:var(--gold);}
+.pvp-row{display:flex;align-items:center;justify-content:space-between;padding:10px 13px;background:var(--d3);border-radius:8px;border:1px solid rgba(255,255,255,.06);margin-bottom:6px;}
+.pvp-in{background:rgba(255,77,187,.06);border-color:rgba(255,77,187,.26);}
+.trl{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:640px){.trl{grid-template-columns:1fr;}}
+.tp{background:var(--d3);border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,.06);}
+.tslot{min-height:58px;border:2px dashed rgba(255,215,0,.2);border-radius:8px;padding:6px;margin-bottom:8px;display:flex;gap:4px;flex-wrap:wrap;align-items:center;}
+.tsc{width:44px;height:62px;border-radius:4px;border:2px solid var(--gold);overflow:hidden;position:relative;}
 .tsc img{width:100%;height:100%;object-fit:cover;}
-.tsx{position:absolute;top:1px;right:1px;background:rgba(255,0,0,.82);width:12px;height:12px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;cursor:pointer;}
-
-/* ADMIN */
-.ag{display:grid;grid-template-columns:repeat(auto-fit,minmax(252px,1fr));gap:16px;margin-bottom:22px;}
-.ac{background:var(--dark3);border:1px solid rgba(255,215,0,.16);border-radius:14px;padding:16px;}
-.ac h3{font-family:'Bangers',cursive;font-size:17px;letter-spacing:2px;color:var(--gold);margin-bottom:11px;}
-.fg{margin-bottom:9px;}
-.fl2{font-size:10px;color:var(--text2);margin-bottom:3px;display:block;text-transform:uppercase;}
-.fi,.fs,.fta{width:100%;padding:6px 9px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.11);border-radius:7px;color:var(--text);font-family:'Nunito',sans-serif;font-size:12px;outline:none;transition:border-color .2s;}
+.tsx{position:absolute;top:1px;right:1px;background:rgba(255,0,0,.8);width:11px;height:11px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff;cursor:pointer;}
+.ag{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:14px;margin-bottom:20px;}
+.ac{background:var(--d3);border:1px solid rgba(255,215,0,.14);border-radius:12px;padding:14px;}
+.ac h3{font-family:'Bangers',cursive;font-size:16px;letter-spacing:2px;color:var(--gold);margin-bottom:10px;}
+.fg{margin-bottom:8px;}
+.fl{font-size:10px;color:var(--t2);margin-bottom:2px;display:block;text-transform:uppercase;}
+.fi,.fs,.fta{width:100%;padding:6px 8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:var(--text);font-family:'Nunito',sans-serif;font-size:11px;outline:none;transition:border-color .2s;}
 .fi:focus,.fs:focus,.fta:focus{border-color:var(--gold);}
-.fs option{background:var(--dark2);}
-.fta{resize:vertical;min-height:56px;}
-.at{width:100%;border-collapse:collapse;font-size:11px;}
-.at th{padding:6px 9px;text-align:left;color:var(--text2);font-size:9px;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.09);}
-.at td{padding:6px 9px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;}
-.at tr:hover td{background:rgba(255,255,255,.02);}
+.fs option{background:var(--d2);}
+.fta{resize:vertical;min-height:50px;}
+.atable{width:100%;border-collapse:collapse;font-size:10px;}
+.atable th{padding:5px 8px;text-align:left;color:var(--t2);font-size:9px;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.08);}
+.atable td{padding:5px 8px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;}
+.atable tr:hover td{background:rgba(255,255,255,.02);}
 .sx{overflow-x:auto;}
-
-/* COLLECTION STATS */
-.cstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:9px;margin-bottom:18px;}
-.scrd{background:var(--dark3);border:1px solid rgba(255,255,255,.07);border-radius:11px;padding:12px;text-align:center;}
-.scv{font-family:'Bangers',cursive;font-size:30px;color:var(--gold);letter-spacing:2px;}
-.scl{font-size:10px;color:var(--text2);text-transform:uppercase;}
-
-/* LOGIN */
+.cstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:16px;}
+.scrd{background:var(--d3);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:11px;text-align:center;}
+.scv{font-family:'Bangers',cursive;font-size:28px;color:var(--gold);letter-spacing:2px;}
+.scl{font-size:9px;color:var(--t2);text-transform:uppercase;}
 .ls{display:none;position:fixed;inset:0;background:var(--dark);z-index:5000;align-items:center;justify-content:center;}
 .ls.open{display:flex;}
-.lb{background:var(--dark2);border:2px solid rgba(255,215,0,.28);border-radius:18px;padding:34px;width:100%;max-width:388px;text-align:center;}
-.ll{font-family:'Bangers',cursive;font-size:36px;letter-spacing:4px;background:linear-gradient(135deg,var(--gold),var(--gold2),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:5px;}
-.lt{font-size:11px;color:var(--text2);margin-bottom:22px;}
-.tabs{display:flex;border-radius:9px;overflow:hidden;border:1px solid rgba(255,255,255,.09);margin-bottom:16px;}
-.tabb{flex:1;padding:7px;background:transparent;border:none;color:var(--text2);font-family:'Nunito',sans-serif;font-weight:700;font-size:11px;cursor:pointer;transition:all .2s;}
-.tabb.active{background:rgba(255,215,0,.14);color:var(--gold);}
-
-/* TOAST */
-.toast-box{position:fixed;bottom:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:6px;}
-.toast{padding:9px 16px;border-radius:9px;font-weight:700;font-size:12px;animation:si .3s ease;border:1px solid rgba(255,255,255,.09);min-width:170px;max-width:300px;}
-.ts{background:rgba(77,255,155,.16);border-color:var(--green);color:var(--green);}
-.te{background:rgba(255,77,77,.16);border-color:var(--red);color:var(--red);}
-.ti{background:rgba(255,215,0,.11);border-color:var(--gold);color:var(--gold);}
-@keyframes si{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
-
-/* LOADER */
-.loader{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:4000;align-items:center;justify-content:center;flex-direction:column;gap:12px;}
-.loader.open{display:flex;}
-.sp{width:42px;height:42px;border:4px solid rgba(255,215,0,.18);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;}
+.lbox{background:var(--d2);border:2px solid rgba(255,215,0,.26);border-radius:16px;padding:30px;width:100%;max-width:380px;text-align:center;}
+.llogo{font-family:'Bangers',cursive;font-size:34px;letter-spacing:4px;background:linear-gradient(135deg,var(--gold),var(--g2),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;}
+.ltag{font-size:10px;color:var(--t2);margin-bottom:20px;}
+.tabs2{display:flex;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,.08);margin-bottom:14px;}
+.tabb{flex:1;padding:6px;background:transparent;border:none;color:var(--t2);font-family:'Nunito',sans-serif;font-weight:700;font-size:11px;cursor:pointer;transition:all .2s;}
+.tabb.on{background:rgba(255,215,0,.13);color:var(--gold);}
+.tb{position:fixed;bottom:14px;right:14px;z-index:9999;display:flex;flex-direction:column;gap:5px;}
+.toast{padding:8px 14px;border-radius:8px;font-weight:700;font-size:11px;animation:tsi .3s ease;border:1px solid rgba(255,255,255,.08);min-width:160px;max-width:280px;}
+.TS{background:rgba(77,255,155,.15);border-color:var(--green);color:var(--green);}
+.TE{background:rgba(255,77,77,.15);border-color:var(--red);color:var(--red);}
+.TI{background:rgba(255,215,0,.1);border-color:var(--gold);color:var(--gold);}
+@keyframes tsi{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+.ldr{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:4000;align-items:center;justify-content:center;flex-direction:column;gap:11px;}
+.ldr.open{display:flex;}
+.spinner{width:40px;height:40px;border:4px solid rgba(255,215,0,.17);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
-.ltext{color:var(--gold);font-weight:700;letter-spacing:2px;font-size:12px;text-transform:uppercase;}
-
-/* PVP */
-.pvp-row{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:var(--dark3);border-radius:9px;border:1px solid rgba(255,255,255,.07);margin-bottom:7px;}
-.pvp-incoming{background:rgba(255,77,187,.07);border-color:rgba(255,77,187,.28);}
-.es{text-align:center;padding:46px 18px;color:var(--text2);}
-.es .icon{font-size:46px;margin-bottom:11px;}
-.es h3{font-family:'Bangers',cursive;font-size:20px;letter-spacing:2px;color:var(--text2);margin-bottom:5px;}
-.dv{height:1px;background:rgba(255,255,255,.06);margin:14px 0;}
-@media(max-width:560px){.cards-grid{grid-template-columns:repeat(3,1fr);gap:7px;} .nav-btn span{display:none;}}
+.ldrtxt{color:var(--gold);font-weight:700;letter-spacing:2px;font-size:11px;text-transform:uppercase;}
+.es{text-align:center;padding:44px 16px;color:var(--t2);}
+.es .icon{font-size:44px;margin-bottom:10px;}
+.es h3{font-family:'Bangers',cursive;font-size:19px;letter-spacing:2px;color:var(--t2);margin-bottom:5px;}
+.dv{height:1px;background:rgba(255,255,255,.06);margin:12px 0;}
+/* Admin battle creator */
+.abattle{background:rgba(255,215,0,.05);border:2px solid rgba(255,215,0,.2);border-radius:12px;padding:16px;margin-bottom:16px;}
+.abattle h3{font-family:'Bangers',cursive;font-size:18px;letter-spacing:2px;color:var(--gold);margin-bottom:12px;}
+.card-pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px;max-height:260px;overflow-y:auto;border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:8px;background:rgba(0,0,0,.2);}
+.cp-card{cursor:pointer;border-radius:7px;overflow:hidden;border:2px solid transparent;transition:border-color .2s;}
+.cp-card.sel{border-color:var(--gold);box-shadow:0 0 10px rgba(255,215,0,.4);}
+.cp-card img{width:100%;aspect-ratio:5/7;object-fit:cover;display:block;}
+.cp-card .cpname{font-size:7px;font-weight:800;text-align:center;padding:2px;color:var(--text);background:rgba(0,0,0,.6);}
+/* Status badges in battle */
+.status-row{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin-top:4px;min-height:16px;}
+@media(max-width:540px){.cgrid{grid-template-columns:repeat(3,1fr);gap:7px;} .nb span{display:none;} .cdlayout{grid-template-columns:1fr;} .bvs{gap:7px;} .bslot{width:88px;height:123px;} .vstxt{font-size:32px;padding-top:42px;}}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- LOGIN SCREEN -->
 <div class="ls open" id="LS">
-  <div class="lb">
-    <div class="ll">⚡ ROOF TCG</div>
-    <p class="lt">Collect. Battle. Trade. Flex.</p>
-    <div class="tabs">
-      <button class="tabb active" id="tl" onclick="stab('login')">Login</button>
-      <button class="tabb" id="ts2" onclick="stab('signup')">Sign Up</button>
+  <div class="lbox">
+    <div class="llogo">⚡ ROOF TCG</div>
+    <p class="ltag">Collect. Battle. Trade. Flex.</p>
+    <div class="tabs2">
+      <button class="tabb on" id="TL" onclick="stab('login')">Login</button>
+      <button class="tabb" id="TSU" onclick="stab('signup')">Sign Up</button>
     </div>
     <div id="LF">
-      <div class="fg"><input class="fi" id="le" placeholder="Email" type="email"/></div>
-      <div class="fg"><input class="fi" id="lp" placeholder="Password" type="password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
-      <button class="btn btn-gold" style="width:100%;margin-bottom:7px" onclick="doLogin()">Sign In</button>
+      <div class="fg"><input class="fi" id="LE" placeholder="Email" type="email" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+      <div class="fg"><input class="fi" id="LP" placeholder="Password" type="password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+      <button class="btn bgold" style="width:100%;margin-bottom:6px" onclick="doLogin()">Sign In</button>
     </div>
-    <div id="SF" style="display:none">
-      <div class="fg"><input class="fi" id="su" placeholder="Username"/></div>
-      <div class="fg"><input class="fi" id="se" placeholder="Email" type="email"/></div>
-      <div class="fg"><input class="fi" id="sp" placeholder="Password (min 6)" type="password"/></div>
-      <button class="btn btn-gold" style="width:100%;margin-bottom:7px" onclick="doSignup()">Create Account</button>
+    <div id="SUF" style="display:none">
+      <div class="fg"><input class="fi" id="SU" placeholder="Username"/></div>
+      <div class="fg"><input class="fi" id="SE" placeholder="Email" type="email"/></div>
+      <div class="fg"><input class="fi" id="SP" placeholder="Password (min 6)" type="password"/></div>
+      <button class="btn bgold" style="width:100%;margin-bottom:6px" onclick="doSignup()">Create Account</button>
     </div>
-    <button onclick="guestLogin()" style="background:none;border:none;color:var(--text2);font-family:Nunito,sans-serif;font-size:11px;cursor:pointer;text-decoration:underline">Continue as Guest</button>
+    <div id="LERR" style="color:var(--red);font-size:11px;min-height:16px;margin-bottom:4px"></div>
+    <button onclick="guestLogin()" style="background:none;border:none;color:var(--t2);font-family:Nunito,sans-serif;font-size:10px;cursor:pointer;text-decoration:underline">Continue as Guest (no save)</button>
   </div>
 </div>
 
 <!-- PACK OPENING -->
 <div class="pos" id="POS">
-  <div class="pot" id="POT">📦 OPENING...</div>
-  <div class="prc" id="PRC"></div>
-  <div style="margin-top:20px;display:flex;gap:9px;flex-wrap:wrap;justify-content:center">
-    <button class="btn btn-gold" onclick="flipAll()">✨ Reveal All</button>
-    <button class="btn btn-outline" onclick="closePack()">✅ Add to Collection</button>
+  <div class="ptitle" id="PTL">📦 OPENING...</div>
+  <div class="prcards" id="PRC"></div>
+  <div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+    <button class="btn bgold" onclick="flipAll()">✨ Reveal All</button>
+    <button class="btn bout" onclick="closePack()">✅ Add to Collection</button>
   </div>
-  <div id="PSumm" style="margin-top:12px;text-align:center;font-size:11px;color:var(--text2);max-width:580px;padding:0 16px;"></div>
+  <div id="PSUM" style="margin-top:10px;text-align:center;font-size:10px;color:var(--t2);max-width:560px;padding:0 14px;"></div>
 </div>
 
-<!-- CARD SELECT MODAL -->
-<div class="mo" id="CSM">
+<!-- CARD SELECT MODAL (battle/pvp) -->
+<div class="mo" id="CSMO">
   <div class="mdl">
-    <button class="mclose" onclick="cm('CSM')">✕</button>
-    <h2 style="font-family:Bangers,cursive;font-size:20px;color:var(--gold);margin-bottom:12px">SELECT A CARD</h2>
-    <div class="cards-grid" id="CSG"></div>
+    <button class="mclose" onclick="cm('CSMO')">✕</button>
+    <h2 style="font-family:Bangers,cursive;font-size:19px;color:var(--gold);margin-bottom:10px" id="CSMOTITLE">SELECT A CARD</h2>
+    <div class="cgrid" id="CSMG"></div>
   </div>
 </div>
 
@@ -281,1038 +265,1434 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,.96);backdrop-fil
 <div class="mo" id="CDM">
   <div class="mdl">
     <button class="mclose" onclick="cm('CDM')">✕</button>
-    <div class="cdl" id="CDC"></div>
+    <div class="cdlayout" id="CDC"></div>
   </div>
 </div>
 
 <!-- NAV -->
 <nav id="MN" style="display:none">
-  <div class="nav-logo" onclick="sp('home')">⚡ ROOF TCG</div>
-  <div class="nav-links">
-    <button class="nav-btn" onclick="sp('home')">🏠</button>
-    <button class="nav-btn" onclick="sp('pokedex')">📖 <span>Dex</span></button>
-    <button class="nav-btn" onclick="sp('collection')">🃏 <span>Cards</span></button>
-    <button class="nav-btn" onclick="sp('packs')">📦 <span>Packs</span></button>
-    <button class="nav-btn" onclick="sp('battle')">⚔️ <span>Battle</span></button>
-    <button class="nav-btn" onclick="sp('trade')">🔄 <span>Trade</span></button>
-    <button class="nav-btn" id="ABN" onclick="tryAdmin()">🛠️ <span>Admin</span></button>
+  <div class="nlogo" onclick="go('home')">⚡ ROOF TCG</div>
+  <div class="nlinks">
+    <button class="nb" onclick="go('home')">🏠</button>
+    <button class="nb" onclick="go('dex')">📖 <span>Dex</span></button>
+    <button class="nb" onclick="go('collection')">🃏 <span>Cards</span></button>
+    <button class="nb" onclick="go('packs')">📦 <span>Packs</span></button>
+    <button class="nb" onclick="go('battle')">⚔️ <span>Battle</span></button>
+    <button class="nb" onclick="go('trade')">🔄 <span>Trade</span></button>
+    <button class="nb" id="ADMBTN" onclick="tryAdmin()">🛠️ <span>Admin</span></button>
   </div>
-  <div class="nav-user">
-    <div class="coins-badge" id="CB">💰 0</div>
-    <div class="avatar" id="AV" onclick="sp('profile')">?</div>
+  <div class="nuser">
+    <div class="cbadge" id="COINS">💰 0</div>
+    <div class="ava" id="AVA" onclick="go('profile')">?</div>
   </div>
 </nav>
 
-<div id="PAGES" style="display:none">
+<div id="APP" style="display:none">
 
 <!-- HOME -->
-<div class="page active" id="page-home">
+<div class="page active" id="P-home">
   <div class="hero">
-    <div class="hero-title">dsc.gg/roof TCG</div>
-    <div class="hero-sub">Collect. Battle. Trade.</div>
-    <div class="hero-cards" id="HC"></div>
-    <div style="display:flex;gap:11px;justify-content:center;flex-wrap:wrap">
-      <button class="btn btn-gold" onclick="sp('packs')">📦 Open Packs</button>
-      <button class="btn btn-pink" onclick="sp('battle')">⚔️ Battle</button>
-      <button class="btn btn-outline" onclick="sp('pokedex')">📖 View All Cards</button>
+    <div class="htitle">dsc.gg/roof TCG</div>
+    <div class="hsub">Collect · Battle · Trade</div>
+    <div class="hcards" id="HCARDS"></div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn bgold" onclick="go('packs')">📦 Open Packs</button>
+      <button class="btn bpink" onclick="go('battle')">⚔️ Battle</button>
+      <button class="btn bout" onclick="go('dex')">📖 View All Cards</button>
     </div>
   </div>
 </div>
 
-<!-- POKEDEX -->
-<div class="page" id="page-pokedex">
-  <div class="sec-hdr"><span class="sec-title">📖 CARD DEX</span><span style="color:var(--text2);font-size:12px" id="DC">0 cards</span></div>
-  <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:13px">
-    <input class="fi" id="DS" placeholder="🔍 Search..." style="flex:1;min-width:150px;border-radius:18px" oninput="rdex()"/>
-    <button class="btb active" onclick="sdf('all',this)">All</button>
-    <button class="btb" onclick="sdf('psychic',this)">Psychic</button>
-    <button class="btb" onclick="sdf('water',this)">Water</button>
-    <button class="btb" onclick="sdf('fighting',this)">Fighting</button>
-    <button class="btb" onclick="sdf('fire',this)">Fire</button>
-    <button class="btb" onclick="sdf('electric',this)">Electric</button>
-    <button class="btb" onclick="sdf('normal',this)">Normal</button>
-    <button class="btb" onclick="sdf('trainer',this)">Trainer</button>
+<!-- DEX -->
+<div class="page" id="P-dex">
+  <div class="shdr"><span class="stitle">📖 CARD DEX</span><span style="color:var(--t2);font-size:11px" id="DEXCOUNT">0 cards</span></div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+    <input class="fi" id="DEXQ" placeholder="🔍 Search..." style="flex:1;min-width:140px;border-radius:16px" oninput="renderDex()"/>
+    <button class="btab on" onclick="setDF('all',this)">All</button>
+    <button class="btab" onclick="setDF('psychic',this)">Psychic</button>
+    <button class="btab" onclick="setDF('water',this)">Water</button>
+    <button class="btab" onclick="setDF('fighting',this)">Fighting</button>
+    <button class="btab" onclick="setDF('fire',this)">Fire</button>
+    <button class="btab" onclick="setDF('electric',this)">Electric</button>
+    <button class="btab" onclick="setDF('normal',this)">Normal</button>
+    <button class="btab" onclick="setDF('trainer',this)">Trainer</button>
   </div>
-  <div class="cards-grid" id="DG"></div>
+  <div class="cgrid" id="DEXG"></div>
 </div>
 
 <!-- COLLECTION -->
-<div class="page" id="page-collection">
-  <div class="sec-hdr"><span class="sec-title">🃏 MY COLLECTION</span><button class="btn btn-sm btn-gold" onclick="sp('packs')">+ Get Cards</button></div>
-  <div class="cstats" id="CS2"></div>
-  <div class="cards-grid" id="CG"></div>
+<div class="page" id="P-collection">
+  <div class="shdr"><span class="stitle">🃏 MY COLLECTION</span><button class="btn bsm bgold" onclick="go('packs')">+ Get Cards</button></div>
+  <div class="cstats" id="COLLSTATS"></div>
+  <div class="cgrid" id="COLLG"></div>
 </div>
 
 <!-- PACKS -->
-<div class="page" id="page-packs">
-  <div class="sec-hdr"><span class="sec-title">📦 PACKS</span><div class="coins-badge" id="PC2">💰 0</div></div>
-  <div class="packs-grid" id="PG"></div>
+<div class="page" id="P-packs">
+  <div class="shdr"><span class="stitle">📦 PACKS</span><div class="cbadge" id="PCOINS">💰 0</div></div>
+  <div class="packs-grid" id="PACKG"></div>
 </div>
 
 <!-- BATTLE -->
-<div class="page" id="page-battle">
-  <div class="sec-hdr"><span class="sec-title">⚔️ BATTLE</span></div>
-  <div class="bt">
-    <button class="btb active" onclick="sbt('cpu',this)">🤖 VS CPU</button>
-    <button class="btb" onclick="sbt('pvp',this)">👥 VS Player</button>
+<div class="page" id="P-battle">
+  <div class="shdr"><span class="stitle">⚔️ BATTLE</span></div>
+  <div class="btabs">
+    <button class="btab on" onclick="setBTab('cpu',this)">🤖 VS CPU</button>
+    <button class="btab" onclick="setBTab('pvp',this)">👥 VS Player</button>
   </div>
-  <div id="BTC">
+  <!-- CPU TAB -->
+  <div id="CPUTAB">
     <div class="ba">
       <div class="bvs">
-        <div class="bs">
-          <div class="bst">YOUR CARD</div>
-          <div class="bcs" id="PS2" onclick="openCS('player')"><span>Click to select</span></div>
-          <div id="PHW" style="display:none">
-            <div class="hbl"><span id="PNL">Card</span><span id="PHL">0</span></div>
-            <div class="hbt"><div class="hbf" id="PHB" style="width:100%"></div></div>
+        <div class="bside">
+          <div class="bsname">YOUR CARD</div>
+          <div class="bslot" id="PSLOT" onclick="openCardPick('cpu')"><span>Click to pick</span></div>
+          <div id="PHPWRAP" style="display:none">
+            <div class="hplbl"><span id="PCNAME">Card</span><span id="PHPTXT">0</span></div>
+            <div class="hpbar-track"><div class="hpbar-fill" id="PHPBAR" style="width:100%"></div></div>
           </div>
-          <div id="PStatusTags" style="display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin-top:4px;min-height:18px"></div>
+          <div class="status-row" id="PSTATUS"></div>
         </div>
-        <div class="vsd">VS</div>
-        <div class="bs">
-          <div class="bst">CPU</div>
-          <div class="bcs" id="CS4"><span>Waiting...</span></div>
-          <div id="CHW" style="display:none">
-            <div class="hbl"><span id="CNL">CPU</span><span id="CHL">0</span></div>
-            <div class="hbt"><div class="hbf" id="CHB" style="width:100%"></div></div>
+        <div class="vstxt">VS</div>
+        <div class="bside">
+          <div class="bsname">CPU</div>
+          <div class="bslot" id="ESLOT"><span>Waiting...</span></div>
+          <div id="EHPWRAP" style="display:none">
+            <div class="hplbl"><span id="ECNAME">CPU</span><span id="EHPTXT">0</span></div>
+            <div class="hpbar-track"><div class="hpbar-fill" id="EHPBAR" style="width:100%"></div></div>
           </div>
-          <div id="CStatusTags" style="display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin-top:4px;min-height:18px"></div>
+          <div class="status-row" id="ESTATUS"></div>
         </div>
       </div>
-      <div class="blog" id="BL"><div class="le system">⚡ Select a card to start!</div></div>
-      <div class="bmoves" id="BM"></div>
+      <div class="blog" id="BLOG"></div>
+      <div class="bmoves" id="BMOVES"></div>
     </div>
   </div>
-  <div id="BTP" style="display:none">
-    <div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-      <button class="btn btn-gold" onclick="rpvp()">🔄 Refresh</button>
-      <span style="font-size:11px;color:var(--text2)">Challenge players!</span>
+  <!-- PVP TAB -->
+  <div id="PVPTAB" style="display:none">
+    <div style="display:flex;gap:7px;align-items:center;margin-bottom:11px">
+      <button class="btn bgold bsm" onclick="loadPvp()">🔄 Refresh</button>
+      <span style="font-size:10px;color:var(--t2)">Challenge other players to a live battle!</span>
     </div>
-    <div id="PVL"></div>
-    <div id="PVBA" style="display:none;margin-top:18px">
+    <div id="PVPLIST"></div>
+    <div id="PVPBATTLE" style="display:none;margin-top:16px">
       <div class="ba">
         <div class="bvs">
-          <div class="bs"><div class="bst" id="PVPL">YOU</div><div class="bcs" id="PVPS"><span>Select...</span></div></div>
-          <div class="vsd">VS</div>
-          <div class="bs"><div class="bst" id="PVOL">OPP</div><div class="bcs" id="PVOS"><span>Waiting...</span></div></div>
+          <div class="bside">
+            <div class="bsname" id="PVPPLBL">YOU</div>
+            <div class="bslot" id="PVPPSLOT"><span>Selecting...</span></div>
+            <div id="PVPPHPW" style="display:none">
+              <div class="hplbl"><span id="PVPPCN">Card</span><span id="PVPPHT">0</span></div>
+              <div class="hpbar-track"><div class="hpbar-fill" id="PVPPHB" style="width:100%"></div></div>
+            </div>
+          </div>
+          <div class="vstxt">VS</div>
+          <div class="bside">
+            <div class="bsname" id="PVPOLBL">OPP</div>
+            <div class="bslot" id="PVPOSLOT"><span>Waiting...</span></div>
+            <div id="PVPOHPW" style="display:none">
+              <div class="hplbl"><span id="PVPOCN">Opp</span><span id="PVPOHT">0</span></div>
+              <div class="hpbar-track"><div class="hpbar-fill" id="PVPOHB" style="width:100%"></div></div>
+            </div>
+          </div>
         </div>
-        <div class="blog" id="PVL2"><div class="le system">⚡ PvP!</div></div>
-        <div class="bmoves" id="PVM"></div>
+        <div class="blog" id="PVPLOG"></div>
+        <div class="bmoves" id="PVPMOVES"></div>
       </div>
     </div>
   </div>
 </div>
 
 <!-- TRADE -->
-<div class="page" id="page-trade">
-  <div class="sec-hdr"><span class="sec-title">🔄 TRADING</span></div>
-  <div class="trl2">
-    <div class="tp2">
-      <h3 style="font-family:Bangers,cursive;color:var(--gold);letter-spacing:2px;margin-bottom:9px">YOUR OFFER</h3>
-      <div class="tslot" id="MTS"><span style="color:var(--text2);font-size:11px">Click your cards below ↓</span></div>
-      <div class="fg"><label class="fl2">Coins</label><input class="fi" type="number" id="MCO" placeholder="0" min="0"/></div>
+<div class="page" id="P-trade">
+  <div class="shdr"><span class="stitle">🔄 TRADE</span></div>
+  <div class="trl">
+    <div class="tp">
+      <h3 style="font-family:Bangers,cursive;color:var(--gold);letter-spacing:2px;margin-bottom:8px">YOUR OFFER</h3>
+      <div class="tslot" id="MYOFFER"><span style="color:var(--t2);font-size:10px">Click your cards below ↓</span></div>
+      <div class="fg"><label class="fl">Coins to include</label><input class="fi" type="number" id="MYCOINS" placeholder="0" min="0"/></div>
     </div>
-    <div class="tp2">
-      <h3 style="font-family:Bangers,cursive;color:var(--pink);letter-spacing:2px;margin-bottom:9px">SEND TO</h3>
-      <div class="fg"><label class="fl2">Player</label>
-        <select class="fs" id="TTP" onchange="ltc()"><option value="">— pick player —</option></select>
+    <div class="tp">
+      <h3 style="font-family:Bangers,cursive;color:var(--pink);letter-spacing:2px;margin-bottom:8px">SEND TO</h3>
+      <div class="fg"><label class="fl">Player</label>
+        <select class="fs" id="TPLAYER" onchange="loadTheirCards()"><option value="">— select player —</option></select>
       </div>
-      <div class="fg"><label class="fl2">Their cards you want</label>
-        <div class="tslot" id="WTS"><span style="color:var(--text2);font-size:11px">Select player first</span></div>
-      </div>
-      <div class="cards-grid" id="TCG2" style="grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:7px;margin-top:7px"></div>
+      <label class="fl">Their cards you want</label>
+      <div class="tslot" id="THEIRWANT" style="margin-top:3px"><span style="color:var(--t2);font-size:10px">Select player first</span></div>
+      <div class="cgrid" id="THEIRGRID" style="grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:6px;margin-top:6px"></div>
     </div>
   </div>
-  <div style="display:flex;gap:7px;margin:12px 0;justify-content:center">
-    <button class="btn btn-gold" onclick="propTrade()">📨 Send Trade</button>
-    <button class="btn btn-dark btn-sm" onclick="clrTrade()">🗑️ Clear</button>
+  <div style="display:flex;gap:6px;margin:11px 0;justify-content:center">
+    <button class="btn bgold" onclick="sendTrade()">📨 Send Trade</button>
+    <button class="btn bdark bsm" onclick="clearTrade()">🗑️ Clear</button>
   </div>
-  <div class="sec-hdr" style="margin-top:20px"><span class="sec-title">📬 INBOX</span></div>
-  <div id="TI"></div>
-  <div class="sec-hdr" style="margin-top:20px"><span class="sec-title">🃏 YOUR CARDS</span></div>
-  <div class="cards-grid" id="MYCC"></div>
+  <div class="shdr" style="margin-top:18px"><span class="stitle">📬 INBOX</span></div>
+  <div id="TINBOX"></div>
+  <div class="shdr" style="margin-top:18px"><span class="stitle">🃏 YOUR CARDS</span></div>
+  <div class="cgrid" id="TRADEMY"></div>
 </div>
 
 <!-- ADMIN -->
-<div class="page" id="page-admin">
-  <div class="sec-hdr"><span class="sec-title">🛠️ ADMIN</span><span style="font-size:11px;color:var(--green)">✅ Authenticated</span></div>
+<div class="page" id="P-admin">
+  <div class="shdr"><span class="stitle">🛠️ ADMIN</span><span style="font-size:10px;color:var(--green)">✅ Authenticated</span></div>
+
+  <!-- Admin Battle Creator -->
+  <div class="abattle">
+    <h3>⚔️ Create Battle (Admin)</h3>
+    <p style="font-size:10px;color:var(--t2);margin-bottom:10px">Select exactly 2 cards to create an admin-controlled battle. Pick one for each side.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+      <div>
+        <div class="fl" style="margin-bottom:4px">CARD 1 (Player side)</div>
+        <div id="ABCARD1" onclick="pickAdminCard(1)" style="width:90px;height:126px;border-radius:9px;border:3px dashed rgba(255,215,0,.3);background:rgba(255,255,255,.02);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;font-size:10px;color:var(--t2);">Click to pick</div>
+      </div>
+      <div>
+        <div class="fl" style="margin-bottom:4px">CARD 2 (Enemy side)</div>
+        <div id="ABCARD2" onclick="pickAdminCard(2)" style="width:90px;height:126px;border-radius:9px;border:3px dashed rgba(255,77,187,.3);background:rgba(255,255,255,.02);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;font-size:10px;color:var(--t2);">Click to pick</div>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">Battle Name</label><input class="fi" id="ABNAME" placeholder="e.g. Grand Tournament Final"/></div>
+    <div class="fg"><label class="fl">Broadcast to Player (select player)</label>
+      <select class="fs" id="ABPLAYER"><option value="all">All Players (public)</option></select>
+    </div>
+    <button class="btn bgold" style="width:100%" onclick="launchAdminBattle()">⚔️ Launch Battle</button>
+  </div>
+
   <div class="ag">
+    <!-- Create Card -->
     <div class="ac">
       <h3>➕ Create Card</h3>
-      <div class="fg"><label class="fl2">Name</label><input class="fi" id="acN"/></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
-        <div class="fg"><label class="fl2">Number</label><input class="fi" id="acNu" type="number" placeholder="0026"/></div>
-        <div class="fg"><label class="fl2">HP</label><input class="fi" id="acH" type="number" placeholder="100"/></div>
+      <div class="fg"><label class="fl">Name</label><input class="fi" id="ACN"/></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <div class="fg"><label class="fl">Number</label><input class="fi" id="ACNU" type="number" placeholder="0026"/></div>
+        <div class="fg"><label class="fl">HP</label><input class="fi" id="ACH" type="number" placeholder="100"/></div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
-        <div class="fg"><label class="fl2">Type</label>
-          <select class="fs" id="acT"><option value="normal">Normal</option><option value="psychic">Psychic</option><option value="water">Water</option><option value="fighting">Fighting</option><option value="fire">Fire</option><option value="electric">Electric</option><option value="vape">Vape</option><option value="flying">Flying</option><option value="dark">Dark</option><option value="trainer">Trainer</option></select>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <div class="fg"><label class="fl">Type</label>
+          <select class="fs" id="ACT"><option value="normal">Normal</option><option value="psychic">Psychic</option><option value="water">Water</option><option value="fighting">Fighting</option><option value="fire">Fire</option><option value="electric">Electric</option><option value="vape">Vape</option><option value="flying">Flying</option><option value="dark">Dark</option><option value="trainer">Trainer</option></select>
         </div>
-        <div class="fg"><label class="fl2">Rarity</label>
-          <select class="fs" id="acR"><option value="common">Common</option><option value="rare">Rare</option><option value="epic">Epic</option><option value="legendary">Legendary</option></select>
+        <div class="fg"><label class="fl">Rarity</label>
+          <select class="fs" id="ACR"><option value="common">Common</option><option value="rare">Rare</option><option value="epic">Epic</option><option value="legendary">Legendary</option></select>
         </div>
       </div>
-      <div class="fg"><label class="fl2">Image URL (or Supabase path)</label><input class="fi" id="acI" placeholder="https://..."/></div>
-      <div class="fg"><label class="fl2">Flavour</label><textarea class="fta" id="acF"></textarea></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
-        <div class="fg"><label class="fl2">Weakness</label><input class="fi" id="acW"/></div>
-        <div class="fg"><label class="fl2">Resistance</label><input class="fi" id="acRe"/></div>
-        <div class="fg"><label class="fl2">Retreat</label><input class="fi" id="acRt"/></div>
+      <div class="fg"><label class="fl">Image URL (Supabase storage URL)</label><input class="fi" id="ACI" placeholder="https://...supabase.co/storage/v1/object/public/cards/Name.png"/></div>
+      <div class="fg"><label class="fl">Flavour Text</label><textarea class="fta" id="ACF"></textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px">
+        <div class="fg"><label class="fl">Weakness</label><input class="fi" id="ACW"/></div>
+        <div class="fg"><label class="fl">Resistance</label><input class="fi" id="ACRE"/></div>
+        <div class="fg"><label class="fl">Retreat</label><input class="fi" id="ACRT"/></div>
       </div>
-      <div id="AMC"></div>
-      <button class="btn btn-dark btn-sm" onclick="aam()" style="width:100%;margin-bottom:7px">+ Add Move</button>
-      <button class="btn btn-gold" style="width:100%" onclick="aCC()">✅ Create Card</button>
+      <div id="AMOVES"></div>
+      <button class="btn bdark bsm" onclick="addMove()" style="width:100%;margin-bottom:6px">+ Add Move</button>
+      <button class="btn bgold" style="width:100%" onclick="createCard()">✅ Create Card</button>
     </div>
+    <!-- Create Pack -->
     <div class="ac">
       <h3>📦 Create Pack</h3>
-      <div class="fg"><label class="fl2">Name</label><input class="fi" id="apN"/></div>
-      <div class="fg"><label class="fl2">Description</label><textarea class="fta" id="apD"></textarea></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
-        <div class="fg"><label class="fl2">Cards/pack</label><input class="fi" id="apC" type="number" value="5"/></div>
-        <div class="fg"><label class="fl2">Price</label><input class="fi" id="apP" type="number" value="100"/></div>
+      <div class="fg"><label class="fl">Pack Name</label><input class="fi" id="APN"/></div>
+      <div class="fg"><label class="fl">Description</label><textarea class="fta" id="APD"></textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <div class="fg"><label class="fl">Cards/pack</label><input class="fi" id="APC" type="number" value="5"/></div>
+        <div class="fg"><label class="fl">Price (coins)</label><input class="fi" id="APP" type="number" value="100"/></div>
       </div>
-      <div class="fg"><label class="fl2">Image URL</label><input class="fi" id="apI"/></div>
-      <div class="fg"><label class="fl2">Card Pool (Ctrl+click)</label><select class="fs" id="apPl" multiple style="height:90px"></select></div>
-      <button class="btn btn-gold" style="width:100%;margin-top:5px" onclick="aCP()">✅ Create Pack</button>
+      <div class="fg"><label class="fl">Image URL</label><input class="fi" id="APIMG"/></div>
+      <div class="fg"><label class="fl">Card Pool (Ctrl+click multiple)</label>
+        <select class="fs" id="APPOOL" multiple style="height:84px"></select>
+      </div>
+      <button class="btn bgold" style="width:100%;margin-top:4px" onclick="createPack()">✅ Create Pack</button>
     </div>
+    <!-- Give Stuff -->
     <div class="ac">
-      <h3>🎁 Give</h3>
-      <div class="fg"><label class="fl2">Player</label><select class="fs" id="agPl"></select></div>
+      <h3>🎁 Give to Player</h3>
+      <div class="fg"><label class="fl">Player</label><select class="fs" id="AGPLAYER"></select></div>
       <div class="dv"></div>
-      <div class="fg"><label class="fl2">Card</label><select class="fs" id="agC"><option value="">—</option></select></div>
-      <div class="fg"><label class="fl2">Foil</label>
-        <select class="fs" id="agFl"><option value="normal">Normal</option><option value="holo">Holo ✨</option><option value="reverse">Reverse 🌟</option><option value="gold">Gold 🥇</option><option value="rainbow">Rainbow 🌈</option></select>
+      <div class="fg"><label class="fl">Card</label><select class="fs" id="AGCARD"><option value="">— select —</option></select></div>
+      <div class="fg"><label class="fl">Foil Type</label>
+        <select class="fs" id="AGFOIL"><option value="normal">Normal</option><option value="holo">✨ Holo</option><option value="reverse">🌟 Reverse Holo</option><option value="gold">🥇 Gold</option><option value="rainbow">🌈 Rainbow</option></select>
       </div>
-      <div class="fg"><label class="fl2">Qty</label><input class="fi" id="agQ" type="number" value="1"/></div>
-      <button class="btn btn-green btn-sm" style="width:100%;margin-bottom:7px" onclick="aGC()">Give Card</button>
+      <div class="fg"><label class="fl">Quantity</label><input class="fi" id="AGQTY" type="number" value="1" min="1"/></div>
+      <button class="btn bgreen bsm" style="width:100%;margin-bottom:6px" onclick="giveCard()">✅ Give Card</button>
       <div class="dv"></div>
-      <div class="fg"><label class="fl2">Pack</label><select class="fs" id="agPk"><option value="">—</option></select></div>
-      <button class="btn btn-blue btn-sm" style="width:100%;margin-bottom:7px" onclick="aGP()">Give Pack</button>
+      <div class="fg"><label class="fl">Pack to Give</label><select class="fs" id="AGPACK"><option value="">— select —</option></select></div>
+      <div class="fg"><label class="fl">Qty</label><input class="fi" id="AGPQTY" type="number" value="1" min="1"/></div>
+      <button class="btn bblue bsm" style="width:100%;margin-bottom:6px" onclick="givePack()">📦 Give Pack</button>
       <div class="dv"></div>
-      <div class="fg"><label class="fl2">Coins</label><input class="fi" id="agCo" type="number" placeholder="500"/></div>
-      <button class="btn btn-gold btn-sm" style="width:100%" onclick="aGCo()">Give Coins</button>
+      <div class="fg"><label class="fl">Coins to Give</label><input class="fi" id="AGCOINS" type="number" placeholder="500"/></div>
+      <button class="btn bgold bsm" style="width:100%" onclick="giveCoins()">💰 Give Coins</button>
     </div>
+    <!-- Events -->
     <div class="ac">
       <h3>🎉 Event</h3>
-      <div class="fg"><label class="fl2">Name</label><input class="fi" id="aeN"/></div>
-      <div class="fg"><label class="fl2">Description</label><textarea class="fta" id="aeD"></textarea></div>
-      <div class="fg"><label class="fl2">Reward Card</label><select class="fs" id="aeC"><option value="">— none —</option></select></div>
-      <div class="fg"><label class="fl2">Reward Coins</label><input class="fi" id="aeCo" type="number" placeholder="0"/></div>
-      <button class="btn btn-pink btn-sm" style="width:100%" onclick="aLE()">🎉 Launch</button>
+      <div class="fg"><label class="fl">Name</label><input class="fi" id="AEN"/></div>
+      <div class="fg"><label class="fl">Description</label><textarea class="fta" id="AED"></textarea></div>
+      <div class="fg"><label class="fl">Reward Card</label><select class="fs" id="AECARD"><option value="">— none —</option></select></div>
+      <div class="fg"><label class="fl">Reward Coins</label><input class="fi" id="AECOINS" type="number" placeholder="0"/></div>
+      <button class="btn bpink bsm" style="width:100%" onclick="launchEvent()">🎉 Launch Event</button>
     </div>
   </div>
-  <div class="sec-hdr"><span class="sec-title">📋 ALL CARDS</span></div>
-  <div class="sx" style="margin-bottom:20px"><table class="at" id="ACT"><tr><th>#</th><th>Name</th><th>Type</th><th>HP</th><th>Rarity</th><th>Source</th><th>Delete</th></tr></table></div>
-  <div class="sec-hdr"><span class="sec-title">📦 ALL PACKS</span></div>
-  <div class="sx" style="margin-bottom:20px"><table class="at" id="APT"><tr><th>Name</th><th>Price</th><th>Cards/pack</th><th>Delete</th></tr></table></div>
-  <div class="sec-hdr"><span class="sec-title">👥 PLAYERS</span></div>
-  <div class="sx"><table class="at" id="APLT"><tr><th>Username</th><th>Coins</th><th>Actions</th></tr></table></div>
+
+  <div class="shdr"><span class="stitle">📋 CARDS</span></div>
+  <div class="sx" style="margin-bottom:18px">
+    <table class="atable" id="ADMINCARDS">
+      <tr><th>Number</th><th>Name</th><th>Type</th><th>HP</th><th>Rarity</th><th>Source</th><th>Delete</th></tr>
+    </table>
+  </div>
+  <div class="shdr"><span class="stitle">📦 PACKS</span></div>
+  <div class="sx" style="margin-bottom:18px">
+    <table class="atable" id="ADMINPACKS">
+      <tr><th>Name</th><th>Price</th><th>Cards/pack</th><th>Delete</th></tr>
+    </table>
+  </div>
+  <div class="shdr"><span class="stitle">👥 PLAYERS</span></div>
+  <div class="sx">
+    <table class="atable" id="ADMINPLAYERS">
+      <tr><th>Username</th><th>Coins</th><th>Actions</th></tr>
+    </table>
+  </div>
 </div>
 
 <!-- PROFILE -->
-<div class="page" id="page-profile">
-  <div class="sec-hdr"><span class="sec-title">👤 PROFILE</span></div>
-  <div style="max-width:400px">
-    <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px">
-      <div style="width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--purple));border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900" id="PAV">?</div>
-      <div><div style="font-family:Bangers,cursive;font-size:24px;letter-spacing:2px" id="PUN">Guest</div><div style="font-size:11px;color:var(--text2)" id="PEM"></div></div>
+<div class="page" id="P-profile">
+  <div class="shdr"><span class="stitle">👤 PROFILE</span></div>
+  <div style="max-width:380px">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+      <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--purple));border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900" id="PROFAVA">?</div>
+      <div><div style="font-family:Bangers,cursive;font-size:22px;letter-spacing:2px" id="PROFNAME">Guest</div><div style="font-size:10px;color:var(--t2)" id="PROFSUB"></div></div>
     </div>
-    <button class="btn btn-danger btn-sm" onclick="doLogout()">Sign Out</button>
+    <button class="btn bdanger bsm" onclick="doLogout()">Sign Out</button>
   </div>
 </div>
-</div>
 
-<div class="loader" id="LDR"><div class="sp"></div><div class="ltext" id="LT">Loading...</div></div>
-<div class="toast-box" id="TB"></div>
+</div><!-- end APP -->
+
+<div class="ldr" id="LDR"><div class="spinner"></div><div class="ldrtxt" id="LDRTXT">Loading...</div></div>
+<div class="tb" id="TOASTS"></div>
 
 <script>
-// ══════════════════════════════════════════════════
-//  CONFIG
-// ══════════════════════════════════════════════════
-const SBU='https://tnhcucreiuvwbpszznuh.supabase.co';
-const SBK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRuaGN1Y3JlaXV2d2Jwc3p6bnVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwMTA1MDksImV4cCI6MjA5MTU4NjUwOX0.ysx5B4QxiqyJ2ei9FsDmW_573ivDXW7nA9qZL31l7Lg';
-const APW='Roof TGC';
-// Images load from Supabase Storage bucket called "cards"
-// Upload your PNGs to: Supabase Dashboard → Storage → cards bucket
-const IMG=(name)=>`${SBU}/storage/v1/object/public/cards/${name}`;
+'use strict';
+// ═══════════════════════════════════════════════════════
+//  CONSTANTS
+// ═══════════════════════════════════════════════════════
+const SBU = 'https://tnhcucreiuvwbpszznuh.supabase.co';
+const SBK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRuaGN1Y3JlaXV2d2Jwc3p6bnVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwMTA1MDksImV4cCI6MjA5MTU4NjUwOX0.ysx5B4QxiqyJ2ei9FsDmW_573ivDXW7nA9qZL31l7Lg';
+const ADMIN_PW = 'Roof TGC';
+const STORAGE = `${SBU}/storage/v1/object/public/cards/`;
+const img = name => STORAGE + name;
 
-// ══════════════════════════════════════════════════
-//  ALL CARDS  (built-in)
-// ══════════════════════════════════════════════════
-const BC=[
-  // ── KEANU ──────────────────────────────────────
-  {id:'c0001',number:'0001',name:'Keanu Elliot James',stage:'Stage 1',hp:280,hpUnit:'Tons',type:'psychic',rarity:'epic',img:IMG('Keanu_Elliot_James_No__0001.png'),flavour:'Little gay man that is not over 13 and likes men also is a girl',weakness:'Euphoria & Face',resistance:'Shampoo',retreat:'A WHOLE LOT of estrogen',isTrainer:false,
-    moves:[{name:'Oily Hair',dmg:30,type:'damage',desc:'',cd:0},{name:'Bully',dmg:5,type:'damage',desc:'I bully giggle and others because im self Conscious.',cd:0},{name:'Mistake',dmg:-10,type:'special',desc:'Thought Euphoria WAS his friend... -10 self dmg.',cd:0},{name:'Kirkify',dmg:'Evo',type:'special',desc:'Evolution energy — opponent skips next turn.',cd:99,opm:true}]},
-  {id:'c0002',number:'0002',name:'Keanu No Shampoo James',stage:'Stage 1',hp:380,hpUnit:'Tons',type:'psychic',rarity:'epic',img:IMG('Keanu_no_shampooo_james_No__0002.png'),flavour:'French fry arms with jelly rolls beggs on knees for brainrots fakes going to the gyms',weakness:'Shampoo & Girls',resistance:'Being good at a game',retreat:'Spiderini Brainrot',isTrainer:false,
-    moves:[{name:'Dandruff',dmg:15,type:'damage',desc:'',cd:0},{name:'Fire Breath',dmg:25,type:'damage',desc:'',cd:0},{name:'Shark Teeth',dmg:40,type:'damage',desc:'',cd:2},{name:'Lonely',dmg:0,type:'effect',desc:'Puts opponent in a room — they skip their next turn.',cd:99,opm:true}]},
-  {id:'c0003',number:'0003',name:'Keanu Blanket James',stage:'Stage 1',hp:100,hpUnit:'Tons',type:'psychic',rarity:'rare',img:IMG('Keanu_Blanket_James_No__0003.png'),flavour:'Tranny is scared to show HER face so she covers it with a blanket and tries to leave the call',weakness:'End Button Call',resistance:'Turning on cam',retreat:'Going to gym',isTrainer:false,
-    moves:[{name:'Blanket',dmg:15,type:'damage',desc:'Shield: reduces next incoming hit by 10.',cd:2},{name:'Face',dmg:80,type:'damage',desc:'',cd:3}]},
-  // ── CASPIAN ────────────────────────────────────
-  {id:'c0004',number:'0004',name:'Caspian da 5',stage:'Stage 1',hp:80,hpUnit:'HP',type:'dark',rarity:'rare',img:IMG('Caspian_da_5_No_0004.png'),flavour:'Short little black boy that smokes and flexes fake balenciaga tracks',weakness:'No Vape',resistance:'Fire/Smoke',retreat:'Drug Test',isTrainer:false,
-    moves:[{name:'Geek Bar',dmg:30,type:'damage',desc:'Blows flavored smoke.',cd:1},{name:'Shit Stain',dmg:30,type:'effect',desc:'Blinds enemy — opponent misses next move.',cd:3},{name:'Balenciaga Tracks',dmg:10,type:'damage',desc:'',cd:0}]},
-  {id:'c0005',number:'0005',name:'Big Shoulder Caspian',stage:'Stage 1',hp:100,hpUnit:'HP',type:'fighting',rarity:'rare',img:IMG('Big_Shoulder_Caspian_No_0005.png'),flavour:'Lil black boy with big shoulder pads knock you out',weakness:'No Shoulder Pads',resistance:'Football',retreat:'Watermelon',isTrainer:false,
-    moves:[{name:'Shoulder Pads',dmg:100,type:'damage',desc:'',cd:4},{name:'Gatorade',dmg:50,type:'heal',desc:'Restores 50 HP.',cd:3}]},
-  {id:'c0006',number:'0006',name:'Majesitc Caspian',stage:'Stage 1',hp:110,hpUnit:'HP',type:'flying',rarity:'epic',img:IMG('Majesitc_Caspian_No__0006.png'),flavour:'Caspian has always wanted to be gansta but hes as sugary as a sugar cookie',weakness:'Looking good for stoopy',resistance:'Geek Bar',retreat:'Fairy Dust',isTrainer:false,
-    moves:[{name:'Fein',dmg:15,type:'damage',desc:'Feining for his vape.',cd:0},{name:'Os',dmg:60,type:'damage',desc:'Shooting out Os out of his ashy lips.',cd:2}]},
-  // ── ITEMS ──────────────────────────────────────
-  {id:'c0007',number:'0007',name:'Geek Bar',stage:'Stage 1',hp:20,hpUnit:'HP',type:'vape',rarity:'common',img:IMG('Geek_Bar_No__0007.png'),flavour:'Compact disposable vape',weakness:'Caspian',resistance:'Weed',retreat:'Vape Juice',isTrainer:false,
-    moves:[{name:'Smoke',dmg:10,type:'heal',desc:'Restores 10 HP.',cd:2},{name:'Explode',dmg:40,type:'damage',desc:'',cd:3}]},
-  {id:'c0008',number:'0008',name:'Vape Juice',stage:null,hp:null,hpUnit:null,type:'trainer',rarity:'common',img:IMG('Vape_Juice_No__0008.png'),flavour:'A nicotine filled delight — Caspian is an addict to this',weakness:null,resistance:null,retreat:null,isTrainer:true,trainerEffect:'Restore 30 HP to your active Vape-type card. If Caspian is on field deal +20 bonus dmg next attack.',moves:[]},
-  {id:'c0009',number:'0009',name:'Shower',stage:'Stage 1',hp:20,hpUnit:'HP',type:'water',rarity:'common',img:IMG('Shower_No__0009.png'),flavour:'Water PSPSPSPSPSPS — The bane of all Caspians',weakness:'Stoopy',resistance:'Fire/Smoke',retreat:'Soap',isTrainer:false,
-    moves:[{name:'Cold Water',dmg:15,type:'damage',desc:'',cd:0},{name:'Hot Water',dmg:20,type:'damage',desc:'',cd:2}]},
-  // ── RUINS ──────────────────────────────────────
-  {id:'c0010',number:'0010',name:'Ruins Hairy Ass Legs',stage:'Stage 1',hp:67,hpUnit:'HP',type:'psychic',rarity:'rare',img:IMG('Ruins_Hairy_ass_legs_No__0010.png'),flavour:'An emo E-kitten that says she will kill herself and keeps saying that bill is her king',weakness:'BLADE',resistance:'Bill',retreat:'Stoopy',isTrainer:false,
-    moves:[{name:'Paw Tattoo',dmg:20,type:'damage',desc:'Shows off the paw tattoo.',cd:0},{name:'E-Kitten Scratch',dmg:35,type:'damage',desc:'',cd:1}]},
-  {id:'c0011',number:'0011',name:'Ruins Setup',stage:'Stage 1',hp:1,hpUnit:'HP',type:'normal',rarity:'common',img:IMG('Ruins_Setup_No__0011.png'),flavour:'Computer',weakness:'Fortnite',resistance:'Talking',retreat:'Bill',isTrainer:false,
-    moves:[{name:'Setup Falls',dmg:1,type:'damage',desc:'The whole setup collapses.',cd:0}]},
-  // ── AXEL & JESTIFYED ───────────────────────────
-  {id:'c0012',number:'0012',name:'Axel',stage:'Stage 1',hp:100,hpUnit:'HP',type:'normal',rarity:'common',img:IMG('Axel_No_0012.png'),flavour:'Pedo comboy that e-dates and dropped out to be a pro gamer',weakness:'Deodorant',resistance:'RL',retreat:'Geek Bar',isTrainer:false,
-    moves:[{name:'DBD',dmg:30,type:'damage',desc:'',cd:0},{name:'Diploma',dmg:25,type:'damage',desc:'',cd:1},{name:'E-Girl',dmg:30,type:'damage',desc:'',cd:2}]},
-  {id:'c0013',number:'0013',name:'Jestifyed',stage:'Stage 1',hp:110,hpUnit:'HP',type:'fire',rarity:'rare',img:IMG('Jestifyed_No__0013.png'),flavour:'OH SHIT CANDY FROM MY NOSE',weakness:'Clean Room',resistance:'Period Blood',retreat:'Boogers',isTrainer:false,
-    moves:[{name:'Nose Picking',dmg:10,type:'damage',desc:'',cd:0},{name:'Quiting YT',dmg:0,type:'effect',desc:'Does nothing. Like his career.',cd:0}]},
-  // ── FOOTBALL ───────────────────────────────────
-  {id:'c0014',number:'0014',name:'Football',stage:'Stage 1',hp:50,hpUnit:'HP',type:'normal',rarity:'common',img:IMG('Football_No_0014.png'),flavour:'Just a normal football :D',weakness:'Caspian',resistance:'Football Player',retreat:'Football Player',isTrainer:false,
-    moves:[{name:'Pass',dmg:15,type:'damage',desc:'',cd:0},{name:'Tackle',dmg:30,type:'damage',desc:'',cd:1}]},
-  {id:'c0015',number:'0015',name:'Soap',stage:'Stage 1',hp:50,hpUnit:'HP',type:'water',rarity:'common',img:IMG('Soap_No__0015.png'),flavour:'Stoopy needs some soap and a shower',weakness:'Stoopy',resistance:'Dirt',retreat:'Shower',isTrainer:false,
-    moves:[{name:'Wash',dmg:10,type:'damage',desc:'',cd:0},{name:'Slip',dmg:30,type:'damage',desc:'',cd:2}]},
-  {id:'c0016',number:'0016',name:'Football Player',stage:'Stage 1',hp:140,hpUnit:'HP',type:'fighting',rarity:'rare',img:IMG('FootballPlayer_No__0016.png'),flavour:'AND HE PASSES AND HE misses ;/',weakness:'Vape',resistance:'Football',retreat:'Football',isTrainer:false,
-    moves:[{name:'Shove',dmg:15,type:'damage',desc:'',cd:0},{name:'Tackle',dmg:30,type:'damage',desc:'',cd:1},{name:'Pass',dmg:25,type:'damage',desc:'Does 2x damage if not caught.',cd:2}]},
-  // ── COPS ───────────────────────────────────────
-  {id:'c0018',number:'0018',name:'Cops',stage:'Stage 1',hp:240,hpUnit:'HP',type:'normal',rarity:'epic',img:IMG('Cops_No__0018.png'),flavour:'Pew Pew Mafaka',weakness:'Vape',resistance:'Majestic Caspian',retreat:'None',isTrainer:false,
-    moves:[{name:'Tazer',dmg:20,type:'effect',desc:'Stuns enemy for 1 round.',cd:2},{name:'Arrest',dmg:5,type:'effect',desc:'Skips turn of enemy.',cd:3,opm:true},{name:'Catch',dmg:0,type:'effect',desc:'Catches a "pedo" card — removes them from battle.',cd:99,opm:true}]},
-  // ── JUSTEN ─────────────────────────────────────
-  {id:'c0020',number:'0020',name:'Majestic Justen',stage:'Stage 1',hp:120,hpUnit:'HP',type:'psychic',rarity:'rare',img:IMG('Majestic_Justen_No__0020.png'),flavour:'Tall lil black boy who robbed his neighbors house',weakness:'Vape',resistance:'Bill',retreat:'Cops',isTrainer:false,
-    moves:[{name:'Rizz',dmg:15,type:'effect',desc:'Enemy card flusters — -15% DMG next turn.',cd:0},{name:'Roast',dmg:20,type:'damage',desc:'',cd:1},{name:'Call Bill',dmg:10,type:'heal',desc:'+10 HP.',cd:2},{name:'Rob',dmg:10,type:'damage',desc:'',cd:0}]},
-  {id:'c0021',number:'0021',name:'Dark Justen',stage:'Stage 1',hp:150,hpUnit:'HP',type:'fire',rarity:'epic',img:IMG('Dark_Justen_No__0021.png'),flavour:'Tall lil black boy who robbed his neighbors house and spun this block',weakness:'Vape',resistance:'Bill',retreat:'Cops',isTrainer:false,
-    moves:[{name:'Scare',dmg:20,type:'effect',desc:'Enemy Card Jumps -5% DMG.',cd:0},{name:'Roasted',dmg:35,type:'damage',desc:'Fire cards are immune to this attack.',cd:2},{name:'Call Bill',dmg:10,type:'heal',desc:'+10 HP.',cd:2},{name:'Spin the Block',dmg:55,type:'damage',desc:'',cd:3}]},
-  // ── BILL ───────────────────────────────────────
-  {id:'c0022',number:'0022',name:'Bill',stage:'Stage 1',hp:200,hpUnit:'HP',type:'fighting',rarity:'rare',img:IMG('Bill_No__0022.png'),flavour:'Rich lil asian boy that gets glazed by Keanu',weakness:'Salad',resistance:'Justen',retreat:'Waddling',isTrainer:false,
-    moves:[{name:'Belly Smash',dmg:45,type:'damage',desc:'',cd:1},{name:'Anger',dmg:15,type:'special',desc:'When Bill gets angry he gets 2x strength for 1 round.',cd:3},{name:'Call Justen',dmg:10,type:'heal',desc:'+10 HP.',cd:2}]},
-  {id:'c0023',number:'0023',name:'Rich Bill',stage:'Stage 1',hp:250,hpUnit:'HP',type:'fighting',rarity:'epic',img:IMG('Rich_Bill_No__0023.png'),flavour:'Bill goes B4B with anybody at any moment',weakness:'Homeless',resistance:'Money',retreat:'Scary Games',isTrainer:false,
-    moves:[{name:'Band for Band',dmg:55,type:'damage',desc:'',cd:1},{name:'Diss Track',dmg:15,type:'effect',desc:'Stuns Enemy for 1 Round.',cd:3},{name:'Dox',dmg:5,type:'effect',desc:'For 3 Rounds Enemy gets dealt 5 HP per turn.',cd:99,opm:true}]},
-  // ── MODDY ──────────────────────────────────────
-  {id:'c0024',number:'0024',name:'Moddy',stage:'Stage 1',hp:120,hpUnit:'HP',type:'electric',rarity:'rare',img:IMG('Moddy_No__0024.png'),flavour:'Keanu is Moddy\'s Bitch and Moddy Glaze\'s Lebron (Yes he gooned to him)',weakness:'Water',resistance:'Hair Clippers',retreat:'Barber Shop',isTrainer:false,
-    moves:[{name:'Nappy Hair',dmg:20,type:'damage',desc:'',cd:0},{name:'Failed SMPs',dmg:15,type:'damage',desc:'',cd:1},{name:'V Neck',dmg:10,type:'damage',desc:'',cd:0}]},
-  {id:'c0025',number:'0025',name:'Blanket Moddy',stage:'Stage 1',hp:160,hpUnit:'HP',type:'electric',rarity:'epic',img:IMG('Blanket_Moddy__No_0025.png'),flavour:'Keanu is Moddy\'s Bitch and Moddy Glaze\'s Lebron (Yes he gooned to him)',weakness:'Water',resistance:'Hair Clippers',retreat:'Barber Shop',isTrainer:false,
-    moves:[{name:'Nappy Hair',dmg:40,type:'damage',desc:'',cd:0},{name:'Failed SMPs',dmg:50,type:'damage',desc:'',cd:2},{name:'V Neck',dmg:20,type:'damage',desc:'',cd:0},{name:'Combs',dmg:13,type:'heal',desc:'+13 HP. x3 use.',cd:1}]},
+// ═══════════════════════════════════════════════════════
+//  CARD DATABASE  — format: "Name No. XXXX"
+// ═══════════════════════════════════════════════════════
+const CARDS = [
+{id:'c001',num:'0001',name:'Keanu Elliot James',label:'Keanu Elliot James No. 0001',hp:280,hpu:'Tons',type:'psychic',rarity:'epic',img:img('Keanu_Elliot_James_No__0001.png'),flavour:'Little gay man that is not over 13 and likes men also is a girl',weak:'Euphoria & Face',resist:'Shampoo',retreat:'A WHOLE LOT of estrogen',trainer:false,
+moves:[{n:'Oily Hair',d:30,t:'dmg',desc:'',cd:0},{n:'Bully',d:5,t:'dmg',desc:'Self-conscious attack.',cd:0},{n:'Mistake',d:-10,t:'special',desc:'Thought Euphoria WAS his friend... -10 self dmg.',cd:0},{n:'Kirkify',d:'Evo',t:'special',desc:'Skip opponent next turn. ONCE per match.',cd:99,opm:true}]},
+{id:'c002',num:'0002',name:'Keanu No Shampoo James',label:'Keanu No Shampoo James No. 0002',hp:380,hpu:'Tons',type:'psychic',rarity:'epic',img:img('Keanu_no_shampooo_james_No__0002.png'),flavour:'French fry arms with jelly rolls, fakes going to the gym, alergic to girls & femboy',weak:'Shampoo & Girls',resist:'Being good at a game',retreat:'Spiderini Brainrot',trainer:false,
+moves:[{n:'Dandruff',d:15,t:'dmg',desc:'',cd:0},{n:'Fire Breath',d:25,t:'dmg',desc:'',cd:0},{n:'Shark Teeth',d:40,t:'dmg',desc:'',cd:2},{n:'Lonely',d:0,t:'special',desc:'Opponent stuck in room — skips next turn. ONCE per match.',cd:99,opm:true}]},
+{id:'c003',num:'0003',name:'Keanu Blanket James',label:'Keanu Blanket James No. 0003',hp:100,hpu:'Tons',type:'psychic',rarity:'rare',img:img('Keanu_Blanket_James_No__0003.png'),flavour:'Scared to show HER face, covers with blanket, can\'t find the end call button',weak:'End Button Call',resist:'Turning on cam',retreat:'Going to gym',trainer:false,
+moves:[{n:'Blanket',d:15,t:'dmg',desc:'Hides face — grants Shield (blocks 10 next hit).',cd:2},{n:'Face',d:80,t:'dmg',desc:'',cd:3}]},
+{id:'c004',num:'0004',name:'Caspian da 5',label:'Caspian da 5 No. 0004',hp:80,hpu:'HP',type:'dark',rarity:'rare',img:img('Caspian_da_5_No_0004.png'),flavour:'Short little black boy that smokes and flexes fake balenciaga tracks',weak:'No Vape',resist:'Fire/Smoke',retreat:'Drug Test',trainer:false,
+moves:[{n:'Geek Bar',d:30,t:'dmg',desc:'Blows flavored smoke.',cd:1},{n:'Shit Stain',d:30,t:'stun',desc:'Blinds enemy — they miss next move.',cd:3},{n:'Balenciaga Tracks',d:10,t:'dmg',desc:'',cd:0}]},
+{id:'c005',num:'0005',name:'Big Shoulder Caspian',label:'Big Shoulder Caspian No. 0005',hp:100,hpu:'HP',type:'fighting',rarity:'rare',img:img('Big_Shoulder_Caspian_No_0005.png'),flavour:'Lil black boy with big shoulder pads knock you out',weak:'No Shoulder Pads',resist:'Football',retreat:'Watermelon',trainer:false,
+moves:[{n:'Shoulder Pads',d:100,t:'dmg',desc:'',cd:4},{n:'Gatorade',d:50,t:'heal',desc:'Restores 50 HP.',cd:3}]},
+{id:'c006',num:'0006',name:'Majesitc Caspian',label:'Majesitc Caspian No. 0006',hp:110,hpu:'HP',type:'flying',rarity:'epic',img:img('Majesitc_Caspian_No__0006.png'),flavour:'Wanted to be gansta but as sugary as a sugar cookie',weak:'Looking good for stoopy',resist:'Geek Bar',retreat:'Fairy Dust',trainer:false,
+moves:[{n:'Fein',d:15,t:'dmg',desc:'Feining for his vape.',cd:0},{n:'Os',d:60,t:'dmg',desc:'Shooting Os out of his ashy lips.',cd:2}]},
+{id:'c007',num:'0007',name:'Geek Bar',label:'Geek Bar No. 0007',hp:20,hpu:'HP',type:'vape',rarity:'common',img:img('Geek_Bar_No__0007.png'),flavour:'Compact disposable vape',weak:'Caspian',resist:'Weed',retreat:'Vape Juice',trainer:false,
+moves:[{n:'Smoke',d:10,t:'heal',desc:'Restores 10 HP.',cd:2},{n:'Explode',d:40,t:'dmg',desc:'',cd:3}]},
+{id:'c008',num:'0008',name:'Vape Juice',label:'Vape Juice No. 0008',hp:null,hpu:null,type:'trainer',rarity:'common',img:img('Vape_Juice_No__0008.png'),flavour:'A nicotine filled delight Caspian is an addict to this',weak:null,resist:null,retreat:null,trainer:true,
+trainerEffect:'Restore 30 HP to active Vape-type card. If Caspian on field: +20 dmg next attack.',moves:[]},
+{id:'c009',num:'0009',name:'Shower',label:'Shower No. 0009',hp:20,hpu:'HP',type:'water',rarity:'common',img:img('Shower_No__0009.png'),flavour:'Water PSPSPSPSPS — bane of all Caspians',weak:'Stoopy',resist:'Fire/Smoke',retreat:'Soap',trainer:false,
+moves:[{n:'Cold Water',d:15,t:'dmg',desc:'',cd:0},{n:'Hot Water',d:20,t:'dmg',desc:'',cd:2}]},
+{id:'c010',num:'0010',name:'Ruins Hairy Ass Legs',label:'Ruins Hairy Ass Legs No. 0010',hp:67,hpu:'HP',type:'psychic',rarity:'rare',img:img('Ruins_Hairy_ass_legs_No__0010.png'),flavour:'An emo E-kitten who says bill is her king',weak:'BLADE',resist:'Bill',retreat:'Stoopy',trainer:false,
+moves:[{n:'Paw Tattoo',d:20,t:'dmg',desc:'Shows off the paw tattoo.',cd:0},{n:'E-Kitten Scratch',d:35,t:'dmg',desc:'',cd:1}]},
+{id:'c011',num:'0011',name:'Ruins Setup',label:'Ruins Setup No. 0011',hp:1,hpu:'HP',type:'normal',rarity:'common',img:img('Ruins_Setup_No__0011.png'),flavour:'Computer',weak:'Fortnite',resist:'Talking',retreat:'Bill',trainer:false,
+moves:[{n:'Setup Falls',d:1,t:'dmg',desc:'The whole setup collapses.',cd:0}]},
+{id:'c012',num:'0012',name:'Axel',label:'Axel No. 0012',hp:100,hpu:'HP',type:'normal',rarity:'common',img:img('Axel_No_0012.png'),flavour:'Pedo comboy that e-dates and dropped out to be a pro gamer',weak:'Deodorant',resist:'RL',retreat:'Geek Bar',trainer:false,
+moves:[{n:'DBD',d:30,t:'dmg',desc:'',cd:0},{n:'Diploma',d:25,t:'dmg',desc:'',cd:1},{n:'E-Girl',d:30,t:'dmg',desc:'',cd:2}]},
+{id:'c013',num:'0013',name:'Jestifyed',label:'Jestifyed No. 0013',hp:110,hpu:'HP',type:'fire',rarity:'rare',img:img('Jestifyed_No__0013.png'),flavour:'OH SHIT CANDY FROM MY NOSE',weak:'Clean Room',resist:'Period Blood',retreat:'Boogers',trainer:false,
+moves:[{n:'Nose Picking',d:10,t:'dmg',desc:'',cd:0},{n:'Quiting YT',d:0,t:'special',desc:'Does nothing. Like his career.',cd:0}]},
+{id:'c014',num:'0014',name:'Football',label:'Football No. 0014',hp:50,hpu:'HP',type:'normal',rarity:'common',img:img('Football_No_0014.png'),flavour:'Just a normal football :D',weak:'Caspian',resist:'Football Player',retreat:'Football Player',trainer:false,
+moves:[{n:'Pass',d:15,t:'dmg',desc:'',cd:0},{n:'Tackle',d:30,t:'dmg',desc:'',cd:1}]},
+{id:'c015',num:'0015',name:'Soap',label:'Soap No. 0015',hp:50,hpu:'HP',type:'water',rarity:'common',img:img('Soap_No__0015.png'),flavour:'Stoopy needs some soap and a shower',weak:'Stoopy',resist:'Dirt',retreat:'Shower',trainer:false,
+moves:[{n:'Wash',d:10,t:'dmg',desc:'',cd:0},{n:'Slip',d:30,t:'dmg',desc:'',cd:2}]},
+{id:'c016',num:'0016',name:'Football Player',label:'Football Player No. 0016',hp:140,hpu:'HP',type:'fighting',rarity:'rare',img:img('FootballPlayer_No__0016.png'),flavour:'AND HE PASSES AND HE misses ;/',weak:'Vape',resist:'Football',retreat:'Football',trainer:false,
+moves:[{n:'Shove',d:15,t:'dmg',desc:'',cd:0},{n:'Tackle',d:30,t:'dmg',desc:'',cd:1},{n:'Pass',d:25,t:'dmg',desc:'Does 2× damage if not caught.',cd:2}]},
+{id:'c018',num:'0018',name:'Cops',label:'Cops No. 0018',hp:240,hpu:'HP',type:'normal',rarity:'epic',img:img('Cops_No__0018.png'),flavour:'Pew Pew Mafaka',weak:'Vape',resist:'Majestic Caspian',retreat:'None',trainer:false,
+moves:[{n:'Tazer',d:20,t:'stun',desc:'Stuns enemy for 1 round.',cd:2},{n:'Arrest',d:5,t:'stun',desc:'Skips enemy turn.',cd:3,opm:true},{n:'Catch',d:0,t:'special',desc:'Catches any "pedo" card — removes from battle. ONCE.',cd:99,opm:true}]},
+{id:'c020',num:'0020',name:'Majestic Justen',label:'Majestic Justen No. 0020',hp:120,hpu:'HP',type:'psychic',rarity:'rare',img:img('Majestic_Justen_No__0020.png'),flavour:'Tall lil black boy who robbed his neighbors house',weak:'Vape',resist:'Bill',retreat:'Cops',trainer:false,
+moves:[{n:'Rizz',d:15,t:'debuff',desc:'Enemy card flusters — -15% DMG next turn.',cd:0},{n:'Roast',d:20,t:'dmg',desc:'',cd:1},{n:'Call Bill',d:10,t:'heal',desc:'+10 HP.',cd:2},{n:'Rob',d:10,t:'dmg',desc:'',cd:0}]},
+{id:'c021',num:'0021',name:'Dark Justen',label:'Dark Justen No. 0021',hp:150,hpu:'HP',type:'fire',rarity:'epic',img:img('Dark_Justen_No__0021.png'),flavour:'Tall lil black boy who robbed his neighbors house and spun this block',weak:'Vape',resist:'Bill',retreat:'Cops',trainer:false,
+moves:[{n:'Scare',d:20,t:'debuff',desc:'Enemy card jumps — -5% DMG.',cd:0},{n:'Roasted',d:35,t:'dmg',desc:'Fire cards are immune to this attack.',cd:2},{n:'Call Bill',d:10,t:'heal',desc:'+10 HP.',cd:2},{n:'Spin the Block',d:55,t:'dmg',desc:'',cd:3}]},
+{id:'c022',num:'0022',name:'Bill',label:'Bill No. 0022',hp:200,hpu:'HP',type:'fighting',rarity:'rare',img:img('Bill_No__0022.png'),flavour:'Rich lil asian boy that gets glazed by Keanu',weak:'Salad',resist:'Justen',retreat:'Waddling',trainer:false,
+moves:[{n:'Belly Smash',d:45,t:'dmg',desc:'',cd:1},{n:'Anger',d:15,t:'special',desc:'Bill gets 2× strength next move for 1 round.',cd:3,opm:false},{n:'Call Justen',d:10,t:'heal',desc:'+10 HP.',cd:2}]},
+{id:'c023',num:'0023',name:'Rich Bill',label:'Rich Bill No. 0023',hp:250,hpu:'HP',type:'fighting',rarity:'epic',img:img('Rich_Bill_No__0023.png'),flavour:'Bill goes B4B with anybody at any moment',weak:'Homeless',resist:'Money',retreat:'Scary Games',trainer:false,
+moves:[{n:'Band for Band',d:55,t:'dmg',desc:'',cd:1},{n:'Diss Track',d:15,t:'stun',desc:'Stuns Enemy for 1 Round.',cd:3},{n:'Dox',d:5,t:'dot',desc:'Enemy takes 5 dmg per turn for 3 turns.',cd:99,opm:true}]},
+{id:'c024',num:'0024',name:'Moddy',label:'Moddy No. 0024',hp:120,hpu:'HP',type:'electric',rarity:'rare',img:img('Moddy_No__0024.png'),flavour:"Keanu is Moddy's Bitch and Moddy Glaze's Lebron (Yes he gooned to him)",weak:'Water',resist:'Hair Clippers',retreat:'Barber Shop',trainer:false,
+moves:[{n:'Nappy Hair',d:20,t:'dmg',desc:'',cd:0},{n:'Failed SMPs',d:15,t:'dmg',desc:'',cd:1},{n:'V Neck',d:10,t:'dmg',desc:'',cd:0}]},
+{id:'c025',num:'0025',name:'Blanket Moddy',label:'Blanket Moddy No. 0025',hp:160,hpu:'HP',type:'electric',rarity:'epic',img:img('Blanket_Moddy__No_0025.png'),flavour:"Keanu is Moddy's Bitch and Moddy Glaze's Lebron (Yes he gooned to him)",weak:'Water',resist:'Hair Clippers',retreat:'Barber Shop',trainer:false,
+moves:[{n:'Nappy Hair',d:40,t:'dmg',desc:'',cd:0},{n:'Failed SMPs',d:50,t:'dmg',desc:'',cd:2},{n:'V Neck',d:20,t:'dmg',desc:'',cd:0},{n:'Combs',d:13,t:'heal',desc:'+13 HP. Up to 3 uses per match.',cd:1}]},
 ];
 
-// ══════════════════════════════════════════════════
-//  HELPERS
-// ══════════════════════════════════════════════════
-const TC={psychic:'#ff4dbb',water:'#4dc3ff',fighting:'#ff944d',vape:'#4dff9b',flying:'#b44dff',dark:'#888',trainer:'#FFD700',normal:'#ccc',fire:'#ff6633',electric:'#FFD700'};
-const TCLS={psychic:'tp',water:'tw',fighting:'tf',vape:'tv',flying:'tfl',dark:'td',trainer:'ttr',normal:'tn',fire:'tel',electric:'trl'};
-const FTAG={normal:null,holo:{text:'✨ HOLO',bg:'rgba(136,204,255,.24)',col:'#88ccff'},reverse:{text:'🌟 REV',bg:'rgba(170,255,204,.2)',col:'#aaffcc'},gold:{text:'🥇 GOLD',bg:'rgba(255,215,0,.28)',col:'#FFD700'},rainbow:{text:'🌈 RAINBOW',bg:'rgba(255,100,200,.24)',col:'#ff64c8'}};
+const TYPE_COL={psychic:'#ff4dbb',water:'#4dc3ff',fighting:'#ff944d',vape:'#4dff9b',flying:'#b44dff',dark:'#888',trainer:'#FFD700',normal:'#ccc',fire:'#ff6432',electric:'#ffd800'};
+const FOILS={normal:null,holo:{t:'✨ HOLO',bg:'rgba(136,204,255,.22)',c:'#88ccff'},reverse:{t:'🌟 REVERSE',bg:'rgba(170,255,204,.18)',c:'#aaffcc'},gold:{t:'🥇 GOLD',bg:'rgba(255,215,0,.26)',c:'#FFD700'},rainbow:{t:'🌈 RAINBOW',bg:'rgba(255,100,200,.22)',c:'#ff64c8'}};
 
-let S={user:null,tok:null,guest:false,admin:false,coins:0,coll:[],cc:[],packs:[],players:[],
-  dexf:'all',_pull:null,_pcb:null,_ovcb:null,
-  TO:{my:[],coins:0,want:[]},
-  B:{active:false,pc:null,ec:null,ph:0,eh:0,pmh:0,emh:0,cd:{},opm:{},estun:false,pstun:false,pshield:false,over:false,doxTurns:0,angerActive:false},
-  pvp:{bid:null,chal:false,oppId:null,poll:null}
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+let S = {
+  user:null, tok:null, guest:false, adminUnlocked:false, coins:0,
+  coll:[], customCards:[], packs:[],
+  players:[], dexFilter:'all', _pull:null,
+  tradeOffer:{my:[],coins:0,want:[]},
+  B:{// CPU battle state
+    active:false, pc:null, ec:null,
+    php:0, ehp:0, pmhp:0, emhp:0,
+    cd:{}, opm:{}, // cooldowns & once-per-match tracker per move name
+    estun:false, pstun:false, pshield:false,
+    edebuff:0, // % reduction on enemy dmg
+    angerNext:false, // Bill anger buff
+    dotTurns:0, // Rich Bill Dox
+    over:false
+  },
+  pvp:{bid:null, poll:null, myCard:null},
+  adminBattlePick:0, adminCard1:null, adminCard2:null,
+  _cardPickCb:null
 };
+const allCards = () => [...CARDS, ...S.customCards];
+const getCard  = id => allCards().find(c=>c.id===id);
 
-function AC(){return[...BC,...S.cc];}
-function GC(id){return AC().find(c=>c.id===id);}
-
-// ══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  SUPABASE
-// ══════════════════════════════════════════════════
-async function SB(m,path,body,tok){
-  const h={'Content-Type':'application/json','apikey':SBK,'Authorization':'Bearer '+(tok||S.tok||SBK)};
-  if(!path.startsWith('/auth'))h['Prefer']='return=representation';
-  try{
-    const r=await fetch(SBU+path,{method:m,headers:h,body:body?JSON.stringify(body):undefined});
-    if(r.status===204)return null;
-    const t=await r.text();
-    try{return JSON.parse(t);}catch{return t;}
-  }catch(e){console.error('SB error',e);return null;}
+// ═══════════════════════════════════════════════════════
+async function sb(method, path, body) {
+  const h = {'Content-Type':'application/json','apikey':SBK,'Authorization':'Bearer '+(S.tok||SBK)};
+  if (!path.startsWith('/auth')) h['Prefer'] = 'return=representation';
+  try {
+    const r = await fetch(SBU+path, {method, headers:h, body: body ? JSON.stringify(body) : undefined});
+    if (r.status === 204) return null;
+    const txt = await r.text();
+    try { return JSON.parse(txt); } catch { return txt; }
+  } catch(e) { console.warn('SB',e); return null; }
 }
 
-// ══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  AUTH
-// ══════════════════════════════════════════════════
-function stab(t){
-  document.getElementById('tl').classList.toggle('active',t==='login');
-  document.getElementById('ts2').classList.toggle('active',t==='signup');
-  document.getElementById('LF').style.display=t==='login'?'':'none';
-  document.getElementById('SF').style.display=t==='signup'?'':'none';
+// ═══════════════════════════════════════════════════════
+function stab(t) {
+  document.getElementById('TL').classList.toggle('on', t==='login');
+  document.getElementById('TSU').classList.toggle('on', t==='signup');
+  document.getElementById('LF').style.display = t==='login' ? '' : 'none';
+  document.getElementById('SUF').style.display = t==='signup' ? '' : 'none';
+  document.getElementById('LERR').textContent = '';
 }
-async function doLogin(){
-  const e=document.getElementById('le').value.trim(),p=document.getElementById('lp').value;
-  if(!e||!p){toast('Fill in details','error');return;}
-  sl('Signing in...');
-  const r=await SB('POST','/auth/v1/token?grant_type=password',{email:e,password:p});
-  hl();
-  if(r?.access_token){S.tok=r.access_token;await afterLogin(r.user.id);}
-  else toast(r?.error_description||r?.msg||'Login failed — check email/password','error');
+
+async function doLogin() {
+  const email = document.getElementById('LE').value.trim();
+  const pass  = document.getElementById('LP').value;
+  if (!email || !pass) { setErr('Please enter email and password.'); return; }
+  showLdr('Signing in...');
+  const r = await sb('POST', '/auth/v1/token?grant_type=password', {email, password:pass});
+  hideLdr();
+  if (r?.access_token) {
+    S.tok = r.access_token;
+    await loadProfile(r.user.id);
+    onLogin();
+  } else {
+    setErr(r?.error_description || r?.msg || 'Login failed — check credentials.');
+  }
 }
-async function doSignup(){
-  const u=document.getElementById('su').value.trim(),e=document.getElementById('se').value.trim(),p=document.getElementById('sp').value;
-  if(!u||!e||!p){toast('Fill all fields','error');return;}
-  sl('Creating account...');
-  const r=await SB('POST','/auth/v1/signup',{email:e,password:p});
-  if(r?.user||r?.id){
-    S.tok=r.access_token;const uid=(r.user||r).id;
-    await SB('POST','/rest/v1/profiles',{id:uid,username:u,coins:100});
-    await afterLogin(uid);toast('Welcome '+u+'! 🎉','success');
-  } else toast(r?.error_description||r?.msg||'Signup failed','error');
-  hl();
+
+async function doSignup() {
+  const uname = document.getElementById('SU').value.trim();
+  const email = document.getElementById('SE').value.trim();
+  const pass  = document.getElementById('SP').value;
+  if (!uname||!email||!pass) { setErr('Fill in all fields.'); return; }
+  if (pass.length < 6) { setErr('Password must be at least 6 characters.'); return; }
+  showLdr('Creating account...');
+  const r = await sb('POST', '/auth/v1/signup', {email, password:pass});
+  hideLdr();
+  if (r?.user || r?.id) {
+    S.tok = r.access_token;
+    const uid = (r.user || r).id;
+    await sb('POST', '/rest/v1/profiles', {id:uid, username:uname, coins:100});
+    await loadProfile(uid);
+    toast('Welcome '+uname+'! 🎉', 'S');
+    onLogin();
+  } else {
+    setErr(r?.error_description || r?.msg || 'Signup failed.');
+  }
 }
-async function afterLogin(uid){
-  sl('Loading profile...');
-  const pr=await SB('GET',`/rest/v1/profiles?id=eq.${uid}&select=*`);
-  if(pr?.length){S.user=pr[0];S.coins=pr[0].coins||0;S.admin=!!pr[0].is_admin;}
-  else{S.user={id:uid,username:'Player',coins:100};S.coins=100;}
-  const co=await SB('GET',`/rest/v1/collection?user_id=eq.${uid}&select=*`);
-  if(Array.isArray(co))S.coll=co.map(c=>({cardId:c.card_id,qty:c.quantity||1,foil:c.foil||'normal'}));
-  const cu=await SB('GET','/rest/v1/custom_cards?select=*');
-  if(Array.isArray(cu))S.cc=cu.map(c=>({...c.card_data,id:c.id,_cid:c.id}));
-  await loadPlayers();hl();loginOK();
+
+async function loadProfile(uid) {
+  const pr = await sb('GET', `/rest/v1/profiles?id=eq.${uid}&select=*`);
+  if (pr?.length) { S.user = pr[0]; S.coins = pr[0].coins||0; S.adminUnlocked = !!pr[0].is_admin; }
+  else { S.user = {id:uid, username:'Player', coins:100, is_admin:false}; S.coins = 100; }
+  const co = await sb('GET', `/rest/v1/collection?user_id=eq.${uid}&select=*`);
+  // IMPORTANT: new players start with ZERO cards — collection is empty until they open packs
+  S.coll = Array.isArray(co) ? co.map(c=>({cardId:c.card_id, qty:c.quantity||1, foil:c.foil||'normal'})) : [];
+  const cu = await sb('GET', '/rest/v1/custom_cards?select=*');
+  S.customCards = Array.isArray(cu) ? cu.map(c=>({...c.card_data, id:c.id, _dbId:c.id})) : [];
+  await loadPlayers();
 }
-function guestLogin(){S.guest=true;S.user={id:'guest',username:'Guest',coins:100};S.coins=100;S.coll=[];loginOK();}
-function loginOK(){
+
+async function loadPlayers() {
+  const pl = await sb('GET', '/rest/v1/profiles?select=id,username,coins');
+  S.players = Array.isArray(pl) ? pl.filter(p=>p.id!==S.user?.id) : [];
+}
+
+function guestLogin() {
+  S.guest = true;
+  S.user = {id:'guest', username:'Guest', coins:100, is_admin:false};
+  S.coins = 100;
+  S.coll = []; // guests start empty too
+  onLogin();
+}
+
+function onLogin() {
   document.getElementById('LS').classList.remove('open');
-  document.getElementById('MN').style.display='';
-  document.getElementById('PAGES').style.display='';
-  un();iPacks();rHero();sp('home');
+  document.getElementById('MN').style.display = '';
+  document.getElementById('APP').style.display = '';
+  updateNav();
+  initPacks();
+  renderHero();
+  go('home');
 }
-function doLogout(){
-  Object.assign(S,{user:null,tok:null,guest:false,admin:false,coins:0,coll:[],cc:[],players:[]});
-  document.getElementById('MN').style.display='none';
-  document.getElementById('PAGES').style.display='none';
+
+function doLogout() {
+  S = {...S, user:null, tok:null, guest:false, adminUnlocked:false, coins:0, coll:[], players:[]};
+  document.getElementById('MN').style.display = 'none';
+  document.getElementById('APP').style.display = 'none';
   document.getElementById('LS').classList.add('open');
-}
-async function loadPlayers(){
-  const pl=await SB('GET','/rest/v1/profiles?select=id,username,coins');
-  if(Array.isArray(pl))S.players=pl.filter(p=>p.id!==S.user?.id);
-}
-function un(){
-  document.getElementById('CB').textContent='💰 '+S.coins;
-  document.getElementById('PC2').textContent='💰 '+S.coins;
-  const u=S.user?.username||'?';
-  ['AV','PAV'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=u[0].toUpperCase();});
-  document.getElementById('PUN').textContent=u;
-  document.getElementById('PEM').textContent=S.guest?'Guest mode — data not saved':'';
+  document.getElementById('LERR').textContent = '';
 }
 
-// ══════════════════════════════════════════════════
-//  ADMIN GATE
-// ══════════════════════════════════════════════════
-function tryAdmin(){
-  if(S.admin){sp('admin');return;}
-  const pw=prompt('Admin password:');
-  if(pw===null)return;
-  if(pw===APW){S.admin=true;sp('admin');}
-  else toast('Wrong password!','error');
+function setErr(msg) { document.getElementById('LERR').textContent = msg; }
+
+// ═══════════════════════════════════════════════════════
+//  ADMIN GATE — Cancel does NOT unlock
+// ═══════════════════════════════════════════════════════
+function tryAdmin() {
+  if (S.adminUnlocked) { go('admin'); return; }
+  const pw = prompt('Enter admin password:');
+  if (pw === null) return; // pressed Cancel → do nothing
+  if (pw === ADMIN_PW) { S.adminUnlocked = true; go('admin'); toast('Admin unlocked 🛠️','S'); }
+  else toast('Wrong password!', 'E');
 }
 
-// ══════════════════════════════════════════════════
-//  NAVIGATION
-// ══════════════════════════════════════════════════
-function sp(page){
+// ═══════════════════════════════════════════════════════
+//  NAV
+// ═══════════════════════════════════════════════════════
+function go(page) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+page)?.classList.add('active');
-  if(page==='pokedex')rdex();
-  if(page==='collection')rColl();
-  if(page==='packs'){un();rPacks();}
-  if(page==='trade')loadPlayers().then(()=>rTrade());
-  if(page==='admin')loadPlayers().then(()=>rAdmin());
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('P-'+page)?.classList.add('active');
+  if (page==='dex')        renderDex();
+  if (page==='collection') renderColl();
+  if (page==='packs')      { updateNav(); renderPacks(); }
+  if (page==='trade')      loadPlayers().then(()=>renderTrade());
+  if (page==='admin')      loadPlayers().then(()=>renderAdmin());
 }
 
-// ══════════════════════════════════════════════════
-//  CARD HTML HELPERS
-// ══════════════════════════════════════════════════
-function cHtml(card,qty,foil,oc){
-  foil=foil||'normal';
-  const col=TC[card.type]||'#ccc';
-  const fc=foil!=='normal'?'f'+foil:'';
-  const fl=FTAG[foil];
-  return`<div class="cw ${fc}" onclick="${oc||`scd('${card.id}')`}">
+function updateNav() {
+  document.getElementById('COINS').textContent = '💰 ' + S.coins;
+  document.getElementById('PCOINS').textContent = '💰 ' + S.coins;
+  const u = S.user?.username||'?';
+  document.getElementById('AVA').textContent    = u[0].toUpperCase();
+  document.getElementById('PROFAVA').textContent = u[0].toUpperCase();
+  document.getElementById('PROFNAME').textContent = u;
+  document.getElementById('PROFSUB').textContent = S.guest ? 'Guest — data not saved' : '';
+}
+
+// ═══════════════════════════════════════════════════════
+//  CARD RENDERING
+// ═══════════════════════════════════════════════════════
+function cardHtml(card, qty, foil, onClick) {
+  foil = foil || 'normal';
+  const col = TYPE_COL[card.type] || '#ccc';
+  const fc  = foil !== 'normal' ? ' F'+foil : '';
+  const fl  = FOILS[foil];
+  const oc  = onClick || `showCard('${card.id}')`;
+  return `<div class="cw${fc}" onclick="${oc}">
     <div class="tc" style="border-color:${col}">
-      <img src="${card.img}" alt="${card.name}" loading="lazy"
+      <img src="${card.img}" alt="${card.label}" loading="lazy"
         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
-      <div class="card-fb" style="color:${col}">
-        <div style="font-size:22px">${card.isTrainer?'🃏':'⚡'}</div>
-        <div style="font-family:Bangers,cursive;font-size:11px;color:${col}">${card.name}</div>
-        <div style="font-size:9px;color:var(--text2)">#${card.number}</div>
+      <div class="cfb" style="color:${col}">
+        <div style="font-size:20px">${card.trainer?'🃏':'⚡'}</div>
+        <div style="font-family:Bangers,cursive;font-size:10px;margin-top:2px">${card.name}</div>
+        <div style="font-size:8px;opacity:.7">No. ${card.num}</div>
       </div>
     </div>
-    <div class="cnb">${card.name}</div>
-    ${qty?`<div class="cqb">×${qty}</div>`:''}
-    ${fl?`<div class="cfb" style="background:${fl.bg};color:${fl.col}">${fl.text}</div>`:''}
+    <div class="cnlabel">${card.label}</div>
+    ${qty ? `<div class="cqb">×${qty}</div>` : ''}
+    ${fl ? `<div class="cfoilb" style="background:${fl.bg};color:${fl.c}">${fl.t}</div>` : ''}
   </div>`;
 }
 
-function scd(id){
-  const card=GC(id);if(!card)return;
-  const col=TC[card.type]||'#ccc';
-  const own=S.coll.filter(c=>c.cardId===id);
-  const tot=own.reduce((a,b)=>a+b.qty,0);
-  const ob=tot?`<span class="tag" style="background:rgba(77,255,155,.1);color:var(--green);border:1px solid var(--green)">Owned ×${tot}</span>`:'';
-  let mv='';
-  if(card.isTrainer){
-    mv=`<div style="background:rgba(255,215,0,.07);border:1px solid rgba(255,215,0,.28);border-radius:9px;padding:11px;margin-bottom:11px">
-      <div style="font-size:10px;color:var(--gold);font-weight:800;text-transform:uppercase;margin-bottom:4px">Trainer Effect</div>
-      <div style="font-size:11px">${card.trainerEffect||card.flavour}</div></div>`;
+function showCard(id) {
+  const card = getCard(id); if (!card) return;
+  const col  = TYPE_COL[card.type]||'#ccc';
+  const own  = S.coll.filter(c=>c.cardId===id);
+  const tot  = own.reduce((a,b)=>a+b.qty,0);
+  const ownBadge = tot ? `<span class="tag" style="background:rgba(77,255,155,.1);color:var(--green);border:1px solid var(--green)">Owned ×${tot}</span>` : '';
+  let movesHtml = '';
+  if (card.trainer) {
+    movesHtml = `<div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.25);border-radius:8px;padding:10px;margin-bottom:10px">
+      <div style="font-size:9px;color:var(--gold);font-weight:800;text-transform:uppercase;margin-bottom:3px">Trainer Effect</div>
+      <div style="font-size:10px">${card.trainerEffect||card.flavour}</div></div>`;
   } else {
-    mv='<div class="ml"><h4>Moves</h4>';
-    for(const m of(card.moves||[])){
-      const dc=m.type==='heal'?'pos':m.type==='special'?'spc':typeof m.dmg==='number'&&m.dmg<0?'neg':'neu';
-      const cdb=m.cd>0?`<span class="cdb2">${m.opm?'once/match':m.cd+'T cd'}</span>`:'';
-      mv+=`<div class="mr"><div><div class="mn">${m.name}${cdb}</div>${m.desc?`<div class="mdesc">${m.desc}</div>`:''}</div>
-        <div class="md2 ${dc}">${m.type==='heal'?'+':''}${m.dmg}</div></div>`;
+    movesHtml = '<div class="movelist"><h4>Moves</h4>';
+    for (const m of (card.moves||[])) {
+      const dc = m.t==='heal'?'P': typeof m.d==='number'&&m.d<0?'N':'G';
+      const cdBadge = m.cd>0 ? `<span class="cdbadge">${m.opm?'once/match':m.cd+'T cd'}</span>` : '';
+      movesHtml += `<div class="mrow">
+        <div><div class="mname">${m.n}${cdBadge}</div>${m.desc?`<div class="mdesc">${m.desc}</div>`:''}</div>
+        <div class="mdmg ${dc}">${m.t==='heal'?'+':''}${m.d}</div>
+      </div>`;
     }
-    mv+='</div>';
+    movesHtml += '</div>';
   }
-  const tcls=TCLS[card.type]||'tn';
-  document.getElementById('CDC').innerHTML=`
-    <div class="cdi"><img src="${card.img}" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover"/></div>
+  const tc = `T${card.type}`;
+  const rc = `R${card.rarity}`;
+  document.getElementById('CDC').innerHTML = `
+    <div class="cdimg"><img src="${card.img}" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover"/></div>
     <div>
-      <h2 style="font-family:Bangers,cursive;font-size:22px;color:var(--gold);margin-bottom:5px">${card.name}</h2>
+      <div class="cdnum">${card.label}</div>
+      <h2 style="font-family:Bangers,cursive;font-size:20px;color:var(--gold);margin-bottom:4px">${card.name}</h2>
       <div class="ctags">
-        ${card.isTrainer?'<span class="tag ttr">TRAINER</span>':`<span class="tag ${tcls}">${card.type.toUpperCase()}</span>`}
-        <span class="tag ${card.rarity==='legendary'?'trl':card.rarity==='epic'?'tre':card.rarity==='rare'?'trr':'trc'}">${card.rarity.toUpperCase()}</span>
-        ${card.stage?`<span class="tag tn">${card.stage}</span>`:''}
-        ${ob}
-        <span class="tag tn">#${card.number}</span>
+        ${card.trainer?'<span class="tag Ttrainer">TRAINER</span>':`<span class="tag ${tc}">${card.type.toUpperCase()}</span>`}
+        <span class="tag ${rc}">${card.rarity.toUpperCase()}</span>
+        ${ownBadge}
       </div>
-      ${card.hp?`<div class="hp-val" style="color:${col}">${card.hp} ${card.hpUnit}</div>`:''}
-      ${card.flavour?`<div class="flavour">"${card.flavour}"</div>`:''}
-      ${mv}
-      ${!card.isTrainer?`<div class="srow">
-        <div class="sb2"><div class="slb">Weakness</div><div class="sv">${card.weakness||'—'}</div></div>
-        <div class="sb2"><div class="slb">Resist</div><div class="sv r">${card.resistance||'—'}</div></div>
-        <div class="sb2"><div class="slb">Retreat</div><div class="sv t">${card.retreat||'—'}</div></div>
+      ${card.hp?`<div class="hpval" style="color:${col}">${card.hp} ${card.hpu}</div>`:''}
+      ${card.flavour?`<div class="flavtxt">"${card.flavour}"</div>`:''}
+      ${movesHtml}
+      ${!card.trainer?`<div class="statsrow">
+        <div class="sbox"><div class="slbl">Weakness</div><div class="sval">${card.weak||'—'}</div></div>
+        <div class="sbox"><div class="slbl">Resist</div><div class="sval R">${card.resist||'—'}</div></div>
+        <div class="sbox"><div class="slbl">Retreat</div><div class="sval T">${card.retreat||'—'}</div></div>
       </div>`:''}
-      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:9px">
-        ${tot?`<button class="btn btn-sm btn-pink" onclick="atof('${id}');cm('CDM')">+ Trade</button>`:''}
-        ${tot&&!card.isTrainer?`<button class="btn btn-sm btn-gold" onclick="pfb('${id}');cm('CDM')">⚔️ Battle</button>`:''}
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:8px">
+        ${tot?`<button class="btn bpink bsm" onclick="addToOffer('${id}');cm('CDM')">+ Trade</button>`:''}
+        ${tot&&!card.trainer?`<button class="btn bgold bsm" onclick="pickForBattle('${id}');cm('CDM')">⚔️ Battle</button>`:''}
       </div>
     </div>`;
   document.getElementById('CDM').classList.add('open');
 }
-function cm(id){document.getElementById(id)?.classList.remove('open');}
 
-// ══════════════════════════════════════════════════
-//  POKEDEX
-// ══════════════════════════════════════════════════
-function sdf(f,btn){S.dexf=f;document.querySelectorAll('#page-pokedex .btb').forEach(b=>b.classList.remove('active'));btn.classList.add('active');rdex();}
-function rdex(){
-  const q=(document.getElementById('DS')?.value||'').toLowerCase();
-  const cards=AC().filter(c=>{if(S.dexf!=='all'&&c.type!==S.dexf)return false;if(q&&!c.name.toLowerCase().includes(q))return false;return true;});
-  document.getElementById('DC').textContent=cards.length+' cards';
-  document.getElementById('DG').innerHTML=cards.map(c=>{
-    const own=S.coll.filter(x=>x.cardId===c.id);const tot=own.reduce((a,b)=>a+b.qty,0);
-    return`<div style="position:relative">${cHtml(c,tot||'','normal')}</div>`;
-  }).join('')||'<div class="es" style="grid-column:1/-1"><div class="icon">🔍</div><h3>No cards</h3></div>';
+function cm(id) { document.getElementById(id)?.classList.remove('open'); }
+
+// ═══════════════════════════════════════════════════════
+//  DEX
+// ═══════════════════════════════════════════════════════
+function setDF(f, btn) {
+  S.dexFilter = f;
+  document.querySelectorAll('#P-dex .btab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderDex();
+}
+function renderDex() {
+  const q = (document.getElementById('DEXQ')?.value||'').toLowerCase();
+  const cards = allCards().filter(c=>{
+    if (S.dexFilter!=='all' && c.type!==S.dexFilter) return false;
+    if (q && !c.name.toLowerCase().includes(q) && !c.num.includes(q)) return false;
+    return true;
+  });
+  document.getElementById('DEXCOUNT').textContent = cards.length+' cards';
+  document.getElementById('DEXG').innerHTML = cards.map(c=>{
+    const own = S.coll.filter(x=>x.cardId===c.id);
+    const tot = own.reduce((a,b)=>a+b.qty,0);
+    return `<div style="position:relative">${cardHtml(c,tot||'','normal')}</div>`;
+  }).join('') || '<div class="es" style="grid-column:1/-1"><div class="icon">🔍</div><h3>No cards found</h3></div>';
 }
 
-// ══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  COLLECTION
-// ══════════════════════════════════════════════════
-function rColl(){
-  const tot=S.coll.reduce((a,b)=>a+b.qty,0);
-  const uniq=[...new Set(S.coll.map(c=>c.cardId))].length;
-  const foils=S.coll.filter(c=>c.foil&&c.foil!=='normal').length;
-  document.getElementById('CS2').innerHTML=`
+// ═══════════════════════════════════════════════════════
+function renderColl() {
+  const tot   = S.coll.reduce((a,b)=>a+b.qty,0);
+  const uniq  = [...new Set(S.coll.map(c=>c.cardId))].length;
+  const foils = S.coll.filter(c=>c.foil&&c.foil!=='normal').length;
+  document.getElementById('COLLSTATS').innerHTML = `
     <div class="scrd"><div class="scv">${tot}</div><div class="scl">Total</div></div>
     <div class="scrd"><div class="scv">${uniq}</div><div class="scl">Unique</div></div>
-    <div class="scrd"><div class="scv">${foils}</div><div class="scl">Foils ✨</div></div>
-    <div class="scrd"><div class="scv">${AC().length}</div><div class="scl">In Dex</div></div>
+    <div class="scrd"><div class="scv">${foils}</div><div class="scl">Foil ✨</div></div>
+    <div class="scrd"><div class="scv">${allCards().length}</div><div class="scl">In Dex</div></div>
     <div class="scrd"><div class="scv" style="color:var(--gold)">💰${S.coins}</div><div class="scl">Coins</div></div>`;
-  document.getElementById('CG').innerHTML=!S.coll.length
-    ?'<div class="es" style="grid-column:1/-1"><div class="icon">🃏</div><h3>No Cards Yet</h3><p>Open packs!</p><button class="btn btn-gold" style="margin-top:9px" onclick="sp(\'packs\')">Get Packs</button></div>'
-    :S.coll.map(item=>{const c=GC(item.cardId);if(!c)return'';return`<div style="position:relative">${cHtml(c,item.qty,item.foil)}</div>`;}).join('');
+  if (!S.coll.length) {
+    document.getElementById('COLLG').innerHTML = '<div class="es" style="grid-column:1/-1"><div class="icon">🃏</div><h3>No Cards Yet!</h3><p>Open some packs to get started.</p><button class="btn bgold" style="margin-top:10px" onclick="go(\'packs\')">Open Packs</button></div>';
+    return;
+  }
+  document.getElementById('COLLG').innerHTML = S.coll.map(item=>{
+    const c = getCard(item.cardId); if (!c) return '';
+    return `<div style="position:relative">${cardHtml(c,item.qty,item.foil)}</div>`;
+  }).join('');
 }
 
-// ══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  PACKS
-// ══════════════════════════════════════════════════
-function iPacks(){
-  if(!S.packs.length)S.packs=[
-    {id:'pk_starter',name:'Starter Pack',desc:'5 random cards — FREE for new players!',cpp:5,price:0,img:IMG('The_Pack.png'),pool:BC.map(c=>c.id),starter:true},
-    {id:'pk_caspian',name:'Caspian Pack',desc:'Focused on Caspian cards!',cpp:3,price:150,img:IMG('The_Pack.png'),pool:['c0004','c0005','c0006','c0007','c0008']},
-    {id:'pk_keanu',name:'Keanu Pack',desc:'All 3 Keanu forms!',cpp:3,price:200,img:IMG('The_Pack.png'),pool:['c0001','c0002','c0003']},
-    {id:'pk_justen',name:'Justen Pack',desc:'Both Justen forms + Bill cards!',cpp:4,price:180,img:IMG('The_Pack.png'),pool:['c0020','c0021','c0022','c0023']},
-    {id:'pk_full',name:'Full Set Pack',desc:'Any card from the full set!',cpp:5,price:250,img:IMG('The_Pack.png'),pool:BC.map(c=>c.id)},
+// ═══════════════════════════════════════════════════════
+function initPacks() {
+  if (!S.packs.length) S.packs = [
+    {id:'pk_start',name:'Starter Pack',desc:'5 random cards. FREE for new players!',cpp:5,price:0,img:img('The_Pack.png'),pool:CARDS.map(c=>c.id),starter:true},
+    {id:'pk_casp', name:'Caspian Pack',desc:'Focused on Caspian cards!',cpp:3,price:150,img:img('The_Pack.png'),pool:['c004','c005','c006','c007','c008']},
+    {id:'pk_kean', name:'Keanu Pack',  desc:'All 3 Keanu forms!',cpp:3,price:200,img:img('The_Pack.png'),pool:['c001','c002','c003']},
+    {id:'pk_just', name:'Justen Pack', desc:'Justen + Bill cards!',cpp:4,price:180,img:img('The_Pack.png'),pool:['c020','c021','c022','c023']},
+    {id:'pk_full', name:'Full Set Pack',desc:'Any card from the full set!',cpp:5,price:250,img:img('The_Pack.png'),pool:CARDS.map(c=>c.id)},
   ];
 }
-function rPacks(){
-  document.getElementById('PG').innerHTML=S.packs.map(p=>{
-    const alreadyOpened=p.starter&&S.coll.length>0;
-    return`<div class="pk" onclick="buyPack('${p.id}')">
-      <div class="pi"><img src="${p.img}" onerror="this.textContent='📦'" style="width:100%;height:100%;object-fit:cover;border-radius:7px"/></div>
-      <div class="pn">${p.name}</div>
-      <div class="pd">${p.desc||''}</div>
-      <div style="font-size:10px;color:var(--text2);margin-bottom:7px">${p.cpp||5} cards/pack</div>
-      <div class="pp">${(p.price||0)===0?'🆓 FREE':'💰 '+(p.price)}</div>
-      <button class="btn ${alreadyOpened?'btn-dark':'btn-gold'}" style="width:100%">${alreadyOpened?'Already Claimed':'Open Pack'}</button>
+
+function renderPacks() {
+  document.getElementById('PACKG').innerHTML = S.packs.map(p=>{
+    const claimed = p.starter && S.coll.length>0;
+    return `<div class="pk" onclick="openPack('${p.id}')">
+      <div class="pimg"><img src="${p.img}" onerror="this.textContent='📦'" style="width:100%;height:100%;object-fit:cover;border-radius:6px"/></div>
+      <div class="pname">${p.name}</div>
+      <div class="pdesc">${p.desc||''}</div>
+      <div style="font-size:9px;color:var(--t2);margin-bottom:6px">${p.cpp||5} cards/pack</div>
+      <div class="pprice">${(p.price||0)===0?'🆓 FREE':'💰 '+(p.price)}</div>
+      <button class="btn ${claimed?'bdark':'bgold'}" style="width:100%">${claimed?'Already Claimed':'Open Pack'}</button>
     </div>`;
   }).join('');
 }
 
-function rFoil(){const r=Math.random();if(r<.01)return'rainbow';if(r<.04)return'gold';if(r<.12)return'holo';if(r<.22)return'reverse';return'normal';}
-function rCard(pool){
-  const all=(pool||BC.map(c=>c.id)).map(id=>GC(id)).filter(Boolean);
-  if(!all.length)return BC[0];
-  const r=Math.random();
-  let b=r<.03?all.filter(c=>c.rarity==='legendary'):r<.15?all.filter(c=>c.rarity==='epic'):r<.4?all.filter(c=>c.rarity==='rare'):all.filter(c=>c.rarity==='common');
-  if(!b.length)b=all;
+function rollFoil() {
+  const r = Math.random();
+  if (r<.01)  return 'rainbow';
+  if (r<.04)  return 'gold';
+  if (r<.12)  return 'holo';
+  if (r<.22)  return 'reverse';
+  return 'normal';
+}
+function rollCard(pool) {
+  const all = (pool||CARDS.map(c=>c.id)).map(id=>getCard(id)).filter(Boolean);
+  if (!all.length) return CARDS[0];
+  const r = Math.random();
+  let b = r<.03 ? all.filter(c=>c.rarity==='legendary')
+        : r<.15 ? all.filter(c=>c.rarity==='epic')
+        : r<.40 ? all.filter(c=>c.rarity==='rare')
+        : all.filter(c=>c.rarity==='common');
+  if (!b.length) b = all;
   return b[Math.floor(Math.random()*b.length)];
 }
-async function buyPack(pid){
-  const p=S.packs.find(x=>x.id===pid);if(!p)return;
-  if(p.starter&&S.coll.length>0){toast('Starter pack already claimed!','error');return;}
-  if((p.price||0)>0&&S.coins<p.price){toast('Not enough coins! Need 💰'+p.price,'error');return;}
-  if((p.price||0)>0){S.coins-=p.price;un();}
-  const pool=p.pool||BC.map(c=>c.id);
-  const cpp=p.cpp||5;
-  const pulled=[];
-  for(let i=0;i<cpp;i++){const card=rCard(pool);if(card)pulled.push({card,foil:rFoil()});}
-  for(const{card,foil}of pulled)await addColl(card.id,foil);
-  if((p.price||0)>0&&!S.guest&&S.user?.id)await SB('PATCH',`/rest/v1/profiles?id=eq.${S.user.id}`,{coins:S.coins});
-  // Show pack screen
-  document.getElementById('POT').textContent='📦 '+p.name;
-  document.getElementById('PRC').innerHTML=pulled.map(({card,foil},i)=>{
-    const fl=FTAG[foil];
-    return`<div class="rc" id="rc${i}" onclick="fr(${i})">
-      <div class="cb">⚡ ROOF<br>TCG</div>
-      <div class="cf" style="border:3px solid ${TC[card.type]||'var(--gold)'}">
+
+async function openPack(pid) {
+  const p = S.packs.find(x=>x.id===pid); if (!p) return;
+  if (p.starter && S.coll.length>0) { toast('Starter pack already claimed!','I'); return; }
+  if ((p.price||0)>0 && S.coins<p.price) { toast('Not enough coins! Need 💰'+p.price,'E'); return; }
+  if ((p.price||0)>0) { S.coins -= p.price; updateNav(); }
+  const pulled = [];
+  for (let i=0; i<(p.cpp||5); i++) {
+    const card = rollCard(p.pool||CARDS.map(c=>c.id));
+    if (card) pulled.push({card, foil:rollFoil()});
+  }
+  for (const {card,foil} of pulled) await addToCollection(card.id, foil);
+  if ((p.price||0)>0 && !S.guest && S.user?.id)
+    await sb('PATCH', `/rest/v1/profiles?id=eq.${S.user.id}`, {coins:S.coins});
+  // Show opening screen
+  document.getElementById('PTL').textContent = '📦 ' + p.name;
+  document.getElementById('PRC').innerHTML = pulled.map(({card,foil},i)=>{
+    const fl = FOILS[foil];
+    return `<div class="rc" id="rc${i}" onclick="flipCard(${i})">
+      <div class="rcb">⚡ ROOF<br>TCG</div>
+      <div class="rcf" style="border:3px solid ${TYPE_COL[card.type]||'var(--gold)'}">
         <img src="${card.img}" style="width:100%;height:100%;object-fit:cover" loading="lazy"
           onerror="this.style.display='none';this.parentElement.style.background='#1a1a2e'"/>
-        ${fl?`<div class="frl" style="background:${fl.bg};color:${fl.col}">${fl.text}</div>`:''}
+        ${fl?`<div class="foillbl" style="background:${fl.bg};color:${fl.c}">${fl.t}</div>`:''}
       </div>
     </div>`;
   }).join('');
-  const spc=pulled.filter(x=>x.foil!=='normal');
-  document.getElementById('PSumm').textContent=spc.length?'✨ Special: '+spc.map(({card,foil})=>FTAG[foil].text+' '+card.name).join(', '):'';
-  S._pull=pulled;
+  const specials = pulled.filter(x=>x.foil!=='normal');
+  document.getElementById('PSUM').textContent = specials.length
+    ? '✨ Special: '+specials.map(({card,foil})=>FOILS[foil].t+' '+card.name).join(', ')
+    : '';
+  S._pull = pulled;
   document.getElementById('POS').classList.add('open');
 }
-function fr(i){document.getElementById('rc'+i)?.classList.add('fl');}
-function flipAll(){S._pull?.forEach((_,i)=>fr(i));}
-function closePack(){document.getElementById('POS').classList.remove('open');toast('Cards added! 🎉','success');}
-async function addColl(cardId,foil){
-  foil=foil||'normal';
-  const ex=S.coll.find(c=>c.cardId===cardId&&c.foil===foil);
-  if(ex)ex.qty++;else S.coll.push({cardId,qty:1,foil});
-  if(!S.guest&&S.user?.id)await SB('POST','/rest/v1/collection',{user_id:S.user.id,card_id:cardId,quantity:1,foil});
+
+function flipCard(i) { document.getElementById('rc'+i)?.classList.add('fl'); }
+function flipAll()   { S._pull?.forEach((_,i)=>flipCard(i)); }
+function closePack() { document.getElementById('POS').classList.remove('open'); toast('Cards added to collection! 🎉','S'); }
+
+async function addToCollection(cardId, foil) {
+  foil = foil||'normal';
+  const ex = S.coll.find(c=>c.cardId===cardId && c.foil===foil);
+  if (ex) ex.qty++;
+  else S.coll.push({cardId, qty:1, foil});
+  if (!S.guest && S.user?.id)
+    await sb('POST', '/rest/v1/collection', {user_id:S.user.id, card_id:cardId, quantity:1, foil});
 }
 
-// ══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  BATTLE — CPU
-// ══════════════════════════════════════════════════
-function sbt(tab,btn){
-  document.querySelectorAll('.bt .btb').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
-  document.getElementById('BTC').style.display=tab==='cpu'?'':'none';
-  document.getElementById('BTP').style.display=tab==='pvp'?'':'none';
-  if(tab==='pvp')rpvp();
-}
-function openCS(){
-  const myc=S.coll.filter(c=>!GC(c.cardId)?.isTrainer);
-  if(!myc.length){toast('No cards! Open packs first.','error');return;}
-  document.getElementById('CSG').innerHTML=myc.map(item=>{const c=GC(item.cardId);if(!c)return'';return cHtml(c,'',item.foil,`pfb('${c.id}');cm('CSM')`);}).join('');
-  document.getElementById('CSM').classList.add('open');
-}
-// attach click to battle card slot
-document.getElementById('PS2')?.addEventListener('click',openCS);
-
-function pfb(id){
-  const card=GC(id);if(!card||card.isTrainer)return;
-  const B=S.B;
-  B.pc=card;B.ph=card.hp||80;B.pmh=card.hp||80;
-  B.cd={};B.opm={};B.estun=false;B.pstun=false;B.pshield=false;B.over=false;B.active=true;B.doxTurns=0;B.angerActive=false;
-  const pool=AC().filter(c=>!c.isTrainer&&c.id!==id);
-  const ec=pool[Math.floor(Math.random()*pool.length)];
-  B.ec=ec;B.eh=ec.hp||80;B.emh=ec.hp||80;
-  updBD();bLog('system','⚔️ '+card.name+' VS '+ec.name+' — BATTLE START!');rBM();
+// ═══════════════════════════════════════════════════════
+function setBTab(tab, btn) {
+  document.querySelectorAll('.btabs .btab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('CPUTAB').style.display = tab==='cpu' ? '' : 'none';
+  document.getElementById('PVPTAB').style.display = tab==='pvp' ? '' : 'none';
+  if (tab==='pvp') loadPvp();
 }
 
-function updBD(){
-  const B=S.B;
-  if(B.pc){
-    const sl=document.getElementById('PS2');
-    sl.innerHTML=`<img src="${B.pc.img}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"/>`;
+// Open card picker for CPU battle
+function openCardPick(ctx) {
+  const myBattle = S.coll.filter(c=>!getCard(c.cardId)?.trainer);
+  if (!myBattle.length) { toast('Open packs to get cards first!','E'); return; }
+  S._cardPickCb = (id) => { pickForBattle(id); };
+  document.getElementById('CSMOTITLE').textContent = 'SELECT YOUR BATTLE CARD';
+  document.getElementById('CSMG').innerHTML = myBattle.map(item=>{
+    const c = getCard(item.cardId); if (!c) return '';
+    return cardHtml(c,'',item.foil, `doCardPick('${c.id}')`);
+  }).join('');
+  document.getElementById('CSMO').classList.add('open');
+}
+
+function doCardPick(id) {
+  cm('CSMO');
+  if (S._cardPickCb) { S._cardPickCb(id); S._cardPickCb = null; }
+}
+
+function pickForBattle(id) {
+  const card = getCard(id); if (!card||card.trainer) return;
+  const B = S.B;
+  B.pc = card; B.php = card.hp||80; B.pmhp = card.hp||80;
+  B.cd={}; B.opm={}; B.estun=false; B.pstun=false; B.pshield=false;
+  B.edebuff=0; B.angerNext=false; B.dotTurns=0; B.over=false; B.active=true;
+  const pool = allCards().filter(c=>!c.trainer && c.id!==id);
+  const ec   = pool[Math.floor(Math.random()*pool.length)];
+  B.ec = ec; B.ehp = ec.hp||80; B.emhp = ec.hp||80;
+  updateBattleUI();
+  bLog('sys', `⚔️ ${card.label} VS ${ec.label} — BATTLE START!`);
+  renderMoves();
+}
+
+function updateBattleUI() {
+  const B = S.B;
+  const setSlot = (slotId, wrapId, nameId, txtId, barId, statId, card, hp, mhp, stun, shield) => {
+    const sl = document.getElementById(slotId);
+    sl.innerHTML = `<img src="${card.img}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"/>`;
     sl.classList.add('hc');
-    document.getElementById('PHW').style.display='';
-    document.getElementById('PNL').textContent=B.pc.name;
-    const ph=Math.max(0,B.ph);document.getElementById('PHL').textContent=ph+'/'+B.pmh;
-    const pf=document.getElementById('PHB');const pp=(ph/B.pmh)*100;
-    pf.style.width=pp+'%';pf.className='hbf'+(pp<25?' l':pp<50?' m':'');
-    // Status tags
-    const st=document.getElementById('PStatusTags');
-    st.innerHTML=(B.pstun?'<span class="tag tel">Stunned</span>':'')+(B.pshield?'<span class="tag trr">Shield</span>':'');
-  }
-  if(B.ec){
-    const sl=document.getElementById('CS4');
-    sl.innerHTML=`<img src="${B.ec.img}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"/>`;
-    sl.classList.add('hc');
-    document.getElementById('CHW').style.display='';
-    document.getElementById('CNL').textContent=B.ec.name;
-    const eh=Math.max(0,B.eh);document.getElementById('CHL').textContent=eh+'/'+B.emh;
-    const ef=document.getElementById('CHB');const ep=(eh/B.emh)*100;
-    ef.style.width=ep+'%';ef.className='hbf'+(ep<25?' l':ep<50?' m':'');
-    const ct=document.getElementById('CStatusTags');
-    ct.innerHTML=(B.estun?'<span class="tag tel">Stunned</span>':'');
-  }
+    document.getElementById(wrapId).style.display = '';
+    document.getElementById(nameId).textContent = card.label;
+    const h = Math.max(0,hp);
+    document.getElementById(txtId).textContent = h+'/'+mhp;
+    const bar = document.getElementById(barId);
+    const pct = (h/mhp)*100;
+    bar.style.width = pct+'%';
+    bar.className = 'hpbar-fill'+(pct<25?' L':pct<50?' M':'');
+    if (statId) {
+      document.getElementById(statId).innerHTML =
+        (stun  ? '<span class="tag" style="background:rgba(255,100,50,.15);color:#ff6432;border:1px solid #ff6432">Stunned</span>' : '') +
+        (shield ? '<span class="tag" style="background:rgba(77,195,255,.15);color:var(--blue);border:1px solid var(--blue)">Shield</span>' : '');
+    }
+  };
+  if (B.pc) setSlot('PSLOT','PHPWRAP','PCNAME','PHPTXT','PHPBAR','PSTATUS', B.pc, B.php, B.pmhp, B.pstun, B.pshield);
+  if (B.ec) setSlot('ESLOT','EHPWRAP','ECNAME','EHPTXT','EHPBAR','ESTATUS', B.ec, B.ehp, B.emhp, B.estun, false);
 }
 
-function rBM(){
-  const B=S.B;const con=document.getElementById('BM');
-  if(!B.pc||!B.active){con.innerHTML=!B.pc?`<button class="btn btn-gold" onclick="openCS()">⚔️ Select a Card to Battle</button>`:'';return;}
-  con.innerHTML=(B.pc.moves||[]).map(m=>{
-    const cd=B.cd[m.name]||0;const used=B.opm[m.name];
-    const dis=B.over||cd>0||used||B.pstun;
-    const cdt=used?'Used':cd>0?cd+'T':'';
-    return`<button class="mb${cd>0||used?' ocd':''}" onclick="upm('${m.name}')" ${dis?'disabled':''}>
-      <span>${m.name}</span>
+function renderMoves() {
+  const B = S.B;
+  const con = document.getElementById('BMOVES');
+  if (!B.pc || !B.active) {
+    con.innerHTML = !B.pc
+      ? `<button class="btn bgold" onclick="openCardPick('cpu')">⚔️ Pick a Card to Battle</button>`
+      : '';
+    return;
+  }
+  con.innerHTML = (B.pc.moves||[]).map(m=>{
+    const cd   = B.cd[m.n]||0;
+    const used = B.opm[m.n];
+    const dis  = B.over || cd>0 || used || B.pstun;
+    const cdt  = used ? 'USED' : cd>0 ? cd+'T' : '';
+    let cls = 'mb';
+    if (used) cls += ' OPM';
+    else if (cd>0) cls += ' OCD';
+    return `<button class="${cls}" onclick="useMove('${m.n.replace(/'/g,"\\'")}',${B.pc.moves.indexOf(m)})" ${dis?'disabled':''}>
+      <span>${m.n}</span>
       <div class="mbr">
-        <span class="mbd">${m.type==='heal'?'+':''}${m.dmg}</span>
+        <span class="mbdmg">${m.t==='heal'?'+':''}${m.d}</span>
         ${cdt?`<span class="mbcd">${cdt}</span>`:''}
       </div>
     </button>`;
   }).join('');
 }
 
-function bLog(type,msg){
-  const l=document.getElementById('BL');
-  const d=document.createElement('div');d.className='le '+type;d.textContent=msg;
-  l.appendChild(d);l.scrollTop=l.scrollHeight;
+function bLog(type, msg) {
+  const log = document.getElementById('BLOG');
+  const d   = document.createElement('div');
+  d.className = 'le ' + type;
+  d.textContent = msg;
+  log.appendChild(d);
+  log.scrollTop = log.scrollHeight;
 }
 
-function tcd(){for(const k in S.B.cd)if(S.B.cd[k]>0)S.B.cd[k]--;}
-
-function upm(mn){
-  const B=S.B;if(!B.active||B.over)return;
-  if(B.pstun){B.pstun=false;bLog('cd','😵 You are stunned — turn skipped!');setTimeout(cpuT,900);updBD();return;}
-  const m=B.pc.moves.find(x=>x.name===mn);if(!m)return;
-  if(B.cd[mn]>0){toast('Move on cooldown!','error');return;}
-  if(m.opm&&B.opm[mn]){toast('Already used this match!','error');return;}
-  document.querySelectorAll('#BM .mb').forEach(b=>b.disabled=true);
-  apm(m,'player');
-  if(m.cd>0)B.cd[mn]=m.cd;
-  if(m.opm)B.opm[mn]=true;
-  updBD();chkEnd();
-  if(!B.over)setTimeout(cpuT,950);
+function tickCd() {
+  for (const k in S.B.cd) if (S.B.cd[k]>0) S.B.cd[k]--;
 }
 
-function apm(m,side){
-  const B=S.B;const ip=side==='player';
-  const att=ip?B.pc:B.ec;
-  const dHp=ip?'eh':'ph';const dMx=ip?'emh':'pmh';
-  const sHp=ip?'ph':'eh';const sMx=ip?'pmh':'emh';
-
-  // DOX tick
-  if(ip&&B.doxTurns>0){B.ph-=5;B.doxTurns--;bLog('effect','☠️ Dox deals 5 dmg to you! ('+B.doxTurns+' left)');}
-  // Anger
-  const angerMult=(!ip&&B.angerActive)?2:1;
-  if(!ip&&B.angerActive){B.angerActive=false;}
-
-  if(m.type==='heal'){
-    const h=typeof m.dmg==='number'?Math.abs(m.dmg):10;
-    B[sHp]=Math.min(B[sMx],B[sHp]+h);bLog('heal','💚 '+att.name+' used '+m.name+'! +'+h+' HP');
-  } else if(m.name==='Lonely'||m.name==='Shit Stain'||m.name==='Arrest'||m.name==='Tazer'){
-    let dmg=typeof m.dmg==='number'?m.dmg:0;
-    if(dmg>0){B[dHp]-=dmg;bLog('damage','⚔️ '+att.name+' used '+m.name+'! '+dmg+' dmg');}
-    if(ip){B.estun=true;bLog('effect','😵 '+B.ec.name+' is stunned!');}
-    else{B.pstun=true;bLog('effect','😵 YOU are stunned — skip next turn!');}
-  } else if(m.name==='Blanket'){
-    let dmg=typeof m.dmg==='number'?m.dmg:0;B[dHp]-=dmg;
-    if(ip)B.pshield=true;bLog('damage','🛡️ '+att.name+' used Blanket! '+dmg+' dmg + Shield (blocks 10)');
-  } else if(m.name==='Kirkify'){
-    if(ip){B.estun=true;bLog('special','✨ Kirkify! '+B.ec.name+' loses next turn!');}
-    else bLog('special','✨ CPU used Kirkify!');
-  } else if(m.name==='Anger'){
-    B.angerActive=true;let dmg=typeof m.dmg==='number'?m.dmg:0;B[dHp]-=dmg;
-    bLog('special','💢 '+att.name+' used Anger! +2x strength next move! '+dmg+' dmg');
-  } else if(m.name==='Dox'){
-    B.doxTurns=3;bLog('effect','☠️ DOX! '+att.name+' deals 5 dmg/turn for 3 turns!');
-  } else if(m.name==='Catch'){
-    bLog('effect','🚔 CATCH! '+att.name+' attempts to catch a card...');
-  } else if(m.name==='Rizz'||m.name==='Scare'){
-    let dmg=typeof m.dmg==='number'?m.dmg:0;if(dmg>0){B[dHp]-=dmg;}
-    bLog('effect','😳 '+att.name+' used '+m.name+'! Enemy flustered — reduced damage next turn.');
-  } else {
-    let dmg=typeof m.dmg==='number'?m.dmg:0;
-    if(dmg<0){B[sHp]+=dmg;bLog('damage','💔 BACKFIRE! '+att.name+' used '+m.name+' — '+Math.abs(dmg)+' self dmg');return;}
-    dmg=Math.round(dmg*angerMult);
-    if(!ip&&B.pshield){dmg=Math.max(0,dmg-10);B.pshield=false;bLog('effect','🛡️ Shield blocked 10!');}
-    B[dHp]-=dmg;
-    bLog('damage','⚔️ '+att.name+' used '+m.name+'! '+dmg+(angerMult>1?' (2x Anger!)':'')+' dmg');
-    if(m.desc)bLog('effect','📝 '+m.desc.split('.')[0]);
-  }
-}
-
-function cpuT(){
-  const B=S.B;if(B.over)return;
-  if(B.estun){B.estun=false;bLog('cd','😵 CPU stunned — skips turn!');tcd();updBD();rBM();document.querySelectorAll('#BM .mb').forEach(b=>b.disabled=false);rBM();return;}
-  // DOX tick for CPU side (player used Dox — but let's keep it simple, dox hits player currently)
-  const av=(B.ec.moves||[]).filter(m=>!m.opm&&m.name!=='Kirkify'&&m.name!=='Catch');
-  const m=av.length?av[Math.floor(Math.random()*av.length)]:(B.ec.moves||[])[0];
-  if(!m){tcd();updBD();rBM();document.querySelectorAll('#BM .mb').forEach(b=>b.disabled=false);rBM();return;}
-  apm(m,'cpu');tcd();updBD();chkEnd();
-  if(!B.over){rBM();setTimeout(()=>document.querySelectorAll('#BM .mb').forEach(b=>b.disabled=false),50);rBM();}
-}
-
-function chkEnd(){
-  const B=S.B;
-  if(B.eh<=0){
-    B.over=true;B.active=false;
-    bLog('system','🏆 YOU WIN! +50 💰');
-    S.coins+=50;un();
-    if(!S.guest&&S.user?.id)SB('PATCH',`/rest/v1/profiles?id=eq.${S.user.id}`,{coins:S.coins});
-    document.querySelectorAll('#BM .mb').forEach(b=>b.disabled=true);
+function useMove(moveName, idx) {
+  const B = S.B;
+  if (!B.active||B.over) return;
+  if (B.pstun) {
+    B.pstun = false;
+    bLog('cd','😵 You are stunned — turn skipped!');
+    updateBattleUI();
+    setTimeout(cpuTurn, 900);
     return;
   }
-  if(B.ph<=0){
-    B.over=true;B.active=false;
-    bLog('system','😔 You lost... Select a new card to try again!');
-    document.querySelectorAll('#BM .mb').forEach(b=>b.disabled=true);
+  const m = B.pc.moves.find(x=>x.n===moveName);
+  if (!m) return;
+  if (B.cd[m.n]>0) { toast('Move on cooldown!','E'); return; }
+  if (m.opm && B.opm[m.n]) { toast('Already used this match!','E'); return; }
+  document.querySelectorAll('#BMOVES .mb').forEach(b=>b.disabled=true);
+  applyMove(m, 'player');
+  if (m.cd>0) B.cd[m.n] = m.cd;
+  if (m.opm)  B.opm[m.n] = true;
+  updateBattleUI();
+  checkEnd();
+  if (!B.over) setTimeout(cpuTurn, 950);
+}
+
+function applyMove(m, side) {
+  const B   = S.B;
+  const byP = side==='player';
+  const att = byP ? B.pc : B.ec;
+  const dHP = byP ? 'ehp' : 'php'; // defender HP key
+  const sMX = byP ? 'pmhp' : 'emhp';
+  const sHP = byP ? 'php' : 'ehp';
+
+  // DOT tick
+  if (byP && B.dotTurns>0) {
+    B.php -= 5;
+    B.dotTurns--;
+    bLog('eff', `☠️ Dox burns you for 5 dmg! (${B.dotTurns} turns left)`);
+  }
+
+  switch (m.t) {
+    case 'heal': {
+      const h = Math.abs(typeof m.d==='number'?m.d:10);
+      B[sHP] = Math.min(B[sMX], B[sHP]+h);
+      bLog('heal', `💚 ${att.name} used ${m.n}! +${h} HP`);
+      break;
+    }
+    case 'stun': {
+      let d = typeof m.d==='number' ? m.d : 0;
+      if (d>0) { B[dHP]-=d; bLog('dmg', `⚔️ ${att.name} used ${m.n}! ${d} dmg`); }
+      if (byP) { B.estun=true; bLog('eff','😵 '+B.ec.name+' is stunned!'); }
+      else     { B.pstun=true; bLog('eff','😵 YOU are stunned — skip next turn!'); }
+      break;
+    }
+    case 'dot': {
+      B.dotTurns = 3;
+      bLog('eff','☠️ DOX! '+att.name+' marks you — 5 dmg/turn for 3 turns!');
+      break;
+    }
+    case 'debuff': {
+      let d = typeof m.d==='number' ? m.d : 0;
+      if (d>0) { B[dHP]-=d; bLog('dmg', `⚔️ ${att.name} used ${m.n}! ${d} dmg`); }
+      if (byP) B.edebuff = 15; // -15% on enemy next move
+      bLog('eff', `😳 ${att.name} flusters the enemy!`);
+      break;
+    }
+    case 'special': {
+      if (m.n==='Kirkify') {
+        if (byP) { B.estun=true; bLog('special','✨ Kirkify! '+B.ec.name+' loses next turn!'); }
+        else       bLog('special','✨ CPU used Kirkify!');
+      } else if (m.n==='Anger') {
+        let d = typeof m.d==='number' ? m.d : 0;
+        B[dHP] -= d;
+        B.angerNext = true;
+        bLog('special', `💢 ${att.name} used Anger! 2× strength next attack! ${d} dmg`);
+      } else if (m.n==='Quiting YT') {
+        bLog('eff','📹 '+att.name+' quit YouTube again... nothing happens.');
+      } else {
+        let d = typeof m.d==='number' ? m.d : 0;
+        if (d<0) { B[sHP]+=d; bLog('dmg','💔 BACKFIRE! '+att.name+' hurt itself for '+Math.abs(d)); return; }
+        B[dHP]-=d;
+        bLog('dmg', `⚔️ ${att.name} used ${m.n}! ${d} dmg`);
+      }
+      break;
+    }
+    default: { // dmg
+      let d = typeof m.d==='number' ? m.d : 0;
+      if (d<0) { B[sHP]+=d; bLog('dmg','💔 BACKFIRE! '+att.name+' hurt itself for '+Math.abs(d)); return; }
+      // Apply anger buff
+      if (byP && B.angerNext) { d=Math.round(d*2); B.angerNext=false; }
+      // Apply debuff
+      if (!byP && B.edebuff>0) { d=Math.round(d*(1-B.edebuff/100)); B.edebuff=0; }
+      // Apply shield
+      if (!byP && B.pshield) { d=Math.max(0,d-10); B.pshield=false; bLog('eff','🛡️ Shield absorbed 10!'); }
+      // Blanket move — give shield
+      if (m.n==='Blanket' && byP) B.pshield=true;
+      B[dHP] -= d;
+      const anger = byP && B.angerNext ? '' : (d!==m.d && byP ? ' (Anger 2×!)' : '');
+      bLog('dmg', `⚔️ ${att.name} used ${m.n}! ${d} dmg${anger}`);
+      if (m.desc) bLog('eff', '📝 '+m.desc.split('.')[0]);
+    }
   }
 }
 
-// ══════════════════════════════════════════════════
-//  PVP
-// ══════════════════════════════════════════════════
-async function rpvp(){
+function cpuTurn() {
+  const B = S.B; if (B.over) return;
+  if (B.estun) {
+    B.estun = false;
+    bLog('cd', '😵 CPU is stunned — skips turn!');
+    tickCd(); updateBattleUI(); renderMoves();
+    document.querySelectorAll('#BMOVES .mb').forEach(b=>b.disabled=false);
+    renderMoves();
+    return;
+  }
+  const avail = (B.ec.moves||[]).filter(m => !m.opm && m.t!=='special' && m.n!=='Kirkify');
+  const m = avail.length ? avail[Math.floor(Math.random()*avail.length)] : (B.ec.moves||[])[0];
+  if (!m) { tickCd(); updateBattleUI(); renderMoves(); document.querySelectorAll('#BMOVES .mb').forEach(b=>b.disabled=false); return; }
+  applyMove(m, 'cpu');
+  tickCd(); updateBattleUI(); checkEnd();
+  if (!B.over) {
+    renderMoves();
+    setTimeout(()=>document.querySelectorAll('#BMOVES .mb').forEach(b=>b.disabled=false), 50);
+  }
+}
+
+function checkEnd() {
+  const B = S.B;
+  if (B.ehp<=0) {
+    B.over=true; B.active=false;
+    bLog('sys','🏆 YOU WIN! +50 💰');
+    S.coins+=50; updateNav();
+    if (!S.guest&&S.user?.id) sb('PATCH',`/rest/v1/profiles?id=eq.${S.user.id}`,{coins:S.coins});
+    document.querySelectorAll('#BMOVES .mb').forEach(b=>b.disabled=true);
+    return;
+  }
+  if (B.php<=0) {
+    B.over=true; B.active=false;
+    bLog('sys','😔 You lost! Select a card to try again.');
+    document.querySelectorAll('#BMOVES .mb').forEach(b=>b.disabled=true);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  PVP BATTLE
+// ═══════════════════════════════════════════════════════
+async function loadPvp() {
+  const list = document.getElementById('PVPLIST');
   await loadPlayers();
-  const list=document.getElementById('PVL');
-  let inc=[];
-  if(!S.guest&&S.user?.id){
-    const ch=await SB('GET',`/rest/v1/battles?opponent=eq.${S.user.id}&status=eq.pending&select=*`);
-    if(Array.isArray(ch))inc=ch;
+  let incoming = [];
+  if (!S.guest && S.user?.id) {
+    const ch = await sb('GET', `/rest/v1/battles?opponent=eq.${S.user.id}&status=eq.pending&select=*`);
+    if (Array.isArray(ch)) incoming = ch;
   }
-  list.innerHTML=[
-    ...inc.map(ch=>`<div class="pvp-row pvp-incoming"><span>⚡ Incoming challenge!</span><div style="display:flex;gap:5px"><button class="btn btn-sm btn-green" onclick="accCh('${ch.id}','${ch.challenger}')">Accept</button><button class="btn btn-sm btn-danger" onclick="decCh('${ch.id}')">Decline</button></div></div>`),
-    ...S.players.map(p=>`<div class="pvp-row"><span style="font-weight:800">👤 ${p.username}</span><button class="btn btn-sm btn-pink" onclick="chalP('${p.id}','${p.username}')">⚔️ Challenge</button></div>`)
-  ].join('')||'<div class="es"><div class="icon">👥</div><h3>No other players yet</h3></div>';
+  list.innerHTML = [
+    ...incoming.map(c=>`<div class="pvp-row pvp-in">
+      <span>⚡ Incoming challenge!</span>
+      <div style="display:flex;gap:5px">
+        <button class="btn bgreen bsm" onclick="acceptChallenge('${c.id}','${c.challenger}')">Accept</button>
+        <button class="btn bdanger bsm" onclick="declineChallenge('${c.id}')">Decline</button>
+      </div>
+    </div>`),
+    ...S.players.map(p=>`<div class="pvp-row">
+      <span style="font-weight:800">👤 ${p.username}</span>
+      <button class="btn bpink bsm" onclick="sendChallenge('${p.id}','${p.username}')">⚔️ Challenge</button>
+    </div>`)
+  ].join('') || '<div class="es"><div class="icon">👥</div><h3>No other players online yet</h3></div>';
 }
-async function chalP(oid,on){
-  if(S.guest){toast('Log in to PvP battle!','error');return;}
-  S._ovcb=async(cardId)=>{
-    const r=await SB('POST','/rest/v1/battles',{challenger:S.user.id,opponent:oid,challenger_card:cardId,status:'pending',log:[]});
-    if(r?.[0]?.id){S.pvp.bid=r[0].id;S.pvp.chal=true;S.pvp.oppId=oid;toast('Challenge sent to '+on+'! Waiting...','info');sPoll();}
-    else toast('Could not send challenge','error');
+
+async function sendChallenge(oppId, oppName) {
+  if (S.guest) { toast('Log in to PvP battle!','E'); return; }
+  S._cardPickCb = async(cardId) => {
+    const r = await sb('POST', '/rest/v1/battles', {challenger:S.user.id, opponent:oppId, challenger_card:cardId, status:'pending', log:[]});
+    if (r?.[0]?.id) {
+      S.pvp.bid=r[0].id; S.pvp.myCard=cardId;
+      toast('Challenge sent to '+oppName+'! Waiting...','I');
+      startPvpPoll();
+    } else toast('Could not send challenge','E');
   };
-  oPvpCS();
+  openPvpCardPick();
 }
-function oPvpCS(){
-  const myc=S.coll.filter(c=>!GC(c.cardId)?.isTrainer);
-  document.getElementById('CSG').innerHTML=myc.map(item=>{const c=GC(item.cardId);if(!c)return'';return cHtml(c,'',item.foil,`pvpPick('${c.id}')`);}).join('');
-  document.getElementById('CSM').classList.add('open');
+
+function openPvpCardPick() {
+  const mc = S.coll.filter(c=>!getCard(c.cardId)?.trainer);
+  document.getElementById('CSMOTITLE').textContent = 'SELECT YOUR PVP CARD';
+  document.getElementById('CSMG').innerHTML = mc.map(item=>{
+    const c=getCard(item.cardId); if(!c) return '';
+    return cardHtml(c,'',item.foil,`doCardPick('${c.id}')`);
+  }).join('');
+  document.getElementById('CSMO').classList.add('open');
 }
-function pvpPick(id){cm('CSM');if(S._ovcb){S._ovcb(id);S._ovcb=null;}}
-async function accCh(bid,cid){
-  S._ovcb=async(cardId)=>{
-    await SB('PATCH',`/rest/v1/battles?id=eq.${bid}`,{opponent_card:cardId,status:'active'});
-    S.pvp.bid=bid;S.pvp.chal=false;S.pvp.oppId=cid;
-    document.getElementById('PVBA').style.display='';sPoll();
-  };oPvpCS();
+
+async function acceptChallenge(bid, cid) {
+  S._cardPickCb = async(cardId) => {
+    await sb('PATCH', `/rest/v1/battles?id=eq.${bid}`, {opponent_card:cardId, status:'active'});
+    S.pvp.bid = bid; S.pvp.myCard = cardId;
+    document.getElementById('PVPBATTLE').style.display = '';
+    startPvpPoll();
+  };
+  openPvpCardPick();
 }
-async function decCh(bid){await SB('PATCH',`/rest/v1/battles?id=eq.${bid}`,{status:'declined'});rpvp();}
-function sPoll(){if(S.pvp.poll)clearInterval(S.pvp.poll);S.pvp.poll=setInterval(pollPvp,2500);}
-async function pollPvp(){
-  if(!S.pvp.bid)return;
-  const b=await SB('GET',`/rest/v1/battles?id=eq.${S.pvp.bid}&select=*`);
-  if(!Array.isArray(b)||!b[0])return;
-  const batt=b[0];
-  if(batt.status==='declined'){clearInterval(S.pvp.poll);toast('Challenge declined','error');return;}
-  if((batt.status==='active'||batt.status==='done')&&batt.log?.length){
-    document.getElementById('PVBA').style.display='';
-    const l=document.getElementById('PVL2');l.innerHTML=batt.log.map(e=>`<div class="le ${e.type||'system'}">${e.msg}</div>`).join('');l.scrollTop=l.scrollHeight;
-  }
-  if(batt.status==='done'){
+
+async function declineChallenge(bid) {
+  await sb('PATCH', `/rest/v1/battles?id=eq.${bid}`, {status:'declined'});
+  loadPvp();
+}
+
+function startPvpPoll() {
+  if (S.pvp.poll) clearInterval(S.pvp.poll);
+  S.pvp.poll = setInterval(pollPvp, 2500);
+}
+
+async function pollPvp() {
+  if (!S.pvp.bid) return;
+  const b = await sb('GET', `/rest/v1/battles?id=eq.${S.pvp.bid}&select=*`);
+  if (!Array.isArray(b)||!b[0]) return;
+  const batt = b[0];
+  if (batt.status==='declined') {
     clearInterval(S.pvp.poll);
-    const w=batt.winner===S.user?.id;
-    const l=document.getElementById('PVL2');const d=document.createElement('div');d.className='le system';d.textContent=w?'🏆 YOU WIN! +50 💰':'😔 You lost...';l.appendChild(d);
-    if(w){S.coins+=50;un();if(!S.guest)SB('PATCH',`/rest/v1/profiles?id=eq.${S.user.id}`,{coins:S.coins});}
+    toast('Challenge declined','E');
+    return;
+  }
+  if (batt.status==='active'||batt.status==='done') {
+    document.getElementById('PVPBATTLE').style.display = '';
+    if (batt.log?.length) {
+      const l = document.getElementById('PVPLOG');
+      l.innerHTML = batt.log.map(e=>`<div class="le ${e.t||'sys'}">${e.m}</div>`).join('');
+      l.scrollTop = l.scrollHeight;
+    }
+  }
+  if (batt.status==='done') {
+    clearInterval(S.pvp.poll);
+    const won = batt.winner===S.user?.id;
+    const l = document.getElementById('PVPLOG');
+    const d = document.createElement('div');
+    d.className='le sys'; d.textContent = won?'🏆 YOU WIN! +50 💰':'😔 You lost...';
+    l.appendChild(d); l.scrollTop=l.scrollHeight;
+    if (won) { S.coins+=50; updateNav(); if(!S.guest) sb('PATCH',`/rest/v1/profiles?id=eq.${S.user.id}`,{coins:S.coins}); }
   }
 }
 
-// ══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  TRADING
-// ══════════════════════════════════════════════════
-function rTrade(){
-  const sel=document.getElementById('TTP');
-  sel.innerHTML='<option value="">— pick player —</option>'+S.players.map(p=>`<option value="${p.id}">${p.username}</option>`).join('');
-  document.getElementById('MYCC').innerHTML=S.coll.map(item=>{const c=GC(item.cardId);if(!c)return'';return cHtml(c,item.qty,item.foil,`atof('${c.id}')`);}).join('')||'<div class="es" style="grid-column:1/-1"><div class="icon">🃏</div><h3>No Cards</h3></div>';
-  rTS();loadTI();
+// ═══════════════════════════════════════════════════════
+function renderTrade() {
+  const sel = document.getElementById('TPLAYER');
+  sel.innerHTML = '<option value="">— select player —</option>' +
+    S.players.map(p=>`<option value="${p.id}">${p.username}</option>`).join('');
+  document.getElementById('TRADEMY').innerHTML = S.coll.map(item=>{
+    const c=getCard(item.cardId); if(!c) return '';
+    return cardHtml(c, item.qty, item.foil, `addToOffer('${c.id}')`);
+  }).join('') || '<div class="es" style="grid-column:1/-1"><div class="icon">🃏</div><h3>No cards to trade</h3></div>';
+  renderTradeSlots();
+  loadTradeInbox();
 }
-async function ltc(){
-  const tid=document.getElementById('TTP').value;if(!tid)return;
-  const co=await SB('GET',`/rest/v1/collection?user_id=eq.${tid}&select=*`);
-  if(!Array.isArray(co))return;
-  document.getElementById('TCG2').innerHTML=co.map(item=>{const c=GC(item.card_id);if(!c)return'';return cHtml(c,item.quantity,item.foil||'normal',`atow('${c.id}')`);}).join('');
+
+async function loadTheirCards() {
+  const tid = document.getElementById('TPLAYER').value; if (!tid) return;
+  const co = await sb('GET', `/rest/v1/collection?user_id=eq.${tid}&select=*`);
+  if (!Array.isArray(co)) return;
+  document.getElementById('THEIRGRID').innerHTML = co.map(item=>{
+    const c=getCard(item.card_id); if(!c) return '';
+    return cardHtml(c,item.quantity,item.foil||'normal',`addToWant('${c.id}')`);
+  }).join('');
 }
-async function loadTI(){
-  if(S.guest){document.getElementById('TI').innerHTML='<div class="es"><div class="icon">📭</div><h3>Log in for trades</h3></div>';return;}
-  const trades=await SB('GET',`/rest/v1/trades?to_user=eq.${S.user?.id}&status=eq.pending&select=*`);
-  document.getElementById('TI').innerHTML=!Array.isArray(trades)||!trades.length
-    ?'<div class="es"><div class="icon">📭</div><h3>No Incoming Trades</h3></div>'
-    :trades.map(t=>`<div style="background:var(--dark3);border-radius:12px;padding:14px;border:1px solid rgba(255,215,0,.2);margin-bottom:10px">
-        <div style="font-size:12px;margin-bottom:7px">Offer: <strong>${t.from_cards?.length||0} cards</strong> + 💰${t.from_coins||0}</div>
-        <div style="display:flex;gap:5px"><button class="btn btn-sm btn-green" onclick="accTrade('${t.id}',${JSON.stringify(t.from_cards||[]).replace(/"/g,"'")})">✅ Accept</button><button class="btn btn-sm btn-danger" onclick="decTrade('${t.id}')">❌ Decline</button></div>
+
+async function loadTradeInbox() {
+  if (S.guest||!S.user?.id) { document.getElementById('TINBOX').innerHTML='<div class="es"><div class="icon">📭</div><h3>Log in to see trades</h3></div>'; return; }
+  const trades = await sb('GET', `/rest/v1/trades?to_user=eq.${S.user.id}&status=eq.pending&select=*`);
+  document.getElementById('TINBOX').innerHTML = (!Array.isArray(trades)||!trades.length)
+    ? '<div class="es"><div class="icon">📭</div><h3>No incoming trades</h3></div>'
+    : trades.map(t=>`<div style="background:var(--d3);border-radius:10px;padding:12px;border:1px solid rgba(255,215,0,.18);margin-bottom:8px">
+        <div style="font-size:11px;margin-bottom:6px">Offer: <strong>${t.from_cards?.length||0} cards</strong> + 💰${t.from_coins||0}</div>
+        <div style="display:flex;gap:5px">
+          <button class="btn bgreen bsm" onclick="acceptTrade('${t.id}',${JSON.stringify(t.from_cards||[])})">✅ Accept</button>
+          <button class="btn bdanger bsm" onclick="declineTrade('${t.id}')">❌ Decline</button>
+        </div>
       </div>`).join('');
 }
-function atof(id){if(!S.TO.my.includes(id)){S.TO.my.push(id);rTS();toast('Added to offer','info');}}
-function atow(id){if(!S.TO.want.includes(id)){S.TO.want.push(id);rTS();toast('Added to wants','info');}}
-function rTS(){
-  const ms=document.getElementById('MTS');
-  ms.innerHTML=S.TO.my.length?S.TO.my.map(id=>{const c=GC(id);if(!c)return'';const im=c.img;return`<div class="tsc"><img src="${im}" onerror="this.style.display='none'"/><div class="tsx" onclick="rmO('${id}')">✕</div></div>`;}).join(''):'<span style="color:var(--text2);font-size:11px">Click your cards below ↓</span>';
-  const ws=document.getElementById('WTS');
-  ws.innerHTML=S.TO.want.length?S.TO.want.map(id=>{const c=GC(id);if(!c)return'';return`<div class="tsc"><img src="${c.img}" onerror="this.style.display='none'"/><div class="tsx" onclick="rmW('${id}')">✕</div></div>`;}).join(''):'<span style="color:var(--text2);font-size:11px">Pick their cards above</span>';
-}
-function rmO(id){S.TO.my=S.TO.my.filter(c=>c!==id);rTS();}
-function rmW(id){S.TO.want=S.TO.want.filter(c=>c!==id);rTS();}
-function clrTrade(){S.TO={my:[],coins:0,want:[]};rTS();}
-async function propTrade(){
-  if(!S.TO.my.length){toast('Add cards to offer!','error');return;}
-  const target=document.getElementById('TTP').value;if(!target){toast('Select a player!','error');return;}
-  if(S.guest){toast('Log in to trade!','error');return;}
-  const coins=parseInt(document.getElementById('MCO').value)||0;
-  await SB('POST','/rest/v1/trades',{from_user:S.user.id,to_user:target,from_cards:S.TO.my,to_cards:S.TO.want,from_coins:coins,status:'pending'});
-  toast('Trade sent! 📨','success');clrTrade();
-}
-async function accTrade(tid,fromCards){
-  for(const cid of(fromCards||[]))await addColl(cid,'normal');
-  await SB('PATCH',`/rest/v1/trades?id=eq.${tid}`,{status:'accepted'});
-  toast('Trade accepted! Cards added.','success');loadTI();rColl();
-}
-async function decTrade(tid){await SB('PATCH',`/rest/v1/trades?id=eq.${tid}`,{status:'declined'});toast('Trade declined.','info');loadTI();}
 
-// ══════════════════════════════════════════════════
+function addToOffer(id)  { if(!S.tradeOffer.my.includes(id)){S.tradeOffer.my.push(id);renderTradeSlots();toast('Added to offer','I');}}
+function addToWant(id)   { if(!S.tradeOffer.want.includes(id)){S.tradeOffer.want.push(id);renderTradeSlots();toast('Added to wants','I');}}
+function rmOffer(id)  { S.tradeOffer.my=S.tradeOffer.my.filter(c=>c!==id); renderTradeSlots(); }
+function rmWant(id)   { S.tradeOffer.want=S.tradeOffer.want.filter(c=>c!==id); renderTradeSlots(); }
+function clearTrade() { S.tradeOffer={my:[],coins:0,want:[]}; renderTradeSlots(); }
+
+function renderTradeSlots() {
+  const ms = document.getElementById('MYOFFER');
+  ms.innerHTML = S.tradeOffer.my.length
+    ? S.tradeOffer.my.map(id=>{const c=getCard(id);if(!c)return'';return`<div class="tsc"><img src="${c.img}" onerror="this.style.display='none'"/><div class="tsx" onclick="rmOffer('${id}')">✕</div></div>`;}).join('')
+    : '<span style="color:var(--t2);font-size:10px">Click your cards below ↓</span>';
+  const ws = document.getElementById('THEIRWANT');
+  ws.innerHTML = S.tradeOffer.want.length
+    ? S.tradeOffer.want.map(id=>{const c=getCard(id);if(!c)return'';return`<div class="tsc"><img src="${c.img}" onerror="this.style.display='none'"/><div class="tsx" onclick="rmWant('${id}')">✕</div></div>`;}).join('')
+    : '<span style="color:var(--t2);font-size:10px">Select player & pick cards</span>';
+}
+
+async function sendTrade() {
+  if (!S.tradeOffer.my.length) { toast('Add cards to offer!','E'); return; }
+  const target = document.getElementById('TPLAYER').value;
+  if (!target) { toast('Select a player!','E'); return; }
+  if (S.guest) { toast('Log in to trade!','E'); return; }
+  const coins = parseInt(document.getElementById('MYCOINS').value)||0;
+  await sb('POST', '/rest/v1/trades', {from_user:S.user.id,to_user:target,from_cards:S.tradeOffer.my,to_cards:S.tradeOffer.want,from_coins:coins,status:'pending'});
+  toast('Trade sent! 📨','S');
+  clearTrade();
+}
+
+async function acceptTrade(tid, fromCards) {
+  for (const cid of (fromCards||[])) await addToCollection(cid,'normal');
+  await sb('PATCH', `/rest/v1/trades?id=eq.${tid}`, {status:'accepted'});
+  toast('Trade accepted! Cards added to collection.','S');
+  loadTradeInbox(); renderColl();
+}
+
+async function declineTrade(tid) {
+  await sb('PATCH', `/rest/v1/trades?id=eq.${tid}`, {status:'declined'});
+  toast('Trade declined.','I');
+  loadTradeInbox();
+}
+
+// ═══════════════════════════════════════════════════════
 //  ADMIN
-// ══════════════════════════════════════════════════
-function rAdmin(){
-  const cards=AC();
-  const cOpts=cards.map(c=>`<option value="${c.id}">${c.number} — ${c.name}</option>`).join('');
-  ['agC','aeC'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=(id==='aeC'?'<option value="">— none —</option>':'')+cOpts;});
-  document.getElementById('apPl').innerHTML=cOpts;
-  const pOpts=S.packs.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
-  document.getElementById('agPk').innerHTML='<option value="">—</option>'+pOpts;
-  const plOpts=['<option value="">—</option>',...S.players.map(p=>`<option value="${p.id}">${p.username}</option>`)].join('');
-  ['agPl'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=plOpts;});
-  // Players table
-  document.getElementById('APLT').innerHTML=`<tr><th>Username</th><th>Coins</th><th>Actions</th></tr>`+
-    (S.players.length?S.players.map(p=>`<tr><td>${p.username}</td><td>💰${p.coins||0}</td><td><button class="btn btn-sm btn-danger" onclick="aDLP('${p.id}')">Remove</button></td></tr>`).join(''):'<tr><td colspan="3" style="color:var(--text2);text-align:center;padding:12px">Run SQL first — see setup guide</td></tr>');
+// ═══════════════════════════════════════════════════════
+function renderAdmin() {
+  const cards = allCards();
+  const cOpts = cards.map(c=>`<option value="${c.id}">${c.label}</option>`).join('');
+  ['AGCARD','AECARD'].forEach(id=>{ const el=document.getElementById(id); if(el) el.innerHTML=(id==='AECARD'?'<option value="">— none —</option>':'')+cOpts; });
+  document.getElementById('APPOOL').innerHTML = cOpts;
+  const pOpts = S.packs.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+  document.getElementById('AGPACK').innerHTML = '<option value="">— select —</option>'+pOpts;
+  const plOpts = ['<option value="">— select —</option>',...S.players.map(p=>`<option value="${p.id}">${p.username}</option>`)].join('');
+  ['AGPLAYER','ABPLAYER'].forEach(id=>{ const el=document.getElementById(id); if(el) el.innerHTML=(id==='ABPLAYER'?'<option value="all">All Players (public)</option>':'')+S.players.map(p=>`<option value="${p.id}">${p.username}</option>`).join(''); });
+
   // Cards table
-  document.getElementById('ACT').innerHTML=`<tr><th>#</th><th>Name</th><th>Type</th><th>HP</th><th>Rarity</th><th>Source</th><th>Delete</th></tr>`+
+  document.getElementById('ADMINCARDS').innerHTML =
+    `<tr><th>Number</th><th>Name</th><th>Type</th><th>HP</th><th>Rarity</th><th>Source</th><th>Delete</th></tr>` +
     cards.map(c=>`<tr>
-      <td>${c.number}</td><td style="font-weight:700">${c.name}</td>
-      <td><span class="tag ${TCLS[c.type]||'tn'}">${c.type}</span></td>
+      <td>No. ${c.num}</td>
+      <td style="font-weight:700">${c.name}</td>
+      <td><span class="tag T${c.type}">${c.type}</span></td>
       <td>${c.hp||'—'}</td>
-      <td><span class="tag ${c.rarity==='legendary'?'trl':c.rarity==='epic'?'tre':c.rarity==='rare'?'trr':'trc'}">${c.rarity}</span></td>
-      <td style="font-size:9px;color:var(--text2)">${c._cid?'Custom':'Built-in'}</td>
-      <td>${c._cid?`<button class="btn btn-sm btn-danger" onclick="aDLC('${c.id}')">Del</button>`:'<span style="color:var(--text2);font-size:9px">Protected</span>'}</td>
+      <td><span class="tag R${c.rarity}">${c.rarity}</span></td>
+      <td style="font-size:9px;color:var(--t2)">${c._dbId?'Custom':'Built-in'}</td>
+      <td>${c._dbId
+        ? `<button class="btn bdanger bsm" onclick="deleteCard('${c.id}')">Delete</button>`
+        : '<span style="color:var(--t2);font-size:9px">Protected</span>'}</td>
     </tr>`).join('');
-  // Packs table
-  document.getElementById('APT').innerHTML=`<tr><th>Name</th><th>Price</th><th>Cards/pack</th><th>Delete</th></tr>`+
+
+  // Packs table — ALL packs deletable
+  document.getElementById('ADMINPACKS').innerHTML =
+    `<tr><th>Name</th><th>Price</th><th>Cards/pack</th><th>Delete</th></tr>` +
     S.packs.map(p=>`<tr>
-      <td style="font-weight:700">${p.name}</td><td>💰${p.price||0}</td><td>${p.cpp||5}</td>
-      <td><button class="btn btn-sm btn-danger" onclick="aDLPk('${p.id}')">Del</button></td>
+      <td style="font-weight:700">${p.name}</td>
+      <td>💰${p.price||0}</td>
+      <td>${p.cpp||5}</td>
+      <td><button class="btn bdanger bsm" onclick="deletePack('${p.id}')">Delete</button></td>
     </tr>`).join('');
+
+  // Players table
+  document.getElementById('ADMINPLAYERS').innerHTML =
+    `<tr><th>Username</th><th>Coins</th><th>Actions</th></tr>` +
+    (S.players.length
+      ? S.players.map(p=>`<tr>
+          <td>${p.username}</td>
+          <td>💰${p.coins||0}</td>
+          <td><button class="btn bdanger bsm" onclick="removePlayer('${p.id}')">Remove</button></td>
+        </tr>`).join('')
+      : '<tr><td colspan="3" style="color:var(--t2);text-align:center;padding:12px">Run the SQL setup first — then players will appear here</td></tr>');
 }
 
-let aMI=0;
-function aam(){
-  aMI++;
-  const c=document.getElementById('AMC');
-  const d=document.createElement('div');
-  d.id='am'+aMI;d.style.cssText='background:rgba(255,255,255,.04);border-radius:8px;padding:10px;margin-bottom:8px;position:relative';
-  d.innerHTML=`<button onclick="this.parentElement.remove()" style="position:absolute;top:5px;right:5px;background:rgba(255,77,77,.3);border:none;color:#fff;border-radius:4px;padding:1px 5px;cursor:pointer;font-size:10px">✕</button>
-    <div class="fg"><label class="fl2">Move Name</label><input class="fi amn" placeholder="Move name"/></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px">
-      <div class="fg"><label class="fl2">Damage</label><input class="fi amd" type="number" placeholder="20"/></div>
-      <div class="fg"><label class="fl2">Type</label><select class="fs amt"><option value="damage">Damage</option><option value="heal">Heal</option><option value="effect">Effect</option><option value="special">Special</option></select></div>
-      <div class="fg"><label class="fl2">Cooldown (T)</label><input class="fi amcd" type="number" placeholder="0" value="0"/></div>
-      <div class="fg"><label class="fl2">Once/match</label><select class="fs amopm"><option value="0">No</option><option value="1">Yes</option></select></div>
+// Admin battle card picker
+function pickAdminCard(side) {
+  S.adminBattlePick = side;
+  const allNT = allCards().filter(c=>!c.trainer);
+  document.getElementById('CSMOTITLE').textContent = `SELECT CARD ${side}`;
+  document.getElementById('CSMG').innerHTML = allNT.map(c=>cardHtml(c,'','normal',`setAdminCard(${side},'${c.id}')`)).join('');
+  document.getElementById('CSMO').classList.add('open');
+}
+
+function setAdminCard(side, id) {
+  cm('CSMO');
+  const card = getCard(id); if (!card) return;
+  if (side===1) { S.adminCard1=card; const el=document.getElementById('ABCARD1'); el.innerHTML=`<img src="${card.img}" style="width:100%;height:100%;object-fit:cover"/>`; el.style.border='3px solid var(--gold)'; }
+  if (side===2) { S.adminCard2=card; const el=document.getElementById('ABCARD2'); el.innerHTML=`<img src="${card.img}" style="width:100%;height:100%;object-fit:cover"/>`; el.style.border='3px solid var(--pink)'; }
+}
+
+async function launchAdminBattle() {
+  if (!S.adminCard1||!S.adminCard2) { toast('Pick both cards first!','E'); return; }
+  const name  = document.getElementById('ABNAME').value||'Admin Battle';
+  const pid   = document.getElementById('ABPLAYER').value;
+  const entry = {challenger:'admin',opponent:pid==='all'?null:pid,challenger_card:S.adminCard1.id,opponent_card:S.adminCard2.id,status:'admin',name,log:[]};
+  await sb('POST', '/rest/v1/battles', entry);
+  toast(`Battle "${name}" launched! Cards: ${S.adminCard1.name} VS ${S.adminCard2.name}`,'S');
+  S.adminCard1=null; S.adminCard2=null;
+  document.getElementById('ABCARD1').innerHTML='Click to pick'; document.getElementById('ABCARD1').style.border='3px dashed rgba(255,215,0,.3)';
+  document.getElementById('ABCARD2').innerHTML='Click to pick'; document.getElementById('ABCARD2').style.border='3px dashed rgba(255,77,187,.3)';
+}
+
+// Create custom card
+let _moveIdx = 0;
+function addMove() {
+  _moveIdx++;
+  const c = document.getElementById('AMOVES');
+  const d = document.createElement('div');
+  d.style.cssText='background:rgba(255,255,255,.04);border-radius:7px;padding:9px;margin-bottom:7px;position:relative';
+  d.innerHTML=`<button onclick="this.parentElement.remove()" style="position:absolute;top:4px;right:4px;background:rgba(255,77,77,.28);border:none;color:#fff;border-radius:4px;padding:1px 5px;cursor:pointer;font-size:9px">✕</button>
+    <div class="fg"><label class="fl">Move Name</label><input class="fi mn_${_moveIdx}" placeholder="Move name"/></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px">
+      <div class="fg"><label class="fl">Damage</label><input class="fi md_${_moveIdx}" type="number" placeholder="20"/></div>
+      <div class="fg"><label class="fl">Type</label><select class="fs mt_${_moveIdx}"><option value="dmg">Damage</option><option value="heal">Heal</option><option value="stun">Stun</option><option value="special">Special</option><option value="dot">DOT</option><option value="debuff">Debuff</option></select></div>
+      <div class="fg"><label class="fl">Cooldown</label><input class="fi mcd_${_moveIdx}" type="number" value="0" min="0"/></div>
+      <div class="fg"><label class="fl">Once/match</label><select class="fs mopm_${_moveIdx}"><option value="0">No</option><option value="1">Yes</option></select></div>
     </div>
-    <div class="fg"><label class="fl2">Description</label><input class="fi amde" placeholder="Optional desc"/></div>`;
+    <div class="fg"><label class="fl">Description</label><input class="fi mde_${_moveIdx}" placeholder="Optional desc"/></div>`;
   c.appendChild(d);
 }
-async function aCC(){
-  const name=document.getElementById('acN').value.trim();if(!name){toast('Name required','error');return;}
-  const moves=[];
-  document.querySelectorAll('#AMC > div').forEach(d=>{
-    const n=d.querySelector('.amn')?.value;if(!n)return;
-    moves.push({name:n,dmg:parseInt(d.querySelector('.amd')?.value)||0,type:d.querySelector('.amt')?.value||'damage',desc:d.querySelector('.amde')?.value||'',cd:parseInt(d.querySelector('.amcd')?.value)||0,opm:d.querySelector('.amopm')?.value==='1'});
-  });
-  const imgVal=document.getElementById('acI').value.trim();
-  const card={id:'cc_'+Date.now(),number:String(document.getElementById('acNu').value||AC().length+1).padStart(4,'0'),name,stage:'Stage 1',hp:parseInt(document.getElementById('acH').value)||100,hpUnit:'HP',type:document.getElementById('acT').value,rarity:document.getElementById('acR').value,img:imgVal||IMG(name.replace(/ /g,'_')+'.png'),flavour:document.getElementById('acF').value,weakness:document.getElementById('acW').value,resistance:document.getElementById('acRe').value,retreat:document.getElementById('acRt').value,isTrainer:document.getElementById('acT').value==='trainer',moves};
-  if(!S.guest&&S.user?.id){
-    const r=await SB('POST','/rest/v1/custom_cards',{id:card.id,card_data:card,created_by:S.user.id});
-    if(r?.[0])card._cid=card.id;
-  }
-  S.cc.push(card);toast('Card "'+name+'" created! ✅','success');
-  document.getElementById('AMC').innerHTML='';document.getElementById('acN').value='';
-  rAdmin();
-}
-async function aDLC(id){
-  if(!confirm('Delete this custom card?'))return;
-  S.cc=S.cc.filter(c=>c.id!==id);
-  if(!S.guest)await SB('DELETE',`/rest/v1/custom_cards?id=eq.${id}`);
-  toast('Card deleted','info');rAdmin();
-}
-async function aCP(){
-  const name=document.getElementById('apN').value.trim();if(!name){toast('Name required','error');return;}
-  const pool=Array.from(document.getElementById('apPl').selectedOptions).map(o=>o.value);
-  const pack={id:'pk_'+Date.now(),name,desc:document.getElementById('apD').value,cpp:parseInt(document.getElementById('apC').value)||5,price:parseInt(document.getElementById('apP').value)||100,img:document.getElementById('apI').value||IMG('The_Pack.png'),pool:pool.length?pool:AC().map(c=>c.id)};
-  if(!S.guest&&S.user?.id){
-    const r=await SB('POST','/rest/v1/packs',{name:pack.name,description:pack.desc,cards_per_pack:pack.cpp,price:pack.price,image_url:pack.img,card_pool:pack.pool});
-    if(r?.[0]?.id)pack._dbId=r[0].id;
-  }
-  S.packs.push(pack);toast('Pack "'+name+'" created! ✅','success');rAdmin();
-}
-function aDLPk(id){
-  if(!confirm('Delete this pack?'))return;
-  S.packs=S.packs.filter(p=>p.id!==id);
-  toast('Pack deleted','info');rAdmin();
-}
-async function aGC(){
-  const pid=document.getElementById('agPl').value;const cid=document.getElementById('agC').value;
-  const foil=document.getElementById('agFl').value;const qty=parseInt(document.getElementById('agQ').value)||1;
-  if(!pid||!cid){toast('Select player and card','error');return;}
-  for(let i=0;i<qty;i++)await SB('POST','/rest/v1/collection',{user_id:pid,card_id:cid,quantity:1,foil});
-  toast('Gave '+qty+'× '+FTAG[foil]?.text+' '+GC(cid)?.name+' ✅','success');
-}
-async function aGP(){toast('Pack give — implement via player_packs table','info');}
-async function aGCo(){
-  const pid=document.getElementById('agPl').value;const coins=parseInt(document.getElementById('agCo').value)||0;
-  if(!pid){toast('Select a player','error');return;}
-  const pr=await SB('GET',`/rest/v1/profiles?id=eq.${pid}&select=coins`);
-  const cur=pr?.[0]?.coins||0;
-  await SB('PATCH',`/rest/v1/profiles?id=eq.${pid}`,{coins:cur+coins});
-  toast('Gave 💰'+coins+' coins ✅','success');
-}
-async function aLE(){
-  const name=document.getElementById('aeN').value.trim();if(!name){toast('Name required','error');return;}
-  await SB('POST','/rest/v1/events',{name,description:document.getElementById('aeD').value,reward_card:document.getElementById('aeC').value||null,reward_coins:parseInt(document.getElementById('aeCo').value)||0,active:true});
-  toast('Event "'+name+'" launched! 🎉','success');
-}
-function aDLP(uid){S.players=S.players.filter(p=>p.id!==uid);rAdmin();}
 
-// ══════════════════════════════════════════════════
-//  HERO CARDS
-// ══════════════════════════════════════════════════
-function rHero(){
-  const sample=[BC[0],BC[3],BC[5],BC[18],BC[20]].filter(Boolean);
-  document.getElementById('HC').innerHTML=sample.map(c=>`
-    <div class="float-card" onclick="scd('${c.id}')">
+async function createCard() {
+  const name = document.getElementById('ACN').value.trim();
+  if (!name) { toast('Card name required','E'); return; }
+  const moves = [];
+  document.querySelectorAll('#AMOVES > div').forEach(d=>{
+    const n = d.querySelector('[class*="mn_"]')?.value; if (!n) return;
+    moves.push({
+      n, d:parseInt(d.querySelector('[class*="md_"]')?.value)||0,
+      t:d.querySelector('[class*="mt_"]')?.value||'dmg',
+      desc:d.querySelector('[class*="mde_"]')?.value||'',
+      cd:parseInt(d.querySelector('[class*="mcd_"]')?.value)||0,
+      opm:d.querySelector('[class*="mopm_"]')?.value==='1'
+    });
+  });
+  const num = String(document.getElementById('ACNU').value||allCards().length+1).padStart(4,'0');
+  const imgUrl = document.getElementById('ACI').value.trim() || img(name.replace(/ /g,'_')+'.png');
+  const card = {
+    id:'cc_'+Date.now(), num, name,
+    label:`${name} No. ${num}`,
+    hp:parseInt(document.getElementById('ACH').value)||100, hpu:'HP',
+    type:document.getElementById('ACT').value,
+    rarity:document.getElementById('ACR').value,
+    img:imgUrl,
+    flavour:document.getElementById('ACF').value,
+    weak:document.getElementById('ACW').value,
+    resist:document.getElementById('ACRE').value,
+    retreat:document.getElementById('ACRT').value,
+    trainer:document.getElementById('ACT').value==='trainer',
+    moves
+  };
+  if (!S.guest && S.user?.id) {
+    const r = await sb('POST', '/rest/v1/custom_cards', {id:card.id, card_data:card, created_by:S.user.id});
+    if (r?.[0]) card._dbId = card.id;
+  } else card._dbId = 'local_'+card.id;
+  S.customCards.push(card);
+  toast(`Card "${card.label}" created! ✅`,'S');
+  document.getElementById('AMOVES').innerHTML='';
+  document.getElementById('ACN').value='';
+  renderAdmin();
+}
+
+async function deleteCard(id) {
+  if (!confirm('Delete this card? Cannot be undone.')) return;
+  S.customCards = S.customCards.filter(c=>c.id!==id);
+  if (!S.guest) await sb('DELETE', `/rest/v1/custom_cards?id=eq.${id}`);
+  toast('Card deleted','I'); renderAdmin();
+}
+
+async function createPack() {
+  const name = document.getElementById('APN').value.trim();
+  if (!name) { toast('Pack name required','E'); return; }
+  const pool = Array.from(document.getElementById('APPOOL').selectedOptions).map(o=>o.value);
+  const pack = {
+    id:'pk_'+Date.now(), name,
+    desc:document.getElementById('APD').value,
+    cpp:parseInt(document.getElementById('APC').value)||5,
+    price:parseInt(document.getElementById('APP').value)||100,
+    img:document.getElementById('APIMG').value||img('The_Pack.png'),
+    pool:pool.length ? pool : allCards().map(c=>c.id)
+  };
+  if (!S.guest && S.user?.id) {
+    const r = await sb('POST', '/rest/v1/packs', {name:pack.name,description:pack.desc,cards_per_pack:pack.cpp,price:pack.price,image_url:pack.img,card_pool:pack.pool});
+    if (r?.[0]?.id) pack._dbId=r[0].id;
+  }
+  S.packs.push(pack);
+  toast(`Pack "${name}" created! ✅`,'S'); renderAdmin();
+}
+
+async function deletePack(id) {
+  if (!confirm('Delete this pack?')) return;
+  const pk = S.packs.find(p=>p.id===id);
+  S.packs = S.packs.filter(p=>p.id!==id);
+  if (!S.guest && pk?._dbId) await sb('DELETE', `/rest/v1/packs?id=eq.${pk._dbId}`);
+  toast('Pack deleted','I'); renderAdmin();
+}
+
+// Give card to a player
+async function giveCard() {
+  const pid   = document.getElementById('AGPLAYER').value;
+  const cid   = document.getElementById('AGCARD').value;
+  const foil  = document.getElementById('AGFOIL').value;
+  const qty   = parseInt(document.getElementById('AGQTY').value)||1;
+  if (!pid||!cid) { toast('Select player and card','E'); return; }
+  for (let i=0; i<qty; i++) {
+    await sb('POST', '/rest/v1/collection', {user_id:pid, card_id:cid, quantity:1, foil});
+  }
+  const card = getCard(cid);
+  toast(`Gave ${qty}× ${FOILS[foil]?.t||'Normal'} ${card?.name} ✅`,'S');
+}
+
+// Give pack — record in player_packs
+async function givePack() {
+  const pid  = document.getElementById('AGPLAYER').value;
+  const pkid = document.getElementById('AGPACK').value;
+  const qty  = parseInt(document.getElementById('AGPQTY').value)||1;
+  if (!pid||!pkid) { toast('Select player and pack','E'); return; }
+  const pk = S.packs.find(p=>p.id===pkid);
+  if (!pk) { toast('Pack not found','E'); return; }
+  // Give the pack by opening it on behalf of the player and adding cards
+  for (let q=0; q<qty; q++) {
+    for (let i=0; i<(pk.cpp||5); i++) {
+      const card = rollCard(pk.pool);
+      if (card) await sb('POST', '/rest/v1/collection', {user_id:pid, card_id:card.id, quantity:1, foil:rollFoil()});
+    }
+  }
+  toast(`Gave ${qty} "${pk.name}" pack(s) — cards added to player collection ✅`,'S');
+}
+
+async function giveCoins() {
+  const pid   = document.getElementById('AGPLAYER').value;
+  const coins = parseInt(document.getElementById('AGCOINS').value)||0;
+  if (!pid) { toast('Select a player','E'); return; }
+  const pr = await sb('GET', `/rest/v1/profiles?id=eq.${pid}&select=coins`);
+  const cur = pr?.[0]?.coins||0;
+  await sb('PATCH', `/rest/v1/profiles?id=eq.${pid}`, {coins:cur+coins});
+  toast(`Gave 💰${coins} coins ✅`,'S');
+}
+
+async function launchEvent() {
+  const name = document.getElementById('AEN').value.trim();
+  if (!name) { toast('Event name required','E'); return; }
+  await sb('POST', '/rest/v1/events', {name,description:document.getElementById('AED').value,reward_card:document.getElementById('AECARD').value||null,reward_coins:parseInt(document.getElementById('AECOINS').value)||0,active:true});
+  toast(`Event "${name}" launched! 🎉`,'S');
+}
+
+function removePlayer(uid) { S.players=S.players.filter(p=>p.id!==uid); renderAdmin(); }
+
+// ═══════════════════════════════════════════════════════
+//  HERO
+// ═══════════════════════════════════════════════════════
+function renderHero() {
+  const picks = [CARDS[0],CARDS[3],CARDS[5],CARDS[18]||CARDS[17],CARDS[20]||CARDS[19]].filter(Boolean);
+  document.getElementById('HCARDS').innerHTML = picks.map(c=>`
+    <div class="fcard" onclick="showCard('${c.id}')">
       <img src="${c.img}" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover"/>
     </div>`).join('');
 }
 
-// ══════════════════════════════════════════════════
-//  UTILS
-// ══════════════════════════════════════════════════
-function sl(t){document.getElementById('LT').textContent=t||'Loading...';document.getElementById('LDR').classList.add('open');}
-function hl(){document.getElementById('LDR').classList.remove('open');}
-function toast(msg,type){
-  const b=document.getElementById('TB');const t=document.createElement('div');
-  t.className='toast '+(type==='success'?'ts':type==='error'?'te':'ti');t.textContent=msg;
-  b.appendChild(t);setTimeout(()=>t.remove(),3200);
+// ═══════════════════════════════════════════════════════
+//  UTILITIES
+// ═══════════════════════════════════════════════════════
+function showLdr(t='Loading...') { document.getElementById('LDRTXT').textContent=t; document.getElementById('LDR').classList.add('open'); }
+function hideLdr() { document.getElementById('LDR').classList.remove('open'); }
+function toast(msg, type='I') {
+  const b = document.getElementById('TOASTS');
+  const t = document.createElement('div');
+  t.className = 'toast T'+type; t.textContent = msg;
+  b.appendChild(t);
+  setTimeout(()=>t.remove(), 3400);
 }
-document.querySelectorAll('.mo').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+// Close modals by clicking backdrop
+document.querySelectorAll('.mo').forEach(o=>o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('open'); }));
 </script>
 </body>
 </html>
