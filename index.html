@@ -683,11 +683,11 @@ function stab(t) {
 }
 
 async function doLogin() {
-  const uname = document.getElementById('LU').value.trim().toLowerCase();
+  const uname = document.getElementById('LU').value.trim().toLowerCase().replace(/[^a-z0-9_]/g,'');
   const pass  = document.getElementById('LP').value;
   if (!uname || !pass) { setErr('Enter username and password.'); return; }
   showLdr('Signing in...');
-  const email = uname + '@rooftcg.local';
+  const email = uname + '@roof-tcg.com';
   const r = await sb('POST', '/auth/v1/token?grant_type=password', {email, password:pass});
   hideLdr();
   if (r?.access_token) {
@@ -700,15 +700,16 @@ async function doLogin() {
 }
 
 async function doSignup() {
-  const uname = document.getElementById('SU').value.trim().toLowerCase();
+  const uname = document.getElementById('SU').value.trim().toLowerCase().replace(/[^a-z0-9_]/g,'');
   const pass  = document.getElementById('SP').value;
   if (!uname || !pass) { setErr('Fill in all fields.'); return; }
   if (uname.length < 3) { setErr('Username must be at least 3 characters.'); return; }
   if (pass.length < 6)  { setErr('Password must be at least 6 characters.'); return; }
   showLdr('Creating account...');
-  const email = uname + '@rooftcg.local';
-  const existing = await sb('GET', `/rest/v1/profiles?username=eq.${encodeURIComponent(uname)}&select=id`);
-  if (existing?.length) { hideLdr(); setErr('Username already taken.'); return; }
+  const email = uname + '@roof-tcg.com';
+  // Check username not already taken
+  const taken = await sb('GET', '/rest/v1/profiles?username=eq.' + encodeURIComponent(uname) + '&select=id');
+  if (Array.isArray(taken) && taken.length) { hideLdr(); setErr('Username already taken — try another.'); return; }
   const r = await sb('POST', '/auth/v1/signup', {email, password:pass});
   hideLdr();
   if (r?.user?.id || r?.id) {
@@ -717,10 +718,11 @@ async function doSignup() {
       S.tok = r.access_token;
       await sb('POST', '/rest/v1/profiles', {id:uid, username:uname, coins:100});
       await loadProfile(uid);
-      toast('Welcome '+uname+'! 🎉', 'S');
+      toast('Welcome ' + uname + '! 🎉', 'S');
       onLogin();
     } else {
-      setErr('Disable "Confirm email" in Supabase Auth → Settings, then try again.');
+      // Supabase is requiring email confirmation — must disable it
+      setErr('Go to Supabase → Auth → Settings → disable "Confirm email", then try again.');
     }
   } else {
     setErr(r?.error_description || r?.msg || r?.message || 'Signup failed.');
@@ -798,7 +800,7 @@ function go(page) {
 
 function updateNav() {
   document.getElementById('COINS').textContent = '💰 ' + S.coins;
-  const _pc = document.getElementById('PCOINS'); if (_pc) _pc.textContent = '💰 ' + S.coins;
+  const _pco=document.getElementById('PCOINS'); if(_pco) _pco.textContent='💰 '+S.coins;
   const u = S.user?.username||'?';
   document.getElementById('AVA').textContent    = u[0].toUpperCase();
   document.getElementById('PROFAVA').textContent = u[0].toUpperCase();
@@ -1022,9 +1024,9 @@ async function addToCollection(cardId, foil) {
   if (ex) ex.qty++;
   else S.coll.push({cardId, qty:1, foil});
   if (!S.guest && S.user?.id) {
-    const existing = await sb('GET', `/rest/v1/collection?user_id=eq.${S.user.id}&card_id=eq.${cardId}&foil=eq.${foil}&select=id,quantity`);
-    if (existing?.length) {
-      await sb('PATCH', `/rest/v1/collection?id=eq.${existing[0].id}`, {quantity: existing[0].quantity + 1});
+    const _ex = await sb('GET', `/rest/v1/collection?user_id=eq.${S.user.id}&card_id=eq.${cardId}&foil=eq.${foil}&select=id,quantity`);
+    if (_ex?.length) {
+      await sb('PATCH', `/rest/v1/collection?id=eq.${_ex[0].id}`, {quantity: _ex[0].quantity + 1});
     } else {
       await sb('POST', '/rest/v1/collection', {user_id:S.user.id, card_id:cardId, quantity:1, foil});
     }
@@ -1359,12 +1361,11 @@ async function pollPvp() {
   }
   if (batt.status==='active'||batt.status==='done') {
     document.getElementById('PVPBATTLE').style.display = '';
-    let logArr = batt.log;
-    if (typeof logArr === 'string') { try { logArr = JSON.parse(logArr); } catch { logArr = []; } }
-    if (Array.isArray(logArr) && logArr.length) {
-      const l = document.getElementById('PVPLOG');
-      l.innerHTML = logArr.map(e=>`<div class="le ${e.t||'sys'}">${e.m||e}</div>`).join('');
-      l.scrollTop = l.scrollHeight;
+    let _log = batt.log; if (typeof _log==='string'){try{_log=JSON.parse(_log);}catch{_log=[];}}
+    if (Array.isArray(_log)&&_log.length) {
+      const l=document.getElementById('PVPLOG');
+      l.innerHTML=_log.map(e=>`<div class="le ${e.t||'sys'}">${e.m||e}</div>`).join('');
+      l.scrollTop=l.scrollHeight;
     }
   }
   if (batt.status==='done') {
@@ -1639,12 +1640,9 @@ async function giveCard() {
   const qty   = parseInt(document.getElementById('AGQTY').value)||1;
   if (!pid||!cid) { toast('Select player and card','E'); return; }
   for (let i=0; i<qty; i++) {
-    const ex2 = await sb('GET', `/rest/v1/collection?user_id=eq.${pid}&card_id=eq.${cid}&foil=eq.${foil}&select=id,quantity`);
-    if (ex2?.length) {
-      await sb('PATCH', `/rest/v1/collection?id=eq.${ex2[0].id}`, {quantity: ex2[0].quantity + 1});
-    } else {
-      await sb('POST', '/rest/v1/collection', {user_id:pid, card_id:cid, quantity:1, foil});
-    }
+    const _ge = await sb('GET', `/rest/v1/collection?user_id=eq.${pid}&card_id=eq.${cid}&foil=eq.${foil}&select=id,quantity`);
+    if (_ge?.length) { await sb('PATCH', `/rest/v1/collection?id=eq.${_ge[0].id}`, {quantity:_ge[0].quantity+1}); }
+    else { await sb('POST', '/rest/v1/collection', {user_id:pid, card_id:cid, quantity:1, foil}); }
   }
   const card = getCard(cid);
   toast(`Gave ${qty}× ${FOILS[foil]?.t||'Normal'} ${card?.name} ✅`,'S');
@@ -1662,15 +1660,7 @@ async function givePack() {
   for (let q=0; q<qty; q++) {
     for (let i=0; i<(pk.cpp||5); i++) {
       const card = rollCard(pk.pool);
-      if (card) {
-        const pf = rollFoil();
-        const ex3 = await sb('GET', `/rest/v1/collection?user_id=eq.${pid}&card_id=eq.${card.id}&foil=eq.${pf}&select=id,quantity`);
-        if (ex3?.length) {
-          await sb('PATCH', `/rest/v1/collection?id=eq.${ex3[0].id}`, {quantity: ex3[0].quantity + 1});
-        } else {
-          await sb('POST', '/rest/v1/collection', {user_id:pid, card_id:card.id, quantity:1, foil:pf});
-        }
-      }
+      if (card) { const pf=rollFoil(); const _gp=await sb('GET',`/rest/v1/collection?user_id=eq.${pid}&card_id=eq.${card.id}&foil=eq.${pf}&select=id,quantity`); if(_gp?.length){await sb('PATCH',`/rest/v1/collection?id=eq.${_gp[0].id}`,{quantity:_gp[0].quantity+1});}else{await sb('POST','/rest/v1/collection',{user_id:pid,card_id:card.id,quantity:1,foil:pf});} }
     }
   }
   toast(`Gave ${qty} "${pk.name}" pack(s) — cards added to player collection ✅`,'S');
