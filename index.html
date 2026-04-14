@@ -482,7 +482,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,.97);backdrop-fil
       </div>
       <div id="AMOVES"></div>
       <button class="btn bdark bsm" onclick="addMove()" style="width:100%;margin-bottom:6px">+ Add Move</button>
-      <button class="btn bgold" style="width:100%" onclick="createCard()">✅ Create Card</button>
+      <button class="btn bgold" style="width:100%" id="ACBTN" onclick="createCard()">✅ Create Card</button>
     </div>
     <!-- Create Pack -->
     <div class="ac">
@@ -652,9 +652,9 @@ let S = {
   },
   pvp:{bid:null, poll:null, myCard:null},
   adminBattlePick:0, adminCard1:null, adminCard2:null,
-  _cardPickCb:null
+  _cardPickCb:null, _editingCardId:null
 };
-const allCards = () => [...CARDS, ...S.customCards];
+const allCards = () => { const overrides=new Map(S.customCards.map(c=>[c.id,c])); return CARDS.map(c=>overrides.get(c.id)||c).concat(S.customCards.filter(c=>!CARDS.find(b=>b.id===c.id))); };
 const getCard  = id => allCards().find(c=>c.id===id);
 
 // ═══════════════════════════════════════════════════════
@@ -707,9 +707,8 @@ async function doSignup() {
   if (pass.length < 6)  { setErr('Password must be at least 6 characters.'); return; }
   showLdr('Creating account...');
   const email = uname + '@roof-tcg.com';
-  // Check username not already taken
   const taken = await sb('GET', '/rest/v1/profiles?username=eq.' + encodeURIComponent(uname) + '&select=id');
-  if (Array.isArray(taken) && taken.length) { hideLdr(); setErr('Username already taken — try another.'); return; }
+  if (Array.isArray(taken) && taken.length) { hideLdr(); setErr('Username already taken.'); return; }
   const r = await sb('POST', '/auth/v1/signup', {email, password:pass});
   hideLdr();
   if (r?.user?.id || r?.id) {
@@ -721,8 +720,7 @@ async function doSignup() {
       toast('Welcome ' + uname + '! 🎉', 'S');
       onLogin();
     } else {
-      // Supabase is requiring email confirmation — must disable it
-      setErr('Go to Supabase → Auth → Settings → disable "Confirm email", then try again.');
+      setErr('Disable "Confirm email" in Supabase → Auth → Settings, then try again.');
     }
   } else {
     setErr(r?.error_description || r?.msg || r?.message || 'Signup failed.');
@@ -734,6 +732,7 @@ async function loadProfile(uid) {
   if (pr?.length) { S.user = pr[0]; S.coins = pr[0].coins||0; S.adminUnlocked = !!pr[0].is_admin; }
   else { S.user = {id:uid, username:'Player', coins:100, is_admin:false}; S.coins = 100; }
   const co = await sb('GET', `/rest/v1/collection?user_id=eq.${uid}&select=*`);
+  // IMPORTANT: new players start with ZERO cards — collection is empty until they open packs
   S.coll = Array.isArray(co) ? co.map(c=>({cardId:c.card_id, qty:c.quantity||1, foil:c.foil||'normal'})) : [];
   const cu = await sb('GET', '/rest/v1/custom_cards?select=*');
   S.customCards = Array.isArray(cu) ? cu.map(c=>({...c.card_data, id:c.id, _dbId:c.id})) : [];
@@ -1361,8 +1360,8 @@ async function pollPvp() {
   }
   if (batt.status==='active'||batt.status==='done') {
     document.getElementById('PVPBATTLE').style.display = '';
-    let _log = batt.log; if (typeof _log==='string'){try{_log=JSON.parse(_log);}catch{_log=[];}}
-    if (Array.isArray(_log)&&_log.length) {
+    let _log=batt.log; if(typeof _log==='string'){try{_log=JSON.parse(_log);}catch{_log=[];}}
+    if(Array.isArray(_log)&&_log.length){
       const l=document.getElementById('PVPLOG');
       l.innerHTML=_log.map(e=>`<div class="le ${e.t||'sys'}">${e.m||e}</div>`).join('');
       l.scrollTop=l.scrollHeight;
@@ -1472,9 +1471,9 @@ function renderAdmin() {
   const plOpts = ['<option value="">— select —</option>',...S.players.map(p=>`<option value="${p.id}">${p.username}</option>`)].join('');
   ['AGPLAYER','ABPLAYER'].forEach(id=>{ const el=document.getElementById(id); if(el) el.innerHTML=(id==='ABPLAYER'?'<option value="all">All Players (public)</option>':'')+S.players.map(p=>`<option value="${p.id}">${p.username}</option>`).join(''); });
 
-  // Cards table
+  // Cards table — all cards editable
   document.getElementById('ADMINCARDS').innerHTML =
-    `<tr><th>Number</th><th>Name</th><th>Type</th><th>HP</th><th>Rarity</th><th>Source</th><th>Delete</th></tr>` +
+    `<tr><th>Number</th><th>Name</th><th>Type</th><th>HP</th><th>Rarity</th><th>Source</th><th>Actions</th></tr>` +
     cards.map(c=>`<tr>
       <td>No. ${c.num}</td>
       <td style="font-weight:700">${c.name}</td>
@@ -1482,9 +1481,10 @@ function renderAdmin() {
       <td>${c.hp||'—'}</td>
       <td><span class="tag R${c.rarity}">${c.rarity}</span></td>
       <td style="font-size:9px;color:var(--t2)">${c._dbId?'Custom':'Built-in'}</td>
-      <td>${c._dbId
-        ? `<button class="btn bdanger bsm" onclick="deleteCard('${c.id}')">Delete</button>`
-        : '<span style="color:var(--t2);font-size:9px">Protected</span>'}</td>
+      <td style="display:flex;gap:4px;flex-wrap:wrap">
+        <button class="btn bdark bsm" onclick="editCard('${c.id}')">✏️ Edit</button>
+        ${c._dbId ? `<button class="btn bdanger bsm" onclick="deleteCard('${c.id}')">🗑️</button>` : ''}
+      </td>
     </tr>`).join('');
 
   // Packs table — ALL packs deletable
@@ -1572,6 +1572,47 @@ async function createCard() {
   });
   const num = String(document.getElementById('ACNU').value||allCards().length+1).padStart(4,'0');
   const imgUrl = document.getElementById('ACI').value.trim() || img(name.replace(/ /g,'_')+'.png');
+
+  // ── EDIT MODE ──────────────────────────────────────────
+  if (S._editingCardId) {
+    const eid = S._editingCardId;
+    const existing = getCard(eid);
+    const updated = { ...existing, name, num, label:`${name} No. ${num}`,
+      hp:parseInt(document.getElementById('ACH').value)||100, hpu:'HP',
+      type:document.getElementById('ACT').value,
+      rarity:document.getElementById('ACR').value,
+      img:imgUrl,
+      flavour:document.getElementById('ACF').value,
+      weak:document.getElementById('ACW').value,
+      resist:document.getElementById('ACRE').value,
+      retreat:document.getElementById('ACRT').value,
+      trainer:document.getElementById('ACT').value==='trainer',
+      moves
+    };
+    // Built-in card: override in customCards with same id so it shadows the original
+    const ci = S.customCards.findIndex(c=>c.id===eid);
+    if (ci>=0) {
+      S.customCards[ci] = updated;
+      if (!S.guest && updated._dbId)
+        await sb('PATCH', `/rest/v1/custom_cards?id=eq.${updated._dbId}`, {card_data:updated});
+    } else {
+      // Built-in: add to customCards as override (same id shadows CARDS array)
+      updated._dbId = 'override_'+eid;
+      S.customCards.push(updated);
+      if (!S.guest && S.user?.id)
+        await sb('POST', '/rest/v1/custom_cards', {id:'override_'+eid, card_data:updated, created_by:S.user.id});
+    }
+    S._editingCardId = null;
+    document.getElementById('ACBTN').textContent = '✅ Create Card';
+    document.getElementById('ACBTN').style.background = '';
+    toast(`Card "${updated.label}" saved! ✅`,'S');
+    document.getElementById('AMOVES').innerHTML='';
+    document.getElementById('ACN').value='';
+    renderAdmin();
+    return;
+  }
+
+  // ── CREATE MODE ────────────────────────────────────────
   const card = {
     id:'cc_'+Date.now(), num, name,
     label:`${name} No. ${num}`,
@@ -1595,6 +1636,40 @@ async function createCard() {
   document.getElementById('AMOVES').innerHTML='';
   document.getElementById('ACN').value='';
   renderAdmin();
+}
+
+function editCard(id) {
+  const c = getCard(id); if (!c) return;
+  // Populate the Create Card form with this card's data
+  document.getElementById('ACN').value  = c.name;
+  document.getElementById('ACNU').value = c.num;
+  document.getElementById('ACH').value  = c.hp||100;
+  document.getElementById('ACT').value  = c.type;
+  document.getElementById('ACR').value  = c.rarity;
+  document.getElementById('ACI').value  = c.img||'';
+  document.getElementById('ACF').value  = c.flavour||'';
+  document.getElementById('ACW').value  = c.weak||'';
+  document.getElementById('ACRE').value = c.resist||'';
+  document.getElementById('ACRT').value = c.retreat||'';
+  // Populate moves
+  document.getElementById('AMOVES').innerHTML = '';
+  (c.moves||[]).forEach(m => {
+    addMove();
+    const last = document.getElementById('AMOVES').lastElementChild;
+    last.querySelector('[class*="mn_"]').value  = m.n||'';
+    last.querySelector('[class*="md_"]').value  = m.d||0;
+    last.querySelector('[class*="mt_"]').value  = m.t||'dmg';
+    last.querySelector('[class*="mcd_"]').value = m.cd||0;
+    last.querySelector('[class*="mde_"]').value = m.desc||'';
+    last.querySelector('[class*="mopm_"]').value = m.opm ? '1' : '0';
+  });
+  // Mark form as editing this card
+  S._editingCardId = id;
+  document.getElementById('ACBTN').textContent = '💾 Save Changes';
+  document.getElementById('ACBTN').style.background = 'linear-gradient(135deg,var(--blue),#0055ee)';
+  // Scroll to form
+  document.getElementById('ACN').scrollIntoView({behavior:'smooth', block:'center'});
+  toast('Card loaded for editing — make changes and click Save','I');
 }
 
 async function deleteCard(id) {
