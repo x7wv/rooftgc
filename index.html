@@ -668,8 +668,11 @@ async function sb(method, path, body) {
     const r = await fetch(SBU+path, {method, headers:h, body: body ? JSON.stringify(body) : undefined});
     if (r.status === 204) return null;
     const txt = await r.text();
-    try { return JSON.parse(txt); } catch { return txt; }
-  } catch(e) { console.warn('SB',e); return null; }
+    let parsed;
+    try { parsed = JSON.parse(txt); } catch { return txt; }
+    if (r.status >= 400) { console.warn('SB error', r.status, path, parsed); return parsed; }
+    return parsed;
+  } catch(e) { console.warn('SB fetch error',path,e); return null; }
 }
 
 // ═══════════════════════════════════════════════════════
@@ -695,7 +698,7 @@ async function doLogin() {
     await loadProfile(r.user.id);
     onLogin();
   } else {
-    setErr(r?.error_description || r?.msg || 'Login failed — check credentials.');
+    setErr(r?.error_description || r?.error || r?.msg || r?.message || 'Login failed — check your email and password.');
   }
 }
 
@@ -708,24 +711,41 @@ async function doSignup() {
   showLdr('Creating account...');
   const r = await sb('POST', '/auth/v1/signup', {email, password:pass});
   hideLdr();
-  if (r?.user || r?.id) {
-    S.tok = r.access_token;
-    const uid = (r.user || r).id;
-    await sb('POST', '/rest/v1/profiles', {id:uid, username:uname, coins:100});
-    await loadProfile(uid);
-    toast('Welcome '+uname+'! 🎉', 'S');
-    onLogin();
+  if (r?.user?.id || r?.id) {
+    const uid = r.user?.id || r.id;
+    // Some Supabase configs require email confirmation; token may be null
+    if (r.access_token) {
+      S.tok = r.access_token;
+      // Create profile row
+      await sb('POST', '/rest/v1/profiles', {id:uid, username:uname, coins:100});
+      await loadProfile(uid);
+      toast('Welcome '+uname+'! 🎉', 'S');
+      onLogin();
+    } else {
+      // Email confirmation required — still create profile with anon key
+      const tempTok = S.tok; // anon key used as fallback in sb()
+      await sb('POST', '/rest/v1/profiles', {id:uid, username:uname, coins:100});
+      setErr('');
+      toast('Account created! Check your email to confirm, then log in.', 'S');
+      stab('login');
+      document.getElementById('LE').value = email;
+    }
   } else {
-    setErr(r?.error_description || r?.msg || 'Signup failed.');
+    setErr(r?.error_description || r?.msg || r?.message || 'Signup failed.');
   }
 }
 
 async function loadProfile(uid) {
   const pr = await sb('GET', `/rest/v1/profiles?id=eq.${uid}&select=*`);
-  if (pr?.length) { S.user = pr[0]; S.coins = pr[0].coins||0; S.adminUnlocked = !!pr[0].is_admin; }
-  else { S.user = {id:uid, username:'Player', coins:100, is_admin:false}; S.coins = 100; }
+  if (pr?.length) {
+    S.user = pr[0]; S.coins = pr[0].coins||0; S.adminUnlocked = !!pr[0].is_admin;
+  } else {
+    // Profile doesn't exist yet (email-confirmed signup) — create it
+    const username = 'Player_'+uid.slice(0,5);
+    await sb('POST', '/rest/v1/profiles', {id:uid, username, coins:100});
+    S.user = {id:uid, username, coins:100, is_admin:false}; S.coins = 100;
+  }
   const co = await sb('GET', `/rest/v1/collection?user_id=eq.${uid}&select=*`);
-  // IMPORTANT: new players start with ZERO cards — collection is empty until they open packs
   S.coll = Array.isArray(co) ? co.map(c=>({cardId:c.card_id, qty:c.quantity||1, foil:c.foil||'normal'})) : [];
   const cu = await sb('GET', '/rest/v1/custom_cards?select=*');
   S.customCards = Array.isArray(cu) ? cu.map(c=>({...c.card_data, id:c.id, _dbId:c.id})) : [];
@@ -792,7 +812,7 @@ function go(page) {
 
 function updateNav() {
   document.getElementById('COINS').textContent = '💰 ' + S.coins;
-  document.getElementById('PCOINS').textContent = '💰 ' + S.coins;
+  const pcoins = document.getElementById('PCOINS'); if (pcoins) pcoins.textContent = '💰 ' + S.coins;
   const u = S.user?.username||'?';
   document.getElementById('AVA').textContent    = u[0].toUpperCase();
   document.getElementById('PROFAVA').textContent = u[0].toUpperCase();
@@ -812,7 +832,7 @@ function cardHtml(card, qty, foil, onClick) {
   return `<div class="cw${fc}" onclick="${oc}">
     <div class="tc" style="border-color:${col}">
       <img src="${card.img}" alt="${card.label}" loading="lazy"
-        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        onerror="this.style.display='none';var fb=this.nextElementSibling;if(fb)fb.style.display='flex'"/>
       <div class="cfb" style="color:${col}">
         <div style="font-size:20px">${card.trainer?'🃏':'⚡'}</div>
         <div style="font-family:Bangers,cursive;font-size:10px;margin-top:2px">${card.name}</div>
@@ -1015,8 +1035,14 @@ async function addToCollection(cardId, foil) {
   const ex = S.coll.find(c=>c.cardId===cardId && c.foil===foil);
   if (ex) ex.qty++;
   else S.coll.push({cardId, qty:1, foil});
-  if (!S.guest && S.user?.id)
-    await sb('POST', '/rest/v1/collection', {user_id:S.user.id, card_id:cardId, quantity:1, foil});
+  if (!S.guest && S.user?.id) {
+    const existing = await sb('GET', `/rest/v1/collection?user_id=eq.${S.user.id}&card_id=eq.${cardId}&foil=eq.${foil}&select=id,quantity`);
+    if (existing?.length) {
+      await sb('PATCH', `/rest/v1/collection?id=eq.${existing[0].id}`, {quantity: existing[0].quantity + 1});
+    } else {
+      await sb('POST', '/rest/v1/collection', {user_id:S.user.id, card_id:cardId, quantity:1, foil});
+    }
+  }
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1347,9 +1373,11 @@ async function pollPvp() {
   }
   if (batt.status==='active'||batt.status==='done') {
     document.getElementById('PVPBATTLE').style.display = '';
-    if (batt.log?.length) {
+    let logArr = batt.log;
+    if (typeof logArr === 'string') { try { logArr = JSON.parse(logArr); } catch { logArr = []; } }
+    if (Array.isArray(logArr) && logArr.length) {
       const l = document.getElementById('PVPLOG');
-      l.innerHTML = batt.log.map(e=>`<div class="le ${e.t||'sys'}">${e.m}</div>`).join('');
+      l.innerHTML = logArr.map(e=>`<div class="le ${e.t||'sys'}">${e.m||e}</div>`).join('');
       l.scrollTop = l.scrollHeight;
     }
   }
@@ -1625,7 +1653,12 @@ async function giveCard() {
   const qty   = parseInt(document.getElementById('AGQTY').value)||1;
   if (!pid||!cid) { toast('Select player and card','E'); return; }
   for (let i=0; i<qty; i++) {
-    await sb('POST', '/rest/v1/collection', {user_id:pid, card_id:cid, quantity:1, foil});
+    const existing = await sb('GET', `/rest/v1/collection?user_id=eq.${pid}&card_id=eq.${cid}&foil=eq.${foil}&select=id,quantity`);
+    if (existing?.length) {
+      await sb('PATCH', `/rest/v1/collection?id=eq.${existing[0].id}`, {quantity: existing[0].quantity + 1});
+    } else {
+      await sb('POST', '/rest/v1/collection', {user_id:pid, card_id:cid, quantity:1, foil});
+    }
   }
   const card = getCard(cid);
   toast(`Gave ${qty}× ${FOILS[foil]?.t||'Normal'} ${card?.name} ✅`,'S');
@@ -1643,7 +1676,15 @@ async function givePack() {
   for (let q=0; q<qty; q++) {
     for (let i=0; i<(pk.cpp||5); i++) {
       const card = rollCard(pk.pool);
-      if (card) await sb('POST', '/rest/v1/collection', {user_id:pid, card_id:card.id, quantity:1, foil:rollFoil()});
+      if (card) {
+        const foil = rollFoil();
+        const existing = await sb('GET', `/rest/v1/collection?user_id=eq.${pid}&card_id=eq.${card.id}&foil=eq.${foil}&select=id,quantity`);
+        if (existing?.length) {
+          await sb('PATCH', `/rest/v1/collection?id=eq.${existing[0].id}`, {quantity: existing[0].quantity + 1});
+        } else {
+          await sb('POST', '/rest/v1/collection', {user_id:pid, card_id:card.id, quantity:1, foil});
+        }
+      }
     }
   }
   toast(`Gave ${qty} "${pk.name}" pack(s) — cards added to player collection ✅`,'S');
@@ -1691,6 +1732,135 @@ function toast(msg, type='I') {
   b.appendChild(t);
   setTimeout(()=>t.remove(), 3400);
 }
+// ═══════════════════════════════════════════════════════
+//  SUPABASE SQL SETUP — Run this in Supabase SQL Editor
+//  if tables don't exist yet:
+// ═══════════════════════════════════════════════════════
+/*
+-- PROFILES
+create table if not exists profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  username text not null default 'Player',
+  coins integer not null default 100,
+  is_admin boolean not null default false,
+  created_at timestamptz default now()
+);
+alter table profiles enable row level security;
+create policy "profiles_public_read" on profiles for select using (true);
+create policy "profiles_self_write" on profiles for insert with check (auth.uid() = id);
+create policy "profiles_self_update" on profiles for update using (auth.uid() = id);
+-- Allow anon insert (needed for signup before session is set)
+create policy "profiles_anon_insert" on profiles for insert with check (true);
+
+-- COLLECTION
+create table if not exists collection (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references profiles(id) on delete cascade,
+  card_id text not null,
+  quantity integer not null default 1,
+  foil text not null default 'normal',
+  created_at timestamptz default now()
+);
+alter table collection enable row level security;
+create policy "coll_read_own" on collection for select using (auth.uid() = user_id);
+create policy "coll_insert_own" on collection for insert with check (auth.uid() = user_id);
+create policy "coll_update_own" on collection for update using (auth.uid() = user_id);
+create policy "coll_admin_all" on collection for all using (
+  exists(select 1 from profiles where id=auth.uid() and is_admin=true)
+);
+
+-- CUSTOM CARDS
+create table if not exists custom_cards (
+  id text primary key,
+  card_data jsonb not null,
+  created_by uuid references profiles(id),
+  created_at timestamptz default now()
+);
+alter table custom_cards enable row level security;
+create policy "custom_cards_read_all" on custom_cards for select using (true);
+create policy "custom_cards_admin_write" on custom_cards for all using (
+  exists(select 1 from profiles where id=auth.uid() and is_admin=true)
+);
+
+-- PACKS
+create table if not exists packs (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  description text,
+  cards_per_pack integer default 5,
+  price integer default 100,
+  image_url text,
+  card_pool jsonb,
+  created_at timestamptz default now()
+);
+alter table packs enable row level security;
+create policy "packs_read_all" on packs for select using (true);
+create policy "packs_admin_write" on packs for all using (
+  exists(select 1 from profiles where id=auth.uid() and is_admin=true)
+);
+
+-- BATTLES
+create table if not exists battles (
+  id uuid primary key default gen_random_uuid(),
+  challenger uuid,
+  opponent uuid,
+  challenger_card text,
+  opponent_card text,
+  status text default 'pending',
+  winner uuid,
+  name text,
+  log jsonb default '[]',
+  created_at timestamptz default now()
+);
+alter table battles enable row level security;
+create policy "battles_read_own" on battles for select using (
+  auth.uid() = challenger or auth.uid() = opponent or opponent is null
+);
+create policy "battles_insert_auth" on battles for insert with check (auth.uid() = challenger or challenger='admin');
+create policy "battles_update_own" on battles for update using (
+  auth.uid() = challenger or auth.uid() = opponent
+);
+
+-- TRADES
+create table if not exists trades (
+  id uuid primary key default gen_random_uuid(),
+  from_user uuid references profiles(id),
+  to_user uuid references profiles(id),
+  from_cards jsonb default '[]',
+  to_cards jsonb default '[]',
+  from_coins integer default 0,
+  status text default 'pending',
+  created_at timestamptz default now()
+);
+alter table trades enable row level security;
+create policy "trades_read_own" on trades for select using (
+  auth.uid() = from_user or auth.uid() = to_user
+);
+create policy "trades_insert_auth" on trades for insert with check (auth.uid() = from_user);
+create policy "trades_update_own" on trades for update using (
+  auth.uid() = from_user or auth.uid() = to_user
+);
+
+-- EVENTS
+create table if not exists events (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  description text,
+  reward_card text,
+  reward_coins integer default 0,
+  active boolean default true,
+  created_at timestamptz default now()
+);
+alter table events enable row level security;
+create policy "events_read_all" on events for select using (true);
+create policy "events_admin_write" on events for all using (
+  exists(select 1 from profiles where id=auth.uid() and is_admin=true)
+);
+
+-- Storage bucket: go to Storage > New Bucket > name it "cards" > set Public
+-- Upload your card images (PNG) to that bucket
+*/
+
 // Close modals by clicking backdrop
 document.querySelectorAll('.mo').forEach(o=>o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('open'); }));
 </script>
