@@ -225,13 +225,11 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,.97);backdrop-fil
       <button class="tabb on" id="TL" onclick="stab('login')">Login</button>
       <button class="tabb" id="TSU" onclick="stab('signup')">Sign Up</button>
     </div>
-    <!-- LOGIN FORM: username + password only -->
     <div id="LF">
       <div class="fg"><input class="fi" id="LU" placeholder="Username" onkeydown="if(event.key==='Enter')doLogin()"/></div>
       <div class="fg"><input class="fi" id="LP" placeholder="Password" type="password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
       <button class="btn bgold" style="width:100%;margin-bottom:6px" onclick="doLogin()">Sign In</button>
     </div>
-    <!-- SIGNUP FORM: username + password only -->
     <div id="SUF" style="display:none">
       <div class="fg"><input class="fi" id="SU" placeholder="Username" onkeydown="if(event.key==='Enter')doSignup()"/></div>
       <div class="fg"><input class="fi" id="SP" placeholder="Password (min 6)" type="password" onkeydown="if(event.key==='Enter')doSignup()"/></div>
@@ -531,13 +529,6 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,.97);backdrop-fil
     </div>
   </div>
 
-  <!-- IMAGE DEBUG TOOL -->
-  <div class="shdr" style="margin-top:8px"><span class="stitle">🖼️ IMAGE CHECKER</span><button class="btn bdark bsm" onclick="checkImages()">Check All Images</button></div>
-  <div id="IMGCHECK" style="font-size:10px;color:var(--t2);margin-bottom:16px;background:rgba(0,0,0,.3);border-radius:8px;padding:10px;display:none">
-    <div style="margin-bottom:6px;color:var(--gold);font-weight:800">Storage URL: <span id="IMGSTORAGEURL" style="color:var(--text);font-family:monospace;word-break:break-all"></span></div>
-    <div id="IMGRESULTS" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px;margin-top:8px"></div>
-  </div>
-
   <div class="shdr"><span class="stitle">📋 CARDS</span></div>
   <div class="sx" style="margin-bottom:18px">
     <table class="atable" id="ADMINCARDS">
@@ -590,51 +581,51 @@ const img = name => STORAGE + name;
 //  CARD DATABASE  — format: "Name No. XXXX"
 // ═══════════════════════════════════════════════════════
 const CARDS = [
-{id:'c001',num:'0001',name:'Keanu Elliot James',label:'Keanu Elliot James No. 0001',hp:280,hpu:'Tons',type:'psychic',rarity:'epic',img:img('Keanu_Elliot_James_No__0001.png'),flavour:'Little gay man that is not over 13 and likes men also is a girl',weak:'Euphoria & Face',resist:'Shampoo',retreat:'A WHOLE LOT of estrogen',trainer:false,
+{id:'c001',num:'0001',name:'Keanu Elliot James',label:'Keanu Elliot James No. 0001',hp:280,hpu:'Tons',type:'psychic',rarity:'epic',img:img('Keanu_Elliot_James_No_0001.png'),flavour:'Little gay man that is not over 13 and likes men also is a girl',weak:'Euphoria & Face',resist:'Shampoo',retreat:'A WHOLE LOT of estrogen',trainer:false,
 moves:[{n:'Oily Hair',d:30,t:'dmg',desc:'',cd:0},{n:'Bully',d:5,t:'dmg',desc:'Self-conscious attack.',cd:0},{n:'Mistake',d:-10,t:'special',desc:'Thought Euphoria WAS his friend... -10 self dmg.',cd:0},{n:'Kirkify',d:'Evo',t:'special',desc:'Skip opponent next turn. ONCE per match.',cd:99,opm:true}]},
-{id:'c002',num:'0002',name:'Keanu No Shampoo James',label:'Keanu No Shampoo James No. 0002',hp:380,hpu:'Tons',type:'psychic',rarity:'epic',img:img('Keanu_no_shampooo_james_No__0002.png'),flavour:'French fry arms with jelly rolls, fakes going to the gym, alergic to girls & femboy',weak:'Shampoo & Girls',resist:'Being good at a game',retreat:'Spiderini Brainrot',trainer:false,
+{id:'c002',num:'0002',name:'Keanu No Shampoo James',label:'Keanu No Shampoo James No. 0002',hp:380,hpu:'Tons',type:'psychic',rarity:'epic',img:img('Keanu_No_Shampoo_James_No_0002.png'),flavour:'French fry arms with jelly rolls, fakes going to the gym, alergic to girls & femboy',weak:'Shampoo & Girls',resist:'Being good at a game',retreat:'Spiderini Brainrot',trainer:false,
 moves:[{n:'Dandruff',d:15,t:'dmg',desc:'',cd:0},{n:'Fire Breath',d:25,t:'dmg',desc:'',cd:0},{n:'Shark Teeth',d:40,t:'dmg',desc:'',cd:2},{n:'Lonely',d:0,t:'special',desc:'Opponent stuck in room — skips next turn. ONCE per match.',cd:99,opm:true}]},
-{id:'c003',num:'0003',name:'Keanu Blanket James',label:'Keanu Blanket James No. 0003',hp:100,hpu:'Tons',type:'psychic',rarity:'rare',img:img('Keanu_Blanket_James_No__0003.png'),flavour:'Scared to show HER face, covers with blanket, can\'t find the end call button',weak:'End Button Call',resist:'Turning on cam',retreat:'Going to gym',trainer:false,
+{id:'c003',num:'0003',name:'Keanu Blanket James',label:'Keanu Blanket James No. 0003',hp:100,hpu:'Tons',type:'psychic',rarity:'rare',img:img('Keanu_Blanket_James_No_0003.png'),flavour:'Scared to show HER face, covers with blanket, can\'t find the end call button',weak:'End Button Call',resist:'Turning on cam',retreat:'Going to gym',trainer:false,
 moves:[{n:'Blanket',d:15,t:'dmg',desc:'Hides face — grants Shield (blocks 10 next hit).',cd:2},{n:'Face',d:80,t:'dmg',desc:'',cd:3}]},
-{id:'c004',num:'0004',name:'Caspian da 5',label:'Caspian da 5 No. 0004',hp:80,hpu:'HP',type:'dark',rarity:'rare',img:img('Caspian_da_5_No_0004.png'),flavour:'Short little black boy that smokes and flexes fake balenciaga tracks',weak:'No Vape',resist:'Fire/Smoke',retreat:'Drug Test',trainer:false,
+{id:'c004',num:'0004',name:'Caspian da 5',label:'Caspian da 5 No. 0004',hp:80,hpu:'HP',type:'dark',rarity:'rare',img:img('Caspian_Da_5_No_0004.png'),flavour:'Short little black boy that smokes and flexes fake balenciaga tracks',weak:'No Vape',resist:'Fire/Smoke',retreat:'Drug Test',trainer:false,
 moves:[{n:'Geek Bar',d:30,t:'dmg',desc:'Blows flavored smoke.',cd:1},{n:'Shit Stain',d:30,t:'stun',desc:'Blinds enemy — they miss next move.',cd:3},{n:'Balenciaga Tracks',d:10,t:'dmg',desc:'',cd:0}]},
 {id:'c005',num:'0005',name:'Big Shoulder Caspian',label:'Big Shoulder Caspian No. 0005',hp:100,hpu:'HP',type:'fighting',rarity:'rare',img:img('Big_Shoulder_Caspian_No_0005.png'),flavour:'Lil black boy with big shoulder pads knock you out',weak:'No Shoulder Pads',resist:'Football',retreat:'Watermelon',trainer:false,
 moves:[{n:'Shoulder Pads',d:100,t:'dmg',desc:'',cd:4},{n:'Gatorade',d:50,t:'heal',desc:'Restores 50 HP.',cd:3}]},
-{id:'c006',num:'0006',name:'Majesitc Caspian',label:'Majesitc Caspian No. 0006',hp:110,hpu:'HP',type:'flying',rarity:'epic',img:img('Majesitc_Caspian_No__0006.png'),flavour:'Wanted to be gansta but as sugary as a sugar cookie',weak:'Looking good for stoopy',resist:'Geek Bar',retreat:'Fairy Dust',trainer:false,
+{id:'c006',num:'0006',name:'Majesitc Caspian',label:'Majesitc Caspian No. 0006',hp:110,hpu:'HP',type:'flying',rarity:'epic',img:img('Majesitc_Caspian_No_0006.png'),flavour:'Wanted to be gansta but as sugary as a sugar cookie',weak:'Looking good for stoopy',resist:'Geek Bar',retreat:'Fairy Dust',trainer:false,
 moves:[{n:'Fein',d:15,t:'dmg',desc:'Feining for his vape.',cd:0},{n:'Os',d:60,t:'dmg',desc:'Shooting Os out of his ashy lips.',cd:2}]},
-{id:'c007',num:'0007',name:'Geek Bar',label:'Geek Bar No. 0007',hp:20,hpu:'HP',type:'vape',rarity:'common',img:img('Geek_Bar_No__0007.png'),flavour:'Compact disposable vape',weak:'Caspian',resist:'Weed',retreat:'Vape Juice',trainer:false,
+{id:'c007',num:'0007',name:'Geek Bar',label:'Geek Bar No. 0007',hp:20,hpu:'HP',type:'vape',rarity:'common',img:img('Geek_Bar_No_0007.png'),flavour:'Compact disposable vape',weak:'Caspian',resist:'Weed',retreat:'Vape Juice',trainer:false,
 moves:[{n:'Smoke',d:10,t:'heal',desc:'Restores 10 HP.',cd:2},{n:'Explode',d:40,t:'dmg',desc:'',cd:3}]},
-{id:'c008',num:'0008',name:'Vape Juice',label:'Vape Juice No. 0008',hp:null,hpu:null,type:'trainer',rarity:'common',img:img('Vape_Juice_No__0008.png'),flavour:'A nicotine filled delight Caspian is an addict to this',weak:null,resist:null,retreat:null,trainer:true,
+{id:'c008',num:'0008',name:'Vape Juice',label:'Vape Juice No. 0008',hp:null,hpu:null,type:'trainer',rarity:'common',img:img('Vape_Juice_No_0008.png'),flavour:'A nicotine filled delight Caspian is an addict to this',weak:null,resist:null,retreat:null,trainer:true,
 trainerEffect:'Restore 30 HP to active Vape-type card. If Caspian on field: +20 dmg next attack.',moves:[]},
-{id:'c009',num:'0009',name:'Shower',label:'Shower No. 0009',hp:20,hpu:'HP',type:'water',rarity:'common',img:img('Shower_No__0009.png'),flavour:'Water PSPSPSPSPS — bane of all Caspians',weak:'Stoopy',resist:'Fire/Smoke',retreat:'Soap',trainer:false,
+{id:'c009',num:'0009',name:'Shower',label:'Shower No. 0009',hp:20,hpu:'HP',type:'water',rarity:'common',img:img('Shower_No_0009.png'),flavour:'Water PSPSPSPSPS — bane of all Caspians',weak:'Stoopy',resist:'Fire/Smoke',retreat:'Soap',trainer:false,
 moves:[{n:'Cold Water',d:15,t:'dmg',desc:'',cd:0},{n:'Hot Water',d:20,t:'dmg',desc:'',cd:2}]},
-{id:'c010',num:'0010',name:'Ruins Hairy Ass Legs',label:'Ruins Hairy Ass Legs No. 0010',hp:67,hpu:'HP',type:'psychic',rarity:'rare',img:img('Ruins_Hairy_ass_legs_No__0010.png'),flavour:'An emo E-kitten who says bill is her king',weak:'BLADE',resist:'Bill',retreat:'Stoopy',trainer:false,
+{id:'c010',num:'0010',name:'Ruins Hairy Ass Legs',label:'Ruins Hairy Ass Legs No. 0010',hp:67,hpu:'HP',type:'psychic',rarity:'rare',img:img('Ruins_Hairy_Ass_Legs_No_0010.png'),flavour:'An emo E-kitten who says bill is her king',weak:'BLADE',resist:'Bill',retreat:'Stoopy',trainer:false,
 moves:[{n:'Paw Tattoo',d:20,t:'dmg',desc:'Shows off the paw tattoo.',cd:0},{n:'E-Kitten Scratch',d:35,t:'dmg',desc:'',cd:1}]},
-{id:'c011',num:'0011',name:'Ruins Setup',label:'Ruins Setup No. 0011',hp:1,hpu:'HP',type:'normal',rarity:'common',img:img('Ruins_Setup_No__0011.png'),flavour:'Computer',weak:'Fortnite',resist:'Talking',retreat:'Bill',trainer:false,
+{id:'c011',num:'0011',name:'Ruins Setup',label:'Ruins Setup No. 0011',hp:1,hpu:'HP',type:'normal',rarity:'common',img:img('Ruins_Setup_No_0011.png'),flavour:'Computer',weak:'Fortnite',resist:'Talking',retreat:'Bill',trainer:false,
 moves:[{n:'Setup Falls',d:1,t:'dmg',desc:'The whole setup collapses.',cd:0}]},
 {id:'c012',num:'0012',name:'Axel',label:'Axel No. 0012',hp:100,hpu:'HP',type:'normal',rarity:'common',img:img('Axel_No_0012.png'),flavour:'Pedo comboy that e-dates and dropped out to be a pro gamer',weak:'Deodorant',resist:'RL',retreat:'Geek Bar',trainer:false,
 moves:[{n:'DBD',d:30,t:'dmg',desc:'',cd:0},{n:'Diploma',d:25,t:'dmg',desc:'',cd:1},{n:'E-Girl',d:30,t:'dmg',desc:'',cd:2}]},
-{id:'c013',num:'0013',name:'Jestifyed',label:'Jestifyed No. 0013',hp:110,hpu:'HP',type:'fire',rarity:'rare',img:img('Jestifyed_No__0013.png'),flavour:'OH SHIT CANDY FROM MY NOSE',weak:'Clean Room',resist:'Period Blood',retreat:'Boogers',trainer:false,
+{id:'c013',num:'0013',name:'Jestifyed',label:'Jestifyed No. 0013',hp:110,hpu:'HP',type:'fire',rarity:'rare',img:img('Jestifyed_No_0013.png'),flavour:'OH SHIT CANDY FROM MY NOSE',weak:'Clean Room',resist:'Period Blood',retreat:'Boogers',trainer:false,
 moves:[{n:'Nose Picking',d:10,t:'dmg',desc:'',cd:0},{n:'Quiting YT',d:0,t:'special',desc:'Does nothing. Like his career.',cd:0}]},
 {id:'c014',num:'0014',name:'Football',label:'Football No. 0014',hp:50,hpu:'HP',type:'normal',rarity:'common',img:img('Football_No_0014.png'),flavour:'Just a normal football :D',weak:'Caspian',resist:'Football Player',retreat:'Football Player',trainer:false,
 moves:[{n:'Pass',d:15,t:'dmg',desc:'',cd:0},{n:'Tackle',d:30,t:'dmg',desc:'',cd:1}]},
-{id:'c015',num:'0015',name:'Soap',label:'Soap No. 0015',hp:50,hpu:'HP',type:'water',rarity:'common',img:img('Soap_No__0015.png'),flavour:'Stoopy needs some soap and a shower',weak:'Stoopy',resist:'Dirt',retreat:'Shower',trainer:false,
+{id:'c015',num:'0015',name:'Soap',label:'Soap No. 0015',hp:50,hpu:'HP',type:'water',rarity:'common',img:img('Soap_No_0015.png'),flavour:'Stoopy needs some soap and a shower',weak:'Stoopy',resist:'Dirt',retreat:'Shower',trainer:false,
 moves:[{n:'Wash',d:10,t:'dmg',desc:'',cd:0},{n:'Slip',d:30,t:'dmg',desc:'',cd:2}]},
-{id:'c016',num:'0016',name:'Football Player',label:'Football Player No. 0016',hp:140,hpu:'HP',type:'fighting',rarity:'rare',img:img('FootballPlayer_No__0016.png'),flavour:'AND HE PASSES AND HE misses ;/',weak:'Vape',resist:'Football',retreat:'Football',trainer:false,
+{id:'c016',num:'0016',name:'Football Player',label:'Football Player No. 0016',hp:140,hpu:'HP',type:'fighting',rarity:'rare',img:img('Football_Player_No_0016.png'),flavour:'AND HE PASSES AND HE misses ;/',weak:'Vape',resist:'Football',retreat:'Football',trainer:false,
 moves:[{n:'Shove',d:15,t:'dmg',desc:'',cd:0},{n:'Tackle',d:30,t:'dmg',desc:'',cd:1},{n:'Pass',d:25,t:'dmg',desc:'Does 2× damage if not caught.',cd:2}]},
-{id:'c018',num:'0018',name:'Cops',label:'Cops No. 0018',hp:240,hpu:'HP',type:'normal',rarity:'epic',img:img('Cops_No__0018.png'),flavour:'Pew Pew Mafaka',weak:'Vape',resist:'Majestic Caspian',retreat:'None',trainer:false,
+{id:'c018',num:'0018',name:'Cops',label:'Cops No. 0018',hp:240,hpu:'HP',type:'normal',rarity:'epic',img:img('Cops_No_0018.png'),flavour:'Pew Pew Mafaka',weak:'Vape',resist:'Majestic Caspian',retreat:'None',trainer:false,
 moves:[{n:'Tazer',d:20,t:'stun',desc:'Stuns enemy for 1 round.',cd:2},{n:'Arrest',d:5,t:'stun',desc:'Skips enemy turn.',cd:3,opm:true},{n:'Catch',d:0,t:'special',desc:'Catches any "pedo" card — removes from battle. ONCE.',cd:99,opm:true}]},
-{id:'c020',num:'0020',name:'Majestic Justen',label:'Majestic Justen No. 0020',hp:120,hpu:'HP',type:'psychic',rarity:'rare',img:img('Majestic_Justen_No__0020.png'),flavour:'Tall lil black boy who robbed his neighbors house',weak:'Vape',resist:'Bill',retreat:'Cops',trainer:false,
+{id:'c020',num:'0020',name:'Majestic Justen',label:'Majestic Justen No. 0020',hp:120,hpu:'HP',type:'psychic',rarity:'rare',img:img('Majestic_Justen_No_0020.png'),flavour:'Tall lil black boy who robbed his neighbors house',weak:'Vape',resist:'Bill',retreat:'Cops',trainer:false,
 moves:[{n:'Rizz',d:15,t:'debuff',desc:'Enemy card flusters — -15% DMG next turn.',cd:0},{n:'Roast',d:20,t:'dmg',desc:'',cd:1},{n:'Call Bill',d:10,t:'heal',desc:'+10 HP.',cd:2},{n:'Rob',d:10,t:'dmg',desc:'',cd:0}]},
-{id:'c021',num:'0021',name:'Dark Justen',label:'Dark Justen No. 0021',hp:150,hpu:'HP',type:'fire',rarity:'epic',img:img('Dark_Justen_No__0021.png'),flavour:'Tall lil black boy who robbed his neighbors house and spun this block',weak:'Vape',resist:'Bill',retreat:'Cops',trainer:false,
+{id:'c021',num:'0021',name:'Dark Justen',label:'Dark Justen No. 0021',hp:150,hpu:'HP',type:'fire',rarity:'epic',img:img('Dark_Justen_No_0021.png'),flavour:'Tall lil black boy who robbed his neighbors house and spun this block',weak:'Vape',resist:'Bill',retreat:'Cops',trainer:false,
 moves:[{n:'Scare',d:20,t:'debuff',desc:'Enemy card jumps — -5% DMG.',cd:0},{n:'Roasted',d:35,t:'dmg',desc:'Fire cards are immune to this attack.',cd:2},{n:'Call Bill',d:10,t:'heal',desc:'+10 HP.',cd:2},{n:'Spin the Block',d:55,t:'dmg',desc:'',cd:3}]},
-{id:'c022',num:'0022',name:'Bill',label:'Bill No. 0022',hp:200,hpu:'HP',type:'fighting',rarity:'rare',img:img('Bill_No__0022.png'),flavour:'Rich lil asian boy that gets glazed by Keanu',weak:'Salad',resist:'Justen',retreat:'Waddling',trainer:false,
+{id:'c022',num:'0022',name:'Bill',label:'Bill No. 0022',hp:200,hpu:'HP',type:'fighting',rarity:'rare',img:img('Bill_No_0022.png'),flavour:'Rich lil asian boy that gets glazed by Keanu',weak:'Salad',resist:'Justen',retreat:'Waddling',trainer:false,
 moves:[{n:'Belly Smash',d:45,t:'dmg',desc:'',cd:1},{n:'Anger',d:15,t:'special',desc:'Bill gets 2× strength next move for 1 round.',cd:3,opm:false},{n:'Call Justen',d:10,t:'heal',desc:'+10 HP.',cd:2}]},
-{id:'c023',num:'0023',name:'Rich Bill',label:'Rich Bill No. 0023',hp:250,hpu:'HP',type:'fighting',rarity:'epic',img:img('Rich_Bill_No__0023.png'),flavour:'Bill goes B4B with anybody at any moment',weak:'Homeless',resist:'Money',retreat:'Scary Games',trainer:false,
+{id:'c023',num:'0023',name:'Rich Bill',label:'Rich Bill No. 0023',hp:250,hpu:'HP',type:'fighting',rarity:'epic',img:img('Rich_Bill_No_0023.png'),flavour:'Bill goes B4B with anybody at any moment',weak:'Homeless',resist:'Money',retreat:'Scary Games',trainer:false,
 moves:[{n:'Band for Band',d:55,t:'dmg',desc:'',cd:1},{n:'Diss Track',d:15,t:'stun',desc:'Stuns Enemy for 1 Round.',cd:3},{n:'Dox',d:5,t:'dot',desc:'Enemy takes 5 dmg per turn for 3 turns.',cd:99,opm:true}]},
-{id:'c024',num:'0024',name:'Moddy',label:'Moddy No. 0024',hp:120,hpu:'HP',type:'electric',rarity:'rare',img:img('Moddy_No__0024.png'),flavour:"Keanu is Moddy's Bitch and Moddy Glaze's Lebron (Yes he gooned to him)",weak:'Water',resist:'Hair Clippers',retreat:'Barber Shop',trainer:false,
+{id:'c024',num:'0024',name:'Moddy',label:'Moddy No. 0024',hp:120,hpu:'HP',type:'electric',rarity:'rare',img:img('Moddy_No_0024.png'),flavour:"Keanu is Moddy's Bitch and Moddy Glaze's Lebron (Yes he gooned to him)",weak:'Water',resist:'Hair Clippers',retreat:'Barber Shop',trainer:false,
 moves:[{n:'Nappy Hair',d:20,t:'dmg',desc:'',cd:0},{n:'Failed SMPs',d:15,t:'dmg',desc:'',cd:1},{n:'V Neck',d:10,t:'dmg',desc:'',cd:0}]},
-{id:'c025',num:'0025',name:'Blanket Moddy',label:'Blanket Moddy No. 0025',hp:160,hpu:'HP',type:'electric',rarity:'epic',img:img('Blanket_Moddy__No_0025.png'),flavour:"Keanu is Moddy's Bitch and Moddy Glaze's Lebron (Yes he gooned to him)",weak:'Water',resist:'Hair Clippers',retreat:'Barber Shop',trainer:false,
+{id:'c025',num:'0025',name:'Blanket Moddy',label:'Blanket Moddy No. 0025',hp:160,hpu:'HP',type:'electric',rarity:'epic',img:img('Blanket_Moddy_No_0025.png'),flavour:"Keanu is Moddy's Bitch and Moddy Glaze's Lebron (Yes he gooned to him)",weak:'Water',resist:'Hair Clippers',retreat:'Barber Shop',trainer:false,
 moves:[{n:'Nappy Hair',d:40,t:'dmg',desc:'',cd:0},{n:'Failed SMPs',d:50,t:'dmg',desc:'',cd:2},{n:'V Neck',d:20,t:'dmg',desc:'',cd:0},{n:'Combs',d:13,t:'heal',desc:'+13 HP. Up to 3 uses per match.',cd:1}]},
 ];
 
@@ -696,7 +687,6 @@ async function doLogin() {
   const pass  = document.getElementById('LP').value;
   if (!uname || !pass) { setErr('Enter username and password.'); return; }
   showLdr('Signing in...');
-  // Supabase needs an email — we derive one from the username internally
   const email = uname + '@rooftcg.local';
   const r = await sb('POST', '/auth/v1/token?grant_type=password', {email, password:pass});
   hideLdr();
@@ -717,10 +707,9 @@ async function doSignup() {
   if (pass.length < 6)  { setErr('Password must be at least 6 characters.'); return; }
   showLdr('Creating account...');
   const email = uname + '@rooftcg.local';
-  // Check username not taken
   const existing = await sb('GET', `/rest/v1/profiles?username=eq.${encodeURIComponent(uname)}&select=id`);
   if (existing?.length) { hideLdr(); setErr('Username already taken.'); return; }
-  const r = await sb('POST', '/auth/v1/signup', {email, password:pass, options:{emailRedirectTo:null}});
+  const r = await sb('POST', '/auth/v1/signup', {email, password:pass});
   hideLdr();
   if (r?.user?.id || r?.id) {
     const uid = r.user?.id || r.id;
@@ -731,8 +720,7 @@ async function doSignup() {
       toast('Welcome '+uname+'! 🎉', 'S');
       onLogin();
     } else {
-      // Email confirm required in Supabase settings — tell them to disable it
-      setErr('Turn off "Confirm email" in Supabase Auth settings, then try again.');
+      setErr('Disable "Confirm email" in Supabase Auth → Settings, then try again.');
     }
   } else {
     setErr(r?.error_description || r?.msg || r?.message || 'Signup failed.');
@@ -741,11 +729,8 @@ async function doSignup() {
 
 async function loadProfile(uid) {
   const pr = await sb('GET', `/rest/v1/profiles?id=eq.${uid}&select=*`);
-  if (pr?.length) {
-    S.user = pr[0]; S.coins = pr[0].coins||0; S.adminUnlocked = !!pr[0].is_admin;
-  } else {
-    S.user = {id:uid, username:'Player', coins:100, is_admin:false}; S.coins = 100;
-  }
+  if (pr?.length) { S.user = pr[0]; S.coins = pr[0].coins||0; S.adminUnlocked = !!pr[0].is_admin; }
+  else { S.user = {id:uid, username:'Player', coins:100, is_admin:false}; S.coins = 100; }
   const co = await sb('GET', `/rest/v1/collection?user_id=eq.${uid}&select=*`);
   S.coll = Array.isArray(co) ? co.map(c=>({cardId:c.card_id, qty:c.quantity||1, foil:c.foil||'normal'})) : [];
   const cu = await sb('GET', '/rest/v1/custom_cards?select=*');
@@ -813,7 +798,7 @@ function go(page) {
 
 function updateNav() {
   document.getElementById('COINS').textContent = '💰 ' + S.coins;
-  const pcoins = document.getElementById('PCOINS'); if (pcoins) pcoins.textContent = '💰 ' + S.coins;
+  const _pc = document.getElementById('PCOINS'); if (_pc) _pc.textContent = '💰 ' + S.coins;
   const u = S.user?.username||'?';
   document.getElementById('AVA').textContent    = u[0].toUpperCase();
   document.getElementById('PROFAVA').textContent = u[0].toUpperCase();
@@ -1654,9 +1639,9 @@ async function giveCard() {
   const qty   = parseInt(document.getElementById('AGQTY').value)||1;
   if (!pid||!cid) { toast('Select player and card','E'); return; }
   for (let i=0; i<qty; i++) {
-    const existing = await sb('GET', `/rest/v1/collection?user_id=eq.${pid}&card_id=eq.${cid}&foil=eq.${foil}&select=id,quantity`);
-    if (existing?.length) {
-      await sb('PATCH', `/rest/v1/collection?id=eq.${existing[0].id}`, {quantity: existing[0].quantity + 1});
+    const ex2 = await sb('GET', `/rest/v1/collection?user_id=eq.${pid}&card_id=eq.${cid}&foil=eq.${foil}&select=id,quantity`);
+    if (ex2?.length) {
+      await sb('PATCH', `/rest/v1/collection?id=eq.${ex2[0].id}`, {quantity: ex2[0].quantity + 1});
     } else {
       await sb('POST', '/rest/v1/collection', {user_id:pid, card_id:cid, quantity:1, foil});
     }
@@ -1678,12 +1663,12 @@ async function givePack() {
     for (let i=0; i<(pk.cpp||5); i++) {
       const card = rollCard(pk.pool);
       if (card) {
-        const foil = rollFoil();
-        const existing = await sb('GET', `/rest/v1/collection?user_id=eq.${pid}&card_id=eq.${card.id}&foil=eq.${foil}&select=id,quantity`);
-        if (existing?.length) {
-          await sb('PATCH', `/rest/v1/collection?id=eq.${existing[0].id}`, {quantity: existing[0].quantity + 1});
+        const pf = rollFoil();
+        const ex3 = await sb('GET', `/rest/v1/collection?user_id=eq.${pid}&card_id=eq.${card.id}&foil=eq.${pf}&select=id,quantity`);
+        if (ex3?.length) {
+          await sb('PATCH', `/rest/v1/collection?id=eq.${ex3[0].id}`, {quantity: ex3[0].quantity + 1});
         } else {
-          await sb('POST', '/rest/v1/collection', {user_id:pid, card_id:card.id, quantity:1, foil});
+          await sb('POST', '/rest/v1/collection', {user_id:pid, card_id:card.id, quantity:1, foil:pf});
         }
       }
     }
@@ -1719,47 +1704,6 @@ function renderHero() {
     <div class="fcard" onclick="showCard('${c.id}')">
       <img src="${c.img}" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover"/>
     </div>`).join('');
-}
-
-// ═══════════════════════════════════════════════════════
-//  IMAGE DEBUG
-// ═══════════════════════════════════════════════════════
-async function checkImages() {
-  const box = document.getElementById('IMGCHECK');
-  const res = document.getElementById('IMGRESULTS');
-  const urlEl = document.getElementById('IMGSTORAGEURL');
-  box.style.display = '';
-  urlEl.textContent = STORAGE;
-  res.innerHTML = '<div style="color:var(--gold)">Checking all card images...</div>';
-  const results = await Promise.all(allCards().map(c => new Promise(resolve => {
-    const img = new Image();
-    img.onload  = () => resolve({name:c.name, num:c.num, url:c.img, ok:true});
-    img.onerror = () => resolve({name:c.name, num:c.num, url:c.img, ok:false});
-    img.src = c.img + '?t=' + Date.now(); // bust cache
-  })));
-  const ok  = results.filter(r=>r.ok);
-  const bad = results.filter(r=>!r.ok);
-  res.innerHTML = `<div style="grid-column:1/-1;margin-bottom:6px">
-    <span style="color:var(--green)">✅ ${ok.length} loading</span> &nbsp;
-    <span style="color:var(--red)">❌ ${bad.length} broken</span>
-  </div>` + results.map(r=>`
-    <div style="text-align:center;padding:4px;border-radius:6px;background:${r.ok?'rgba(77,255,155,.06)':'rgba(255,77,77,.08)'};border:1px solid ${r.ok?'rgba(77,255,155,.2)':'rgba(255,77,77,.25)'}">
-      <div style="width:100%;aspect-ratio:5/7;border-radius:4px;overflow:hidden;background:#111;margin-bottom:4px">
-        ${r.ok ? `<img src="${r.url}" style="width:100%;height:100%;object-fit:cover"/>` : '<div style="height:100%;display:flex;align-items:center;justify-content:center;font-size:18px">❌</div>'}
-      </div>
-      <div style="font-size:8px;font-weight:800;color:${r.ok?'var(--green)':'var(--red)'}">${r.ok?'✅':'❌'} No.${r.num}</div>
-      <div style="font-size:7px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r.name}">${r.name}</div>
-    </div>`).join('');
-  if (bad.length) {
-    const details = document.createElement('div');
-    details.style.cssText = 'grid-column:1/-1;margin-top:8px;padding:8px;background:rgba(255,77,77,.06);border-radius:6px;border:1px solid rgba(255,77,77,.2)';
-    details.innerHTML = `<div style="font-weight:800;color:var(--red);margin-bottom:4px">❌ Broken filenames (check these in Supabase Storage bucket "cards"):</div>` +
-      bad.map(r=>{
-        const fname = r.url.replace(STORAGE,'');
-        return `<div style="font-family:monospace;font-size:9px;color:var(--t2);margin-bottom:2px">${fname}</div>`;
-      }).join('');
-    res.appendChild(details);
-  }
 }
 
 // ═══════════════════════════════════════════════════════
